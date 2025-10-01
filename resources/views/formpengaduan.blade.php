@@ -1,94 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Pengaduan</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
+            background: #121212;
+            color: #e0e0e0;
             margin: 0;
-            padding: 0;
+            padding: 30px;
         }
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: #111;
-            padding: 20px;
-            border-radius: 8px;
+            width: 60%;
+            margin: auto;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
         }
         h2 {
             text-align: center;
-            color: #fff;
+            color: #ffffff;
+            margin-bottom: 25px;
         }
         label {
             display: block;
-            margin: 10px 0 5px;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #bdbdbd;
         }
         input, textarea, select {
             width: 100%;
-            padding: 8px;
+            padding: 12px;
+            margin-bottom: 18px;
+            background: #2a2a2a;
             border: 1px solid #444;
-            border-radius: 4px;
-            background: #222;
-            color: #fff;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            box-sizing: border-box;
         }
-        button {
-            margin-top: 15px;
+        input[type="file"] {
             width: 100%;
-            padding: 10px;
+        }
+        /* fokus: garis putih tanpa cahaya */
+        input:focus, textarea:focus, select:focus {
+            border-color: #ffffff;
+            outline: none;
+        }
+        textarea {
+            resize: none;
+        }
+        /* tombol putih polos */
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #ffffff;
+            color: #121212;
             border: none;
-            background: #444;
-            color: #fff;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
         }
         button:hover {
-            background: #666;
+            background: #e0e0e0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Form Pengaduan</h2>
-        <form>
-            <label for="nomor_tiket">Nomor Tiket</label>
-            <input type="text" id="nomor_tiket" name="nomor_tiket">
+<div class="container">
+    <h2>Form Pengaduan Warga</h2>
 
-            <label for="warga_id">Warga ID</label>
-            <input type="text" id="warga_id" name="warga_id">
+    <form method="POST" enctype="multipart/form-data">
+        @csrf
+        <label for="judul">Judul Pengaduan</label>
+        <input type="text" id="judul" name="judul" required>
 
-            <label for="kategori_id">Kategori</label>
-            <select id="kategori_id" name="kategori_id">
-                <option value="1">Fasilitas Umum</option>
-                <option value="2">Lingkungan</option>
-                <option value="3">Lain-lain</option>
-            </select>
+        <label for="kategori_id">Kategori</label>
+        <select id="kategori_id" name="kategori_id">
+            @foreach($list_kategori as $kategori)
+                <option value="{{ $kategori }}">{{ $kategori }}</option>
+            @endforeach
+        </select>
 
-            <label for="judul">Judul</label>
-            <input type="text" id="judul" name="judul">
+        <label for="deskripsi">Deskripsi</label>
+        <textarea id="deskripsi" name="deskripsi" rows="4"></textarea>
 
-            <label for="deskripsi">Deskripsi</label>
-            <textarea id="deskripsi" name="deskripsi"></textarea>
+        <label for="lokasi_text">Lokasi</label>
+        <input type="text" id="lokasi_text" name="lokasi_text">
 
-            <label for="status">Status</label>
-            <input type="text" id="status" name="status">
+        <label for="rt">RT</label>
+        <select id="rt" name="rt">
+            @foreach($rt_list as $rt)
+                <option value="{{ $rt }}">{{ $rt }}</option>
+            @endforeach
+        </select>
 
-            <label for="lokasi_text">Lokasi</label>
-            <input type="text" id="lokasi_text" name="lokasi_text">
+        <label for="rw">RW</label>
+        <select id="rw" name="rw">
+            @foreach($rw_list as $rw)
+                <option value="{{ $rw }}">{{ $rw }}</option>
+            @endforeach
+        </select>
 
-            <label for="rt">RT</label>
-            <input type="text" id="rt" name="rt">
+        <label for="media">Lampiran Bukti</label>
+        <input type="file" id="media" name="media">
 
-            <label for="rw">RW</label>
-            <input type="text" id="rw" name="rw">
-
-            <label for="lampiran">Lampiran Bukti</label>
-            <input type="file" id="lampiran" name="lampiran">
-
-            <button type="submit">Kirim</button>
-        </form>
-    </div>
+        <button type="submit">Kirim Pengaduan</button>
+    </form>
+</div>
 </body>
 </html>
