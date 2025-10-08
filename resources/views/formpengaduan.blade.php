@@ -75,6 +75,9 @@
 
     <form method="POST" enctype="multipart/form-data">
         @csrf
+        <label for="nama">Nama Warga</label>
+        <input type="text" id="nama" name="nama" required>
+
         <label for="judul">Judul Pengaduan</label>
         <input type="text" id="judul" name="judul" required>
 
