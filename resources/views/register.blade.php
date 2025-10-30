@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Bina Desa</title>
+    <title>Daftar - Bina Desa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -73,7 +73,7 @@
 <body>
 
     <div class="card">
-        <h3 class="text-center mb-4">Form Login</h3>
+        <h3 class="text-center mb-4">Form Daftar</h3>
 
         <!-- SUCCESS MESSAGE -->
         @if(session('success'))
@@ -92,8 +92,17 @@
             </div>
         @endif
 
-        <form action="{{ route('auth.login') }}" method="POST">
+        <form action="{{ route('auth.register') }}" method="POST">
             @csrf
+
+            <div class="mb-3">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-control" name="name"
+                       placeholder="Masukkan nama lengkap" value="{{ old('name') }}">
+                @error('name')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
@@ -113,10 +122,16 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <div class="mb-3">
+                <label class="form-label">Konfirmasi Password</label>
+                <input type="password" class="form-control" name="password_confirmation"
+                       placeholder="Masukkan ulang password">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Daftar</button>
 
             <div class="text-center mt-3">
-                <p>Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a></p>
+                <p>Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a></p>
             </div>
         </form>
     </div>
