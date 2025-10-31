@@ -42,7 +42,7 @@
                     <h1 class="text-center mb-4">📋 Form Data Warga</h1>
                     <p class="text-center text-muted mb-4">PBN - Layanan Digital Masyarakat</p>
 
-                    <form action="#" method="POST">
+                    <form action="{{ route('datawarga.store') }}" method="POST">
                         @csrf
 
                         <!-- Data Pribadi -->
@@ -51,7 +51,7 @@
 
                             <div class="mb-3">
                                 <label for="nik" class="form-label">NIK (Nomor Induk Kependudukan) *</label>
-                                <input type="text" class="form-control" id="nik" name="nik" placeholder="16 digit NIK" maxlength="16" required>
+                                <input type="text" class="form-control" id="nik" name="no_ktp" placeholder="16 digit NIK" maxlength="16" required>
                             </div>
 
                             <div class="row">
@@ -185,7 +185,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="telepon" class="form-label">No. Telepon/HP *</label>
-                                        <input type="tel" class="form-control" id="telepon" name="telepon" required>
+                                        <input type="tel" class="form-control" id="telepon" name="telp" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -200,7 +200,7 @@
                         <!-- Submit Button -->
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary btn-lg">Daftar Data Warga</button>
-                            <a href="{{ url('/') }}" class="btn btn-secondary btn-lg">Kembali ke Home</a>
+                            <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-lg">Kembali ke Home</a>
                         </div>
                     </form>
                 </div>

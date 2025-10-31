@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,11 +17,20 @@ class Warga extends Model
     protected $fillable = [
         'no_ktp',
         'nama',
+        'tempat_lahir',
+        'tanggal_lahir',
         'jenis_kelamin',
         'agama',
+        'status',
         'pekerjaan',
         'telp',
-        'email'
+        'email',
+        'alamat',
+        'rt',
+        'rw',
+        'kelurahan',
+        'kecamatan',
+        'kota',
     ];
 
     public $timestamps = true;
