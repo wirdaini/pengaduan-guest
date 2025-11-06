@@ -12,26 +12,14 @@ class Warga extends Model
 
     protected $primaryKey = 'warga_id';
 
-    public $incrementing = true;
-
     protected $fillable = [
+        'user_id',
         'no_ktp',
         'nama',
-        'tempat_lahir',
-        'tanggal_lahir',
         'jenis_kelamin',
         'agama',
-        'status',
         'pekerjaan',
         'telp',
         'email',
-        'alamat',
-        'rt',
-        'rw',
-        'kelurahan',
-        'kecamatan',
-        'kota',
     ];
-
-    public $timestamps = true;
 }

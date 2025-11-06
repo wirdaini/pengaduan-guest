@@ -6,44 +6,75 @@ use Illuminate\Http\Request;
 
 class WargaController extends Controller
 {
+    public function index()
+    {
+        $warga = Warga::all();
+        return view('pages.warga.index', compact('warga'));
+    }
+
     public function create()
     {
-        return view('warga.create');
+        return view('pages.warga.create');
     }
 
     public function store(Request $request)
     {
-        // Validasi data - TAMBAH field yang missing
-        $validated = $request->validate([
-            'no_ktp'        => 'required|string|size:16|unique:warga',
-            'nama'          => 'required|string|max:255',
-            'tempat_lahir'  => 'required|string|max:255', // TAMBAH
-            'tanggal_lahir' => 'required|date',           // TAMBAH
+        $request->validate([
+            'no_ktp'        => 'required|digits:16|unique:warga',
+            'nama'          => 'required',
             'jenis_kelamin' => 'required|in:L,P',
-            'agama'         => 'required|string|max:255',
-            'status'        => 'required|string|max:255', // TAMBAH
-            'pekerjaan'     => 'required|string|max:255',
-            'telp'          => 'required|string|max:15',
-            'email'         => 'nullable|email|max:255',
-            'alamat'        => 'required|string',         // TAMBAH
-            'rt'            => 'required|string|max:5',   // TAMBAH
-            'rw'            => 'required|string|max:5',   // TAMBAH
-            'kelurahan'     => 'required|string|max:255', // TAMBAH
-            'kecamatan'     => 'required|string|max:255', // TAMBAH
-            'kota'          => 'required|string|max:255', // TAMBAH
+            'agama'         => 'required',
+            'pekerjaan'     => 'required',
+            'telp'          => 'required',
+            'email'         => 'required|email',
         ]);
 
-        try {
-            // Simpan ke database
-            Warga::create($validated);
+        Warga::create([
+            'user_id'       => auth()->id() ?? 1,
+            'no_ktp'        => $request->no_ktp,
+            'nama'          => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'agama'         => $request->agama,
+            'pekerjaan'     => $request->pekerjaan,
+            'telp'          => $request->telp,
+            'email'         => $request->email,
+        ]);
 
-            return redirect()->route('datawarga.create')
-                ->with('success', 'Data warga berhasil disimpan! Sekarang Anda bisa mengajukan pengaduan.');
+        return redirect()->route('warga.index')
+            ->with('success', 'Data warga berhasil ditambahkan!');
+    }
 
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', 'Gagal menyimpan data: ' . $e->getMessage())
-                ->withInput();
-        }
+    public function edit($id)
+    {
+        $warga = Warga::findOrFail($id);
+        return view('pages.warga.edit', compact('warga'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'no_ktp'        => 'required|digits:16|unique:warga,no_ktp,' . $id . ',warga_id',
+            'nama'          => 'required',
+            'jenis_kelamin' => 'required|in:L,P',
+            'agama'         => 'required',
+            'pekerjaan'     => 'required',
+            'telp'          => 'required',
+            'email'         => 'required|email',
+        ]);
+
+        $warga = Warga::findOrFail($id);
+        $warga->update($request->all());
+
+        return redirect()->route('warga.index')
+            ->with('success', 'Data warga berhasil diupdate!');
+    }
+
+    public function destroy($id)
+    {
+        $warga = Warga::findOrFail($id);
+        $warga->delete();
+
+        return redirect()->route('warga.index')
+            ->with('success', 'Data warga berhasil dihapus!');
     }
 }

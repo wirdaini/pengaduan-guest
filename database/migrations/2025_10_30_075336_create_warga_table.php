@@ -6,28 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('warga', function (Blueprint $table) {
-            $table->id('warga_id');
-            $table->string('no_ktp')->unique();
+            $table->id('warga_id'); // PK sebagai warga_id
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('no_ktp', 16)->unique(); // UNQ sebagai no_ktp
             $table->string('nama');
-            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->enum('jenis_kelamin', ['L', 'P']);
             $table->string('agama');
             $table->string('pekerjaan');
-            $table->string('telp')->nullable();
-            $table->string('email')->nullable();
+            $table->string('telp', 15);
+            $table->string('email');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('warga');
     }
