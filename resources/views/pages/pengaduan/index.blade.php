@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Pengaduan')
+@section('title', 'Data Pengaduan - Bina Desa')
 
 @section('content')
 <main class="main">
@@ -178,9 +178,8 @@
     position: relative;
     height: 120px;
     overflow: hidden;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #175cdd 0%, #1a4bb8 100%); /* ← Biru sesuai template */
 }
-
 .pengaduan-avatar {
     width: 80px;
     height: 80px;

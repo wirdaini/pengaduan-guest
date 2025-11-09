@@ -83,7 +83,7 @@ class AuthController extends Controller
         \Log::info('Register attempt:', $request->all());
 
         $request->validate([
-            'name'     => 'required|string|max:255', // Ganti first_name & last_name dengan name
+            'name'     => 'required|string|max:255', 
             'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'terms'    => 'required',

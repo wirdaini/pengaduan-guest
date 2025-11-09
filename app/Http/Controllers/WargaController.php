@@ -44,6 +44,12 @@ class WargaController extends Controller
             ->with('success', 'Data warga berhasil ditambahkan!');
     }
 
+    public function show($id)
+    {
+        $warga = Warga::findOrFail($id);
+        return view('pages.warga.show', compact('warga'));
+    }
+
     public function edit($id)
     {
         $warga = Warga::findOrFail($id);

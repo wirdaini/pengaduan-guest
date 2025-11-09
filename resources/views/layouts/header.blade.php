@@ -27,11 +27,31 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="{{ url('/') }}" class="active">Home</a></li>
-                    <li><a href="{{ route('about') }}">About</a></li>
-                    <li><a href="{{ route('services') }}">Services</a></li>
-                    <li><a href="{{ route('contact') }}">Contact</a></li>
-                    <li><a href="{{ route('login') }}">Login</a></li>
+                    <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
+                    <li><a href="{{ route('about') }}" class="{{ request()->is('about') ? 'active' : '' }}">About</a>
+                    </li>
+                    <li><a href="{{ route('services') }}"
+                            class="{{ request()->is('services') ? 'active' : '' }}">Services</a></li>
+                    <li
+                        class="dropdown {{ request()->is('pengaduan*') || request()->is('warga*') || request()->is('users*') ? 'active' : '' }}">
+                        <a href="#"
+                            class="{{ request()->is('pengaduan*') || request()->is('warga*') || request()->is('users*') ? 'active' : '' }}">
+                            <span>Data</span>
+                            <i class="bi bi-chevron-down toggle-dropdown"></i>
+                        </a>
+                        <ul>
+                            <li><a href="{{ route('pengaduan.index') }}"
+                                    class="{{ request()->is('pengaduan*') ? 'active' : '' }}">Pengaduan</a></li>
+                            <li><a href="{{ route('warga.index') }}"
+                                    class="{{ request()->is('warga*') ? 'active' : '' }}">Warga</a></li>
+                            <li><a href="{{ route('user.index') }}"
+                                    class="{{ request()->is('user*') ? 'active' : '' }}">User</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ route('contact') }}"
+                            class="{{ request()->is('contact') ? 'active' : '' }}">Contact</a></li>
+                    <li><a href="{{ route('login') }}" class="{{ request()->is('login') ? 'active' : '' }}">Login</a>
+                    </li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>

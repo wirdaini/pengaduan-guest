@@ -1,114 +1,193 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Data Warga')
+@section('title', 'Edit Data Warga - Bina Desa')
 
 @section('content')
-<main class="main">
+    <main class="main">
 
-    <!-- Page Title -->
-    <div class="page-title">
-        <div class="heading">
-            <div class="container">
-                <div class="row d-flex justify-content-center text-center">
-                    <div class="col-lg-8">
-                        <h1 class="heading-title">Edit Data Warga</h1>
-                        <p class="mb-0">
-                            Update data warga dengan informasi yang terbaru.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <nav class="breadcrumbs">
-            <div class="container">
-                <ol>
-                    <li><a href="{{ url('/') }}">Home</a></li>
-                    <li><a href="{{ route('warga.index') }}">Data Warga</a></li>
-                    <li class="current">Edit Data</li>
-                </ol>
-            </div>
-        </nav>
-    </div><!-- End Page Title -->
-
-    <!-- Edit Section -->
-    <section id="edit-warga" class="edit-warga section">
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-
-                    @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
+        <!-- Page Title -->
+        <div class="page-title">
+            <div class="heading">
+                <div class="container">
+                    <div class="row d-flex justify-content-center text-center">
+                        <div class="col-lg-8">
+                            <h1 class="heading-title">Edit Data Warga</h1>
+                            <p class="mb-0">
+                                Update data warga dengan informasi yang terbaru. Pastikan informasi yang diubah akurat dan
+                                lengkap.
+                            </p>
                         </div>
-                    @endif
-
-                    <div class="edit-form">
-                        <form action="{{ route('warga.update', $warga->warga_id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-
-                            <div class="row gy-4">
-                                <div class="col-md-6">
-                                    <label for="no_ktp" class="form-label">NIK *</label>
-                                    <input type="text" name="no_ktp" class="form-control"
-                                           value="{{ old('no_ktp', $warga->no_ktp) }}"
-                                           placeholder="16 digit NIK" maxlength="16" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="nama" class="form-label">Nama Lengkap *</label>
-                                    <input type="text" name="nama" class="form-control"
-                                           value="{{ old('nama', $warga->nama) }}"
-                                           placeholder="Nama Lengkap" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="jenis_kelamin" class="form-label">Jenis Kelamin *</label>
-                                    <select name="jenis_kelamin" class="form-select" required>
-                                        <option value="">Pilih Jenis Kelamin</option>
-                                        <option value="L" {{ old('jenis_kelamin', $warga->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                        <option value="P" {{ old('jenis_kelamin', $warga->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="agama" class="form-label">Agama *</label>
-                                    <select name="agama" class="form-select" required>
-                                        <option value="">Pilih Agama</option>
-                                        <option value="Islam" {{ old('agama', $warga->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
-                                        <option value="Kristen" {{ old('agama', $warga->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                                        <option value="Katolik" {{ old('agama', $warga->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                                        <option value="Hindu" {{ old('agama', $warga->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                                        <option value="Buddha" {{ old('agama', $warga->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-                                        <option value="Konghucu" {{ old('agama', $warga->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="pekerjaan" class="form-label">Pekerjaan *</label>
-                                    <input type="text" name="pekerjaan" class="form-control"
-                                           value="{{ old('pekerjaan', $warga->pekerjaan) }}"
-                                           placeholder="Pekerjaan" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="telp" class="form-label">No Telepon *</label>
-                                    <input type="tel" name="telp" class="form-control"
-                                           value="{{ old('telp', $warga->telp) }}"
-                                           placeholder="Nomor Telepon" required>
-                                </div>
-                                <div class="col-12">
-                                    <label for="email" class="form-label">Email *</label>
-                                    <input type="email" name="email" class="form-control"
-                                           value="{{ old('email', $warga->email) }}"
-                                           placeholder="Alamat Email" required>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Update Data</button>
-                                    <a href="{{ route('warga.index') }}" class="btn btn-secondary">Kembali ke Data Warga</a>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
+            <nav class="breadcrumbs">
+                <div class="container">
+                    <ol>
+                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ route('warga.index') }}">Data Warga</a></li>
+                        <li class="current">Edit Data</li>
+                    </ol>
+                </div>
+            </nav>
         </div>
-    </section><!-- /Edit Section -->
+        <!-- End Page Title -->
 
-</main>
+        <!-- Edit Warga Section -->
+        <section id="warga" class="appointmnet section">
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="booking-wrapper">
+
+                            <div class="booking-header text-center" data-aos="fade-up" data-aos-delay="200">
+                                <h2>Form Edit Data Warga</h2>
+                                <p>Perbarui data warga untuk memastikan informasi yang akurat dan terkini.</p>
+                            </div>
+
+                            <div class="appointment-form" data-aos="fade-up" data-aos-delay="300">
+
+                                @if (session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+
+                                <form action="{{ route('warga.update', $warga->warga_id) }}" method="POST"
+                                    class="php-email-form">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="row gy-4">
+
+                                        <!-- NIK -->
+                                        <div class="col-12">
+                                            <label for="no_ktp" class="form-label">NIK *</label>
+                                            <input type="text" name="no_ktp"
+                                                class="form-control @error('no_ktp') is-invalid @enderror"
+                                                value="{{ old('no_ktp', $warga->no_ktp) }}" placeholder="16 digit NIK"
+                                                maxlength="16" required>
+                                            @error('no_ktp')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Nama Lengkap -->
+                                        <div class="col-12">
+                                            <label for="nama" class="form-label">Nama Lengkap *</label>
+                                            <input type="text" name="nama"
+                                                class="form-control @error('nama') is-invalid @enderror"
+                                                value="{{ old('nama', $warga->nama) }}" placeholder="Nama Lengkap" required>
+                                            @error('nama')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Jenis Kelamin -->
+                                        <div class="col-12">
+                                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin *</label>
+                                            <select name="jenis_kelamin"
+                                                class="form-select @error('jenis_kelamin') is-invalid @enderror" required>
+                                                <option value="">Pilih Jenis Kelamin</option>
+                                                <option value="L"
+                                                    {{ old('jenis_kelamin', $warga->jenis_kelamin) == 'L' ? 'selected' : '' }}>
+                                                    Laki-laki</option>
+                                                <option value="P"
+                                                    {{ old('jenis_kelamin', $warga->jenis_kelamin) == 'P' ? 'selected' : '' }}>
+                                                    Perempuan</option>
+                                            </select>
+                                            @error('jenis_kelamin')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Agama -->
+                                        <div class="col-12">
+                                            <label for="agama" class="form-label">Agama *</label>
+                                            <select name="agama" class="form-select @error('agama') is-invalid @enderror"
+                                                required>
+                                                <option value="">Pilih Agama</option>
+                                                <option value="Islam"
+                                                    {{ old('agama', $warga->agama) == 'Islam' ? 'selected' : '' }}>Islam
+                                                </option>
+                                                <option value="Kristen"
+                                                    {{ old('agama', $warga->agama) == 'Kristen' ? 'selected' : '' }}>
+                                                    Kristen</option>
+                                                <option value="Katolik"
+                                                    {{ old('agama', $warga->agama) == 'Katolik' ? 'selected' : '' }}>
+                                                    Katolik</option>
+                                                <option value="Hindu"
+                                                    {{ old('agama', $warga->agama) == 'Hindu' ? 'selected' : '' }}>Hindu
+                                                </option>
+                                                <option value="Buddha"
+                                                    {{ old('agama', $warga->agama) == 'Buddha' ? 'selected' : '' }}>Buddha
+                                                </option>
+                                                <option value="Konghucu"
+                                                    {{ old('agama', $warga->agama) == 'Konghucu' ? 'selected' : '' }}>
+                                                    Konghucu</option>
+                                            </select>
+                                            @error('agama')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Pekerjaan -->
+                                        <div class="col-12">
+                                            <label for="pekerjaan" class="form-label">Pekerjaan *</label>
+                                            <input type="text" name="pekerjaan"
+                                                class="form-control @error('pekerjaan') is-invalid @enderror"
+                                                value="{{ old('pekerjaan', $warga->pekerjaan) }}" placeholder="Pekerjaan"
+                                                required>
+                                            @error('pekerjaan')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Telepon -->
+                                        <div class="col-12">
+                                            <label for="telp" class="form-label">No Telepon *</label>
+                                            <input type="tel" name="telp"
+                                                class="form-control @error('telp') is-invalid @enderror"
+                                                value="{{ old('telp', $warga->telp) }}" placeholder="Nomor Telepon"
+                                                required>
+                                            @error('telp')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Email -->
+                                        <div class="col-12">
+                                            <label for="email" class="form-label">Email *</label>
+                                            <input type="email" name="email"
+                                                class="form-control @error('email') is-invalid @enderror"
+                                                value="{{ old('email', $warga->email) }}" placeholder="Alamat Email"
+                                                required>
+                                            @error('email')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Action Buttons -->
+                                        <div class="col-12 text-center">
+                                            <button type="submit" class="btn-book">Update Data Warga</button>
+                                            <a href="{{ route('warga.index') }}"
+                                                class="btn btn-secondary mt-2">Kembali</a>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="emergency-info text-center mt-4" data-aos="fade-up" data-aos-delay="400">
+                                <p><i class="bi bi-info-circle"></i> Perubahan data warga akan segera diperbarui dalam
+                                    sistem. Pastikan informasi yang diubah sudah benar.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /Edit Warga Section -->
+
+    </main>
 @endsection

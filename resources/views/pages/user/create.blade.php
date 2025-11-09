@@ -18,7 +18,7 @@
             <div class="container">
                 <ol>
                     <li><a href="{{ url('/') }}">Home</a></li>
-                    <li><a href="{{ route('users.index') }}">Users</a></li>
+                    <li><a href="{{ route('user.index') }}">Users</a></li>
                     <li class="current">Tambah User</li>
                 </ol>
             </div>
@@ -34,7 +34,7 @@
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('users.store') }}" method="POST">
+                            <form action="{{ route('user.store') }}" method="POST">
                                 @csrf
 
                                 <!-- Include Partial User Form -->
@@ -43,7 +43,7 @@
                                 <div class="row mt-4">
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary">Simpan User</button>
-                                        <a href="{{ route('users.index') }}" class="btn btn-secondary">Kembali</a>
+                                        <a href="{{ route('user.index') }}" class="btn btn-secondary">Kembali</a>
                                     </div>
                                 </div>
                             </form>

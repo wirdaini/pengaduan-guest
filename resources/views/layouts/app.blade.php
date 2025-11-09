@@ -8,6 +8,8 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     @include('layouts.css')
 </head>
 

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Tambah Warga - Bina Desa')
+
 @section('content')
     <main class="main">
 
@@ -74,25 +76,33 @@
                             </div>
 
                             <div class="appointment-form" data-aos="fade-up" data-aos-delay="400">
-                                <form action="{{ route('warga.store') }}" method="POST">
+                                <form action="{{ route('warga.store') }}" method="POST" class="php-email-form">
                                     @csrf
                                     <div class="row gy-4">
-                                        <div class="col-md-6">
+
+                                        <div class="col-12">
+                                            <label for="no_ktp" class="form-label">Nomor KTP *</label>
                                             <input type="text" name="no_ktp" class="form-control"
                                                 placeholder="Nomor KTP (16 digit)" required maxlength="16">
                                         </div>
-                                        <div class="col-md-6">
+
+                                        <div class="col-12">
+                                            <label for="nama" class="form-label">Nama Lengkap *</label>
                                             <input type="text" name="nama" class="form-control"
                                                 placeholder="Nama Lengkap" required>
                                         </div>
-                                        <div class="col-md-6">
+
+                                        <div class="col-12">
+                                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin *</label>
                                             <select name="jenis_kelamin" class="form-select" required>
                                                 <option value="">Pilih Jenis Kelamin</option>
                                                 <option value="L">Laki-laki</option>
                                                 <option value="P">Perempuan</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+
+                                        <div class="col-12">
+                                            <label for="agama" class="form-label">Agama *</label>
                                             <select name="agama" class="form-select" required>
                                                 <option value="">Pilih Agama</option>
                                                 <option value="Islam">Islam</option>
@@ -103,27 +113,33 @@
                                                 <option value="Konghucu">Konghucu</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+
+                                        <div class="col-12">
+                                            <label for="pekerjaan" class="form-label">Pekerjaan *</label>
                                             <input type="text" name="pekerjaan" class="form-control"
                                                 placeholder="Pekerjaan" required>
                                         </div>
-                                        <div class="col-md-6">
+
+                                        <div class="col-12">
+                                            <label for="telp" class="form-label">Nomor Telepon *</label>
                                             <input type="tel" name="telp" class="form-control"
                                                 placeholder="Nomor Telepon" required>
                                         </div>
+
                                         <div class="col-12">
+                                            <label for="email" class="form-label">Alamat Email *</label>
                                             <input type="email" name="email" class="form-control"
                                                 placeholder="Alamat Email" required>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="loading">Loading</div>
-                                            <div class="error-message"></div>
-                                            <div class="sent-message">Data warga berhasil disimpan! Sekarang Anda bisa
-                                                mengajukan pengaduan.</div>
+
+                                        <div class="col-12 text-center">
                                             <button type="submit" class="btn-book">Simpan Data Warga</button>
+                                            <a href="{{ route('warga.index') }}" class="btn btn-secondary mt-2">Kembali</a>
                                         </div>
+
                                     </div>
                                 </form>
+
                             </div>
 
                             <div class="emergency-info" data-aos="fade-up" data-aos-delay="500">

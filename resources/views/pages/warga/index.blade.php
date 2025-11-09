@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Warga')
+@section('title', 'Data Warga - Bina Desa')
 
 @section('content')
     <main class="main">
@@ -13,8 +13,7 @@
                         <div class="col-lg-8">
                             <h1 class="heading-title">Data Warga</h1>
                             <p class="mb-0">
-                                Kelola data warga dengan mudah. Lihat, edit, atau hapus data warga yang telah terdaftar
-                                dalam sistem pengaduan masyarakat.
+                                Daftar warga yang telah terdaftar dalam sistem. Kelola data warga dengan mudah.
                             </p>
                         </div>
                     </div>
@@ -30,7 +29,7 @@
             </nav>
         </div><!-- End Page Title -->
 
-        <!-- Data Warga Section -->
+        <!-- Warga Section -->
         <section id="warga" class="warga section">
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -42,10 +41,11 @@
                     </div>
                 @endif
 
+                <!-- Add Warga Button -->
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h2>Daftar Warga Terdaftar</h2>
+                            <h2>Daftar Warga</h2>
                             <a href="{{ route('warga.create') }}" class="btn btn-primary">
                                 <i class="bi bi-plus-circle"></i> Tambah Warga Baru
                             </a>
@@ -53,19 +53,24 @@
                     </div>
                 </div>
 
+                <!-- Warga Grid -->
                 <div class="row gy-4">
 
                     @foreach ($warga as $item)
                         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
                             <div class="warga-card">
-                                <div class="warga-image">
+                                <div class="warga-header">
                                     <!-- Avatar dengan inisial nama -->
-                                    <div class="avatar-initial"
+                                    <div class="warga-avatar"
                                         style="background: {{ $item->jenis_kelamin == 'L' ? '#3498db' : '#e84393' }};">
                                         {{ strtoupper(substr($item->nama, 0, 2)) }}
                                     </div>
                                     <div class="warga-overlay">
                                         <div class="action-links">
+                                            <a href="{{ route('warga.show', $item->warga_id) }}" class="btn-info"
+                                                title="Lihat Detail">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
                                             <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn-edit"
                                                 title="Edit Data">
                                                 <i class="bi bi-pencil"></i>
@@ -75,17 +80,17 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn-delete" title="Hapus Data"
-                                                    onclick="return confirm('Yakin ingin menghapus data warga ini?')">
+                                                    onclick="return confirm('Yakin ingin menghapus warga ini?')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ... sisa kode tetap ... -->
                                 <div class="warga-content">
                                     <h4>{{ $item->nama }}</h4>
-                                    <span class="nik">{{ $item->no_ktp }}</span>
+                                    <span class="warga-nik">NIK: {{ $item->no_ktp }}</span>
+
                                     <div class="warga-info">
                                         <p><strong>Jenis Kelamin:</strong>
                                             {{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
@@ -94,19 +99,24 @@
                                         <p><strong>Telepon:</strong> {{ $item->telp }}</p>
                                         <p><strong>Email:</strong> {{ $item->email }}</p>
                                     </div>
+
                                     <div class="warga-meta">
-                                        <div class="registered-date">
-                                            <i class="bi bi-calendar"></i>
-                                            <span>Terdaftar: {{ $item->created_at->format('d M Y') }}</span>
+                                        <div class="status-badge">
+                                            <i class="bi bi-person-check"></i>
+                                            <span class="status-verified">Terverifikasi</span>
                                         </div>
-                                        <div class="status">
-                                            <i class="bi bi-check-circle"></i>
-                                            <span>Terverifikasi</span>
+                                        <div class="tanggal">
+                                            <i class="bi bi-calendar"></i>
+                                            <span>{{ $item->created_at->format('d M Y') }}</span>
                                         </div>
                                     </div>
+
                                     <div class="action-buttons">
+                                        <a href="{{ route('warga.show', $item->warga_id) }}" class="btn-info-full">
+                                            <i class="bi bi-eye"></i> Detail
+                                        </a>
                                         <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn-edit-full">
-                                            <i class="bi bi-pencil"></i> Edit Data
+                                            <i class="bi bi-pencil"></i> Edit
                                         </a>
                                         <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST"
                                             style="display: inline;">
@@ -131,7 +141,7 @@
                             <div class="empty-state" data-aos="fade-up">
                                 <i class="bi bi-people display-1 text-muted"></i>
                                 <h3 class="mt-3">Belum Ada Data Warga</h3>
-                                <p class="text-muted">Mulai dengan menambahkan data warga pertama Anda.</p>
+                                <p class="text-muted">Mulai dengan menambahkan data warga pertama.</p>
                                 <a href="{{ route('warga.create') }}" class="btn btn-primary mt-3">
                                     <i class="bi bi-plus-circle"></i> Tambah Warga Pertama
                                 </a>
@@ -142,7 +152,7 @@
 
             </div>
 
-        </section><!-- /Data Warga Section -->
+        </section><!-- /Warga Section -->
 
     </main>
 
@@ -161,16 +171,27 @@
             box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
         }
 
-        .warga-image {
+        .warga-header {
             position: relative;
-            height: 200px;
+            height: 120px;
             overflow: hidden;
+            background: linear-gradient(135deg, #175cdd 0%, #1a4bb8 100%);
         }
 
-        .warga-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .warga-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            border: 3px solid white;
         }
 
         .warga-overlay {
@@ -196,6 +217,7 @@
             gap: 10px;
         }
 
+        .btn-info,
         .btn-edit,
         .btn-delete {
             width: 40px;
@@ -209,8 +231,12 @@
             transition: transform 0.3s ease;
         }
 
+        .btn-info {
+            background: #17a2b8;
+        }
+
         .btn-edit {
-            background: #0d6efd;
+            background: #ffc107;
         }
 
         .btn-delete {
@@ -218,6 +244,7 @@
             border: none;
         }
 
+        .btn-info:hover,
         .btn-edit:hover,
         .btn-delete:hover {
             transform: scale(1.1);
@@ -232,11 +259,13 @@
             color: #2c3e50;
             margin-bottom: 5px;
             font-weight: 600;
+            line-height: 1.3;
         }
 
-        .nik {
+        .warga-nik {
             color: #6c757d;
-            font-size: 0.9em;
+            font-size: 0.8em;
+            font-weight: 500;
         }
 
         .warga-info {
@@ -245,8 +274,9 @@
 
         .warga-info p {
             margin-bottom: 5px;
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #495057;
+            line-height: 1.4;
         }
 
         .warga-meta {
@@ -259,42 +289,50 @@
             border-bottom: 1px solid #e9ecef;
         }
 
-        .registered-date,
-        .status {
+        .status-badge,
+        .tanggal {
             display: flex;
             align-items: center;
             gap: 5px;
             font-size: 0.8em;
+            font-weight: 500;
         }
 
-        .registered-date {
-            color: #6c757d;
-        }
-
-        .status {
+        .status-verified {
             color: #28a745;
+        }
+
+        .tanggal {
+            color: #6c757d;
         }
 
         .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
+        .btn-info-full,
         .btn-edit-full,
         .btn-delete-full {
             flex: 1;
-            padding: 8px 15px;
+            padding: 6px 12px;
             border: none;
             border-radius: 5px;
             text-decoration: none;
             text-align: center;
-            font-size: 0.9em;
+            font-size: 0.8em;
             transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-info-full {
+            background: #17a2b8;
+            color: white;
         }
 
         .btn-edit-full {
-            background: #0d6efd;
-            color: white;
+            background: #ffc107;
+            color: #212529;
         }
 
         .btn-delete-full {
@@ -302,6 +340,7 @@
             color: white;
         }
 
+        .btn-info-full:hover,
         .btn-edit-full:hover,
         .btn-delete-full:hover {
             opacity: 0.9;
@@ -314,20 +353,6 @@
 
         .empty-state i {
             font-size: 4rem;
-        }
-
-        .avatar-initial,
-        .avatar-user,
-        .avatar-gradient {
-            width: 100%;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            font-weight: bold;
-            color: white;
-            font-family: 'Arial', sans-serif;
         }
     </style>
 @endsection

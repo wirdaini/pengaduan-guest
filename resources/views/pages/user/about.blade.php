@@ -3,137 +3,188 @@
 @section('title', 'Tentang Kami - Bina Desa')
 
 @section('content')
-<main class="main">
-    <!-- Page Title -->
-    <div class="page-title" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <div class="heading">
-            <div class="container">
-                <div class="row d-flex justify-content-center text-center">
-                    <div class="col-lg-8">
-                        <h1 class="heading-title text-white">Tentang Bina Desa</h1>
-                        <p class="mb-0 text-light">
-                            Platform inovasi untuk memberdayakan partisipasi warga dalam pembangunan desa
-                        </p>
+
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <div class="heading">
+                <div class="container">
+                    <div class="row d-flex justify-content-center text-center">
+                        <div class="col-lg-8">
+                            <h1 class="heading-title">Tentang Kami</h1>
+                            <p class="mb-0">
+                                Platform pengaduan warga untuk pembangunan desa yang lebih baik.
+                                Kami hadir sebagai jembatan antara masyarakat dan pemerintah desa
+                                dalam menciptakan perubahan positif.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div><!-- End Page Title -->
+            <nav class="breadcrumbs">
+                <div class="container">
+                    <ol>
+                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li class="current">Tentang Kami</li>
+                    </ol>
+                </div>
+            </nav>
+        </div><!-- End Page Title -->
 
-    <!-- About Content Section -->
-    <section class="section">
-        <div class="container">
-            <div class="row align-items-center mb-5">
-                <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="mb-4">Membangun Desa Lebih Baik Bersama</h2>
-                    <p class="lead">
-                        Bina Desa adalah platform digital yang menghubungkan warga dengan pemerintah desa
-                        dalam proses pembangunan yang transparan dan partisipatif.
-                    </p>
-                    <p>
-                        Melalui sistem pengaduan yang terintegrasi, setiap warga dapat berkontribusi
-                        aktif dalam mengawal pembangunan desa menuju kesejahteraan bersama.
-                    </p>
+        <!-- About Section -->
+        <section id="about" class="about section">
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+                <div class="row align-items-center">
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+                        <div class="about-content">
+                            <h2>Pelayanan Terpercaya untuk Setiap Warga</h2>
+                            <p class="lead">Selama bertahun-tahun, kami berdedikasi memberikan pelayanan terbaik
+                                kepada masyarakat desa. Komitmen kami melampaui sekadar menangani pengaduan—kami
+                                percaya dalam membangun hubungan yang berkelanjutan dengan warga dan komunitas.</p>
+
+                            <p>Platform Bina Desa memfasilitasi partisipasi aktif warga dalam pembangunan.
+                                Setiap suara didengar, setiap pengaduan ditindaklanjuti, dan setiap solusi
+                                diwujudkan untuk kemajuan desa bersama.</p>
+
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-number" data-purecounter-start="0" data-purecounter-end="15000"
+                                        data-purecounter-duration="2">15000</span>
+                                    <span class="stat-label">Warga Terlayani</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" data-purecounter-start="0" data-purecounter-end="25"
+                                        data-purecounter-duration="2">25</span>
+                                    <span class="stat-label">Tahun Pengalaman</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" data-purecounter-start="0" data-purecounter-end="50"
+                                        data-purecounter-duration="2">50</span>
+                                    <span class="stat-label">Tim Terlatih</span>
+                                </div>
+                            </div><!-- End Stats Grid -->
+                        </div><!-- End About Content -->
+                    </div>
+
+                    <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                        <div class="image-wrapper">
+                            <img src="{{asset('assets/img/desa/about1.jpg')}}" class="img-fluid main-image"
+                                alt="Fasilitas Desa">
+                            <div class="floating-image" data-aos="zoom-in" data-aos-delay="400">
+                                <img src="{{asset('assets/img/desa/about2.jpg')}}" class="img-fluid" alt="Tim Desa">
+                            </div>
+                        </div><!-- End Image Wrapper -->
+                    </div>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    {{-- <div class="about-image text-center">
-                        <img src="{{ asset('assets/img/desa-illustration.svg') }}" alt="Desa Illustration"
-                             class="img-fluid" style="max-height: 300px;">
-                        <small class="text-muted">Ilustrasi Gotong Royong Desa</small>
-                    </div> --}}
-                </div>
+
+                <div class="values-section" data-aos="fade-up" data-aos-delay="300">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <h3>Nilai Inti Kami</h3>
+                            <p class="section-description">Prinsip-prinsip ini memandu segala yang kami lakukan
+                                dalam komitmen untuk pelayanan terbaik</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="bi bi-heart-pulse"></i>
+                                </div>
+                                <h4>Peduli</h4>
+                                <p>Memberikan pelayanan dengan empati dan pemahaman terhadap kebutuhan
+                                    unik setiap warga dan kondisi mereka.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                                <h4>Profesional</h4>
+                                <p>Mempertahankan standar tertinggi pelayanan melalui pembelajaran
+                                    berkelanjutan dan inovasi.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <h4>Integritas</h4>
+                                <p>Membangun kepercayaan melalui komunikasi jujur dan praktik etis
+                                    dalam semua interaksi kami.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="bi bi-lightbulb"></i>
+                                </div>
+                                <h4>Inovasi</h4>
+                                <p>Mengadopsi teknologi dan pendekatan terkini untuk meningkatkan
+                                    hasil pembangunan desa.</p>
+                            </div>
+                        </div>
+                    </div><!-- End Values Row -->
+                </div><!-- End Values Section -->
+
+                <div class="certifications-section" data-aos="fade-up" data-aos-delay="400">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <h3>Penghargaan & Sertifikasi</h3>
+                            <p class="section-description">Diakui oleh organisasi terkemuka untuk
+                                komitmen kami terhadap kualitas pelayanan</p>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="zoom-in" data-aos-delay="100">
+                            <div class="certification-item">
+                                <img src="assets/img/clients/clients-1.webp" class="img-fluid"
+                                    alt="Sertifikasi Desa">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="zoom-in" data-aos-delay="200">
+                            <div class="certification-item">
+                                <img src="assets/img/clients/clients-2.webp" class="img-fluid"
+                                    alt="Akreditasi Pelayanan">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="zoom-in" data-aos-delay="300">
+                            <div class="certification-item">
+                                <img src="assets/img/clients/clients-3.webp" class="img-fluid"
+                                    alt="Sertifikasi Pembangunan">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="zoom-in" data-aos-delay="400">
+                            <div class="certification-item">
+                                <img src="assets/img/clients/clients-4.webp" class="img-fluid"
+                                    alt="Sertifikasi Desa Mandiri">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="zoom-in" data-aos-delay="500">
+                            <div class="certification-item">
+                                <img src="assets/img/clients/clients-5.webp" class="img-fluid"
+                                    alt="Akreditasi Pelayanan Publik">
+                            </div>
+                        </div>
+                    </div><!-- End Certifications Row -->
+                </div><!-- End Certifications Section -->
+
             </div>
 
-            <!-- Features Grid -->
-            <div class="row mb-5">
-                <div class="col-12 text-center mb-4">
-                    <h3>Mengapa Memilih Bina Desa?</h3>
-                    <p class="text-muted">Fitur unggulan yang membuat pengaduan lebih efektif</p>
-                </div>
+        </section><!-- /About Section -->
 
-                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-card text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="bi bi-megaphone display-4 text-primary"></i>
-                        </div>
-                        <h5>Aspirasi Terdengar</h5>
-                        <p class="text-muted">Setiap suara warga memiliki tempat dan diperhatikan</p>
-                    </div>
-                </div>
+    </main>
 
-                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-card text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="bi bi-clock-history display-4 text-success"></i>
-                        </div>
-                        <h5>Proses Cepat</h5>
-                        <p class="text-muted">Pengaduan ditindaklanjuti dalam waktu singkat</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-card text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="bi bi-graph-up display-4 text-warning"></i>
-                        </div>
-                        <h5>Transparan</h5>
-                        <p class="text-muted">Progress pengaduan dapat dipantau secara real-time</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="400">
-                    <div class="feature-card text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="bi bi-shield-check display-4 text-info"></i>
-                        </div>
-                        <h5>Aman & Terpercaya</h5>
-                        <p class="text-muted">Data warga terlindungi dan terjamin keamanannya</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats Section -->
-            <div class="row bg-light rounded p-5" data-aos="fade-up">
-                <div class="col-12 text-center mb-4">
-                    <h3>Dampak Positif Kami</h3>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <h2 class="text-primary">500+</h2>
-                    <p class="text-muted">Pengaduan Terselesaikan</p>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <h2 class="text-success">95%</h2>
-                    <p class="text-muted">Tingkat Kepuasan Warga</p>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <h2 class="text-warning">24/7</h2>
-                    <p class="text-muted">Layanan Pelaporan</p>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <h2 class="text-info">15+</h2>
-                    <p class="text-muted">Desa Terlayani</p>
-                </div>
-            </div>
-        </div>
-    </section><!-- /About Content Section -->
-
-</main>
-
-<style>
-.feature-card {
-    border: 1px solid #e9ecef;
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%;
-}
-.feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
-}
-.feature-icon {
-    color: #667eea;
-}
-</style>
-@endsection
-
-
+    @endsection

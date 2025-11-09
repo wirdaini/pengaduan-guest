@@ -34,6 +34,7 @@ Route::post('/warga', [WargaController::class, 'store'])->name('warga.store');
 Route::get('/warga', [WargaController::class, 'index'])->name('warga.index');
 Route::get('/warga/create', [WargaController::class, 'create'])->name('warga.create');
 Route::post('/warga', [WargaController::class, 'store'])->name('warga.store');
+Route::get('/warga/{warga}', [WargaController::class, 'show'])->name('warga.show');
 Route::get('/warga/{warga}/edit', [WargaController::class, 'edit'])->name('warga.edit');
 Route::put('/warga/{warga}', [WargaController::class, 'update'])->name('warga.update');
 Route::delete('/warga/{warga}', [WargaController::class, 'destroy'])->name('warga.destroy');
@@ -48,13 +49,13 @@ Route::put('/pengaduan/{pengaduan}', [PengaduanController::class, 'update'])->na
 Route::delete('/pengaduan/{pengaduan}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy');
 
 // Route User
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/user', [UserController::class, 'index'])->name('user.index');
+Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
+Route::post('/user', [UserController::class, 'store'])->name('user.store');
+Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
+Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
+Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
 Route::get('/about', function () {
     return view('pages.user.about');
