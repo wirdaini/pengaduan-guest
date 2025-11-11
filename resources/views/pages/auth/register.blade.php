@@ -1,4 +1,4 @@
-<!-- resources/views/auth/register.blade.php -->
+<!-- resources/views/pages/auth/register.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -36,8 +36,8 @@
                                 <h2>Buat Akun Anda</h2>
                                 <p>Bergabung dengan platform kami untuk mengakses layanan pengaduan desa</p>
                             </div>
-
-                            <!-- Tampilkan error messages -->
+                            {{--
+                            <!-- Tampilkan error messages secara custom -->
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul class="mb-0">
@@ -45,6 +45,13 @@
                                             <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
+                                </div>
+                            @endif --}}
+
+                            <!-- Tampilkan success message -->
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
                                 </div>
                             @endif
 
@@ -57,17 +64,29 @@
                                             <input type="text" name="name" class="form-control"
                                                 placeholder="Masukkan nama lengkap Anda" value="{{ old('name') }}"
                                                 required>
+                                            <!-- Error message untuk name -->
+                                            @error('name')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="col-md-6">
                                             <label for="email" class="form-label">Alamat Email</label>
                                             <input type="email" name="email" class="form-control"
                                                 placeholder="Masukkan alamat email Anda" value="{{ old('email') }}"
                                                 required>
+                                            <!-- Error message untuk email -->
+                                            @error('email')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <label for="password" class="form-label">Kata Sandi</label>
                                             <input type="password" name="password" class="form-control"
                                                 placeholder="Masukkan kata sandi Anda" required>
+                                            <!-- Error message untuk password -->
+                                            @error('password')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <label for="password_confirmation" class="form-label">Konfirmasi Kata
@@ -83,6 +102,10 @@
                                                     Saya setuju dengan Syarat Layanan dan Kebijakan Privasi
                                                 </label>
                                             </div>
+                                            <!-- Error message untuk terms -->
+                                            @error('terms')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <button type="submit" class="btn-register w-100" id="submitBtn">
@@ -106,7 +129,6 @@
     </main>
 
     <style>
-        /* Your existing CSS styles here */
         .register .register-wrapper {
             background-color: var(--surface-color);
             border-radius: 15px;
@@ -177,13 +199,53 @@
             transform: translateY(0);
         }
 
-        .alert-danger {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-            padding: 12px;
+        .register .register-form .login-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .register .register-form .login-link:hover {
+            color: color-mix(in srgb, var(--accent-color), black 20%);
+            text-decoration: underline;
+        }
+
+        /* Style untuk error messages - SAMA DENGAN LOGIN */
+        .alert {
             border-radius: 8px;
+            padding: 12px 15px;
             margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+
+        /* .alert-danger {
+                background-color: #f8d7da;
+                border-color: #f5c6cb;
+                color: #721c24;
+            } */
+
+        .alert-success {
+            background-color: #d1edff;
+            border-color: #b3d9ff;
+            color: #004085;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .register .register-wrapper {
+                padding: 40px 25px;
+            }
+
+            .register .register-header h2 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 
@@ -193,12 +255,9 @@
             const submitBtn = document.getElementById('submitBtn');
 
             form.addEventListener('submit', function(e) {
-                // Hapus event listener JavaScript yang mungkin mem-block
                 console.log('Form submitted');
-                // Biarkan form submit normal
             });
 
-            // Prevent default behavior yang mungkin di-block oleh framework
             submitBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
             });

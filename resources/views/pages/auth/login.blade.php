@@ -1,4 +1,4 @@
-<!-- resources/views/auth/login.blade.php -->
+<!-- resources/views/pages/auth/login.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -37,6 +37,24 @@
                                 <p>Akses pengaduan dan layanan desa Anda</p>
                             </div>
 
+                            {{-- <!-- Tampilkan error messages secara custom -->
+                            @if($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif --}}
+
+                            <!-- Tampilkan success message -->
+                            @if(session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+
                             <div class="login-form">
                                 <form method="POST" action="{{ route('login.post') }}" class="php-email-form">
                                     @csrf
@@ -44,12 +62,21 @@
                                         <div class="col-12">
                                             <label for="email" class="form-label">Alamat Email</label>
                                             <input type="email" name="email" class="form-control"
-                                                placeholder="Masukkan alamat email Anda" required>
+                                                placeholder="Masukkan alamat email Anda"
+                                                value="{{ old('email') }}" required>
+                                            <!-- Error message untuk email -->
+                                            @error('email')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <label for="password" class="form-label">Kata Sandi</label>
                                             <input type="password" name="password" class="form-control"
                                                 placeholder="Masukkan kata sandi Anda" required>
+                                            <!-- Error message untuk password -->
+                                            @error('password')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
@@ -196,6 +223,33 @@
         .login .login-form .php-email-form .register-link:hover {
             color: color-mix(in srgb, var(--accent-color), black 20%);
             text-decoration: underline;
+        }
+
+        /* Style untuk error messages */
+        .alert {
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+
+        /* .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        } */
+
+        .alert-success {
+            background-color: #d1edff;
+            border-color: #b3d9ff;
+            color: #004085;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: block;
         }
 
         @media (max-width: 768px) {
