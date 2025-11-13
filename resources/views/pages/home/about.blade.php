@@ -42,12 +42,13 @@
                         <div class="about-content">
                             <h2>Pelayanan Terpercaya untuk Setiap Warga</h2>
                             <p class="lead">Selama bertahun-tahun, kami berdedikasi memberikan pelayanan terbaik
-                                kepada masyarakat desa. Komitmen kami melampaui sekadar menangani pengaduan—kami
-                                percaya dalam membangun hubungan yang berkelanjutan dengan warga dan komunitas.</p>
+                                yang menggabungkan teknologi modern dengan pendekatan personal yang
+                                diinginkan oleh warga.</p>
 
-                            <p>Platform Bina Desa memfasilitasi partisipasi aktif warga dalam pembangunan.
-                                Setiap suara didengar, setiap pengaduan ditindaklanjuti, dan setiap solusi
-                                diwujudkan untuk kemajuan desa bersama.</p>
+                            <p>Tim multidisiplin kami bekerja sama memastikan setiap pengaduan warga
+                                mendapat penanganan komprehensif sesuai kebutuhan unik mereka. Dari
+                                layanan dasar hingga masalah kompleks, kami menjaga standar tertinggi
+                                pelayanan sambil membangun lingkungan kepercayaan dan solusi.</p>
 
                             <div class="stats-grid">
                                 <div class="stat-item">
@@ -71,10 +72,10 @@
 
                     <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
                         <div class="image-wrapper">
-                            <img src="{{asset('assets/img/desa/about1.jpg')}}" class="img-fluid main-image"
+                            <img src="{{ asset('assets/img/desa/about1.jpg') }}" class="img-fluid main-image"
                                 alt="Fasilitas Desa">
                             <div class="floating-image" data-aos="zoom-in" data-aos-delay="400">
-                                <img src="{{asset('assets/img/desa/about2.jpg')}}" class="img-fluid" alt="Tim Desa">
+                                <img src="{{ asset('assets/img/desa/about2.jpg') }}" class="img-fluid" alt="Tim Desa">
                             </div>
                         </div><!-- End Image Wrapper -->
                     </div>
@@ -150,8 +151,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="zoom-in" data-aos-delay="100">
                             <div class="certification-item">
-                                <img src="assets/img/clients/clients-1.webp" class="img-fluid"
-                                    alt="Sertifikasi Desa">
+                                <img src="assets/img/clients/clients-1.webp" class="img-fluid" alt="Sertifikasi Desa">
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="zoom-in" data-aos-delay="200">
@@ -187,4 +187,4 @@
 
     </main>
 
-    @endsection
+@endsection
