@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.guest.app')
 
-@include('layouts.css')
+@include('layouts.guest.css')
 
 @section('content')
     <main class="main">
@@ -9,6 +9,13 @@
         <section id="hero" class="hero section">
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show auto-dismiss" role="alert"
+                        style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px;">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
 
                 <div class="row align-items-center">
                     <div class="col-lg-6">
@@ -78,7 +85,7 @@
                     <div class="col-lg-6">
                         <div class="hero-visual" data-aos="fade-left" data-aos-delay="400">
                             <div class="main-image">
-                                <img src="{{asset('assets/img/desa/home1.jpg')}}" alt="Modern Healthcare Facility"
+                                <img src="{{ asset('assets/img/desa/home1.jpg') }}" alt="Modern Healthcare Facility"
                                     class="img-fluid">
                                 <div class="floating-card appointment-card">
                                     <div class="card-icon">
@@ -221,7 +228,7 @@
                                 </a>
                             </div>
                             <div class="specialty-visual">
-                                <img src="{{asset('assets/img/desa/home3.jpg')}}" alt="Infrastruktur Desa"
+                                <img src="{{ asset('assets/img/desa/home3.jpg') }}" alt="Infrastruktur Desa"
                                     class="img-fluid">
                                 <div class="visual-overlay">
                                     <i class="bi bi-tools"></i>
@@ -248,7 +255,7 @@
                                 </a>
                             </div>
                             <div class="specialty-visual">
-                                <img src="{{asset('assets/img/desa/home4.jpg')}}" alt="Lingkungan & Kebersihan"
+                                <img src="{{ asset('assets/img/desa/home4.jpg') }}" alt="Lingkungan & Kebersihan"
                                     class="img-fluid">
                                 <div class="visual-overlay">
                                     <i class="bi bi-tree"></i>
@@ -365,7 +372,8 @@
 
                         <div class="col-lg-6">
                             <div class="image-container" data-aos="fade-left" data-aos-delay="300">
-                                <img src="{{ asset('assets/img/desa/home2.jpg') }}" alt="Pembangunan Desa" class="img-fluid">
+                                <img src="{{ asset('assets/img/desa/home2.jpg') }}" alt="Pembangunan Desa"
+                                    class="img-fluid">
                             </div>
                         </div>
 

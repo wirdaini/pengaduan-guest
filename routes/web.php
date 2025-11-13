@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PengaduanController;
-use App\Http\Controllers\WargaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WargaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('pages.warga.landing');
+    return view('pages.home.landing');
 })->name('home');
 
 // Login Routes
@@ -18,17 +18,20 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
-// Logout Route
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// // Logout Route
+// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route::get('/pengaduan', [PengaduanController::class, 'index'])->name('pengaduan');
+Route::get('/about', function () {
+    return view('pages.home.about');
+})->name('about');
 
-Route::get('/warga/create', [WargaController::class, 'create'])->name('warga.create');
-Route::post('/warga', [WargaController::class, 'store'])->name('warga.store');
+Route::get('/services', function () {
+    return view('pages.home.services');
+})->name('services');
 
-// Route::get('/pengaduan', function () {
-//     return view('pages.pengaduan.index');
-// });
+Route::get('/contact', function () {
+    return view('pages.home.contact');
+})->name('contact');
 
 // Route Warga
 Route::get('/warga', [WargaController::class, 'index'])->name('warga.index');
@@ -56,15 +59,3 @@ Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
 Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
 Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
 Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
-
-Route::get('/about', function () {
-    return view('pages.user.about');
-})->name('about');
-
-Route::get('/services', function () {
-    return view('pages.user.services');
-})->name('services');
-
-Route::get('/contact', function () {
-    return view('pages.user.contact');
-})->name('contact');

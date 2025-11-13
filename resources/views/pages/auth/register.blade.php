@@ -1,5 +1,5 @@
 <!-- resources/views/pages/auth/register.blade.php -->
-@extends('layouts.app')
+@extends('layouts.guest.app')
 
 @section('content')
     <main class="main">

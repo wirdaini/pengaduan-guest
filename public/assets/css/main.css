@@ -6234,7 +6234,7 @@ section,
 .floating-whatsapp {
     position: fixed;
     bottom: 25px;
-    left: 25px; 
+    left: 25px;
     z-index: 1000;
 }
 
@@ -6303,9 +6303,11 @@ section,
     0% {
         box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
     }
+
     70% {
         box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
     }
@@ -6315,7 +6317,7 @@ section,
 @media (max-width: 768px) {
     .floating-whatsapp {
         bottom: 20px;
-        left: 20px; /*
+        left: 20px;
     }
 
     .whatsapp-btn {
