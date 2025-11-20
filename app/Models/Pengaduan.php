@@ -14,7 +14,7 @@ class Pengaduan extends Model
     protected $fillable = [
         'nomor_tiket',
         'warga_id',
-        'kategori',
+        'kategori_id',
         'judul',
         'deskripsi',
         'status',
@@ -23,8 +23,15 @@ class Pengaduan extends Model
         'rw',
     ];
 
+    // Relasi ke warga
     public function warga()
     {
         return $this->belongsTo(Warga::class, 'warga_id');
+    }
+
+    // Relasi ke kategori
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriPengaduan::class, 'kategori_id', 'kategori_id');
     }
 }

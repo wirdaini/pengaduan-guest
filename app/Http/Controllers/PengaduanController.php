@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\KategoriPengaduan;
 use App\Models\Pengaduan;
 use App\Models\Warga;
 use Illuminate\Http\Request;
@@ -9,16 +10,16 @@ class PengaduanController extends Controller
 {
     public function index()
     {
-        $pengaduan = Pengaduan::with('warga')->latest()->get();
-        $dataWarga = Warga::all(); // ✅ PINDAHKAN SEBELUM RETURN
-
+        $pengaduan = Pengaduan::with(['warga', 'kategori'])->latest()->get(); // TAMBAH with('kategori')
+        $dataWarga = Warga::all();
         return view('pages.pengaduan.index', compact('pengaduan', 'dataWarga'));
     }
 
     public function create()
     {
-        $warga = Warga::all();
-        return view('pages.pengaduan.create', compact('warga'));
+        $warga    = Warga::all();
+        $kategori = KategoriPengaduan::all(); // AMBIL DATA KATEGORI
+        return view('pages.pengaduan.create', compact('warga', 'kategori'));
     }
 
     public function store(Request $request)
@@ -27,7 +28,7 @@ class PengaduanController extends Controller
             'warga_id'    => 'required|exists:warga,warga_id',
             'judul'       => 'required',
             'deskripsi'   => 'required',
-            'kategori'    => 'required',
+            'kategori_id' => 'required|exists:kategori_pengaduan,kategori_id',
             'lokasi_text' => 'required',
             'rt'          => 'required',
             'rw'          => 'required',
@@ -41,7 +42,7 @@ class PengaduanController extends Controller
             'warga_id'    => $request->warga_id,
             'judul'       => $request->judul,
             'deskripsi'   => $request->deskripsi,
-            'kategori'    => $request->kategori,
+            'kategori_id' => $request->kategori_id,
             'lokasi_text' => $request->lokasi_text,
             'rt'          => $request->rt,
             'rw'          => $request->rw,
@@ -54,15 +55,16 @@ class PengaduanController extends Controller
 
     public function show($id)
     {
-        $pengaduan = Pengaduan::with('warga')->findOrFail($id);
+        $pengaduan = Pengaduan::with(['warga', 'kategori'])->findOrFail($id); // with('kategori')
         return view('pages.pengaduan.show', compact('pengaduan'));
     }
 
     public function edit($id)
     {
-        $pengaduan = Pengaduan::findOrFail($id);
+        $pengaduan = Pengaduan::with(['warga', 'kategori'])->findOrFail($id); // with('kategori')
         $warga     = Warga::all();
-        return view('pages.pengaduan.edit', compact('pengaduan', 'warga'));
+        $kategori  = KategoriPengaduan::all(); // KIRIM DATA KATEGORI
+        return view('pages.pengaduan.edit', compact('pengaduan', 'warga', 'kategori'));
     }
 
     public function update(Request $request, $id)
@@ -70,7 +72,7 @@ class PengaduanController extends Controller
         $request->validate([
             'judul'       => 'required',
             'deskripsi'   => 'required',
-            'kategori'    => 'required',
+            'kategori_id' => 'required|exists:kategori_pengaduan,kategori_id',
             'lokasi_text' => 'required',
             'rt'          => 'required',
             'rw'          => 'required',

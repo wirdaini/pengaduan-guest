@@ -13,7 +13,18 @@ class CreateWargaDummy extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create('id_ID'); // Faker Bahasa Indonesia
+        $faker = Factory::create('id_ID');
+
+        // BUAT USER DULU JIKA BELUM ADA
+        if (User::count() === 0) {
+            User::create([
+                'name' => 'Admin',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('password'),
+            ]);
+        }
+
+        $user = User::first(); // Pakai user yang sudah ada
 
         // Data agama dalam Bahasa Indonesia
         $agamaList = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'];
@@ -31,7 +42,7 @@ class CreateWargaDummy extends Seeder
 
             DB::table('warga')->insert([
                 'user_id'       => User::inRandomOrder()->first()->id,
-                'no_ktp'        => $faker->unique()->numerify('32##############'), 
+                'no_ktp'        => $faker->unique()->numerify('32##############'),
                 'nama'          => $firstName . ' ' . $faker->lastName,
                 'jenis_kelamin' => $jenisKelamin,
                 'agama'         => $faker->randomElement($agamaList),

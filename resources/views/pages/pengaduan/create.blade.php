@@ -78,13 +78,12 @@
 
                                         <div class="col-12">
                                             <label for="kategori" class="form-label">Kategori *</label>
-                                            <select name="kategori" class="form-select" required>
-                                                <option value="">Pilih Kategori</option>
-                                                <option value="Infrastruktur">Infrastruktur</option>
-                                                <option value="Lingkungan">Lingkungan</option>
-                                                <option value="Kesehatan">Kesehatan</option>
-                                                <option value="Keamanan">Keamanan</option>
-                                                <option value="Lainnya">Lainnya</option>
+                                            <select name="kategori_id" class="form-select" required>
+                                                @foreach ($kategori as $kategori)
+                                                    <option value="{{ $kategori->kategori_id }}">
+                                                        {{ $kategori->nama }} - SLA: {{ $kategori->sla_hari }} hari
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
 
@@ -113,7 +112,8 @@
 
                                         <div class="col-12 text-center">
                                             <button type="submit" class="btn-book">Ajukan Pengaduan</button>
-                                            <a href="{{ route('pengaduan.index') }}" class="btn btn-secondary mt-2">Kembali</a>
+                                            <a href="{{ route('pengaduan.index') }}"
+                                                class="btn btn-secondary mt-2">Kembali</a>
                                         </div>
 
                                     </div>

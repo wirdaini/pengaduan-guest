@@ -83,7 +83,7 @@
                                             </div>
                                             <div class="info-item">
                                                 <label class="fw-bold">Kategori</label>
-                                                <p class="info-value">{{ $pengaduan->kategori }}</p>
+                                                <p class="info-value">{{ $pengaduan->kategori->nama }}</p>
                                             </div>
                                         </div>
 

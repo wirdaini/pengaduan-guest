@@ -86,24 +86,15 @@
 
                                         <!-- Kategori -->
                                         <div class="col-12">
-                                            <label for="kategori" class="form-label">Kategori *</label>
-                                            <select name="kategori" class="form-select" required>
+                                            <label for="kategori_id" class="form-label">Kategori *</label>
+                                            <select name="kategori_id" class="form-select" required>
                                                 <option value="">Pilih Kategori</option>
-                                                <option value="Infrastruktur"
-                                                    {{ old('kategori', $pengaduan->kategori) == 'Infrastruktur' ? 'selected' : '' }}>
-                                                    Infrastruktur</option>
-                                                <option value="Lingkungan"
-                                                    {{ old('kategori', $pengaduan->kategori) == 'Lingkungan' ? 'selected' : '' }}>
-                                                    Lingkungan</option>
-                                                <option value="Kesehatan"
-                                                    {{ old('kategori', $pengaduan->kategori) == 'Kesehatan' ? 'selected' : '' }}>
-                                                    Kesehatan</option>
-                                                <option value="Keamanan"
-                                                    {{ old('kategori', $pengaduan->kategori) == 'Keamanan' ? 'selected' : '' }}>
-                                                    Keamanan</option>
-                                                <option value="Lainnya"
-                                                    {{ old('kategori', $pengaduan->kategori) == 'Lainnya' ? 'selected' : '' }}>
-                                                    Lainnya</option>
+                                                @foreach ($kategoris as $kategori)
+                                                    <option value="{{ $kategori->kategori_id }}"
+                                                        {{ old('kategori_id', $pengaduan->kategori_id) == $kategori->kategori_id ? 'selected' : '' }}>
+                                                        {{ $kategori->nama }} - SLA: {{ $kategori->sla_hari }} hari
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
 

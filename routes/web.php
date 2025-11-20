@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PengaduanController;
+use App\Http\Controllers\KategoriPengaduanController;
 
 Route::get('/', function () {
     return view('pages.home.landing');
@@ -59,3 +60,12 @@ Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
 Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
 Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
 Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+
+// Kategori Pengaduan
+Route::get('/kategori_pengaduan', [KategoriPengaduanController::class, 'index'])->name('kategori_pengaduan.index');
+Route::get('/kategori_pengaduan/create', [KategoriPengaduanController::class, 'create'])->name('kategori_pengaduan.create');
+Route::post('/kategori_pengaduan', [KategoriPengaduanController::class, 'store'])->name('kategori_pengaduan.store');
+Route::get('/kategori_pengaduan/{kategori_pengaduan}', [KategoriPengaduanController::class, 'show'])->name('kategori_pengaduan.show');
+Route::get('/kategori_pengaduan/{kategori_pengaduan}/edit', [KategoriPengaduanController::class, 'edit'])->name('kategori_pengaduan.edit');
+Route::put('/kategori_pengaduan/{kategori_pengaduan}', [KategoriPengaduanController::class, 'update'])->name('kategori_pengaduan.update');
+Route::delete('/kategori_pengaduan/{kategori_pengaduan}', [KategoriPengaduanController::class, 'destroy'])->name('kategori_pengaduan.destroy');

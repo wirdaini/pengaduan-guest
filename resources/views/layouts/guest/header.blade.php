@@ -40,6 +40,9 @@
                             <i class="bi bi-chevron-down toggle-dropdown"></i>
                         </a>
                         <ul>
+                            <li><a href="{{ route('kategori_pengaduan.index') }}"
+                                    class="{{ request()->is('kategori_pengaduan*') ? 'active' : '' }}">Kategori
+                                    Pengaduan</a></li>
                             <li><a href="{{ route('pengaduan.index') }}"
                                     class="{{ request()->is('pengaduan*') ? 'active' : '' }}">Pengaduan</a></li>
                             <li><a href="{{ route('warga.index') }}"
