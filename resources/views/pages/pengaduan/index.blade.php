@@ -53,8 +53,179 @@
                     </div>
                 </div>
 
-                <div class="row gy-4">
+                <!-- START: Search & Filter Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="search-section">
+                            <div class="card" style="background: transparent; border: none; box-shadow: none;">
+                                <div class="card-body" style="padding: 0;">
+                                    <h3 class="search-title">Cari & Filter Pengaduan</h3>
+                                    <p class="search-subtitle">Temukan dan kelola semua pengaduan warga dengan mudah</p>
 
+                                    <form method="GET" action="{{ route('pengaduan.index') }}" class="search-form">
+                                        <div class="search-input-group">
+                                            <!-- SEARCH INPUT -->
+                                            <div class="input-wrapper">
+                                                <i class="bi bi-search"></i>
+                                                <input type="text" class="form-control" name="search"
+                                                    value="{{ request('search') }}"
+                                                    placeholder="Cari judul, deskripsi, atau nomor tiket...">
+                                            </div>
+
+                                            <!-- FILTER STATUS -->
+                                            <div class="select-wrapper">
+                                                <i class="bi bi-clock"></i>
+                                                <select class="form-select" name="status">
+                                                    <option value="">Semua Status</option>
+                                                    <option value="menunggu"
+                                                        {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu
+                                                    </option>
+                                                    <option value="diproses"
+                                                        {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses
+                                                    </option>
+                                                    <option value="selesai"
+                                                        {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai
+                                                    </option>
+                                                    <option value="ditolak"
+                                                        {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <!-- FILTER KATEGORI -->
+                                            <div class="select-wrapper">
+                                                <i class="bi bi-tags"></i>
+                                                <select class="form-select" name="kategori_id">
+                                                    <option value="">Semua Kategori</option>
+                                                    @foreach ($kategories as $kategori)
+                                                        <option value="{{ $kategori->kategori_id }}"
+                                                            {{ request('kategori_id') == $kategori->kategori_id ? 'selected' : '' }}>
+                                                            {{ $kategori->nama }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <!-- FILTER RT -->
+                                            <div class="select-wrapper">
+                                                <i class="bi bi-house"></i>
+                                                <select class="form-select" name="rt">
+                                                    <option value="">Semua RT</option>
+                                                    @for ($i = 1; $i <= 20; $i++)
+                                                        <option value="{{ $i }}"
+                                                            {{ request('rt') == $i ? 'selected' : '' }}>
+                                                            RT {{ $i }}
+                                                        </option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+
+                                            <!-- FILTER RW -->
+                                            <div class="select-wrapper">
+                                                <i class="bi bi-building"></i>
+                                                <select class="form-select" name="rw">
+                                                    <option value="">Semua RW</option>
+                                                    @for ($i = 1; $i <= 10; $i++)
+                                                        <option value="{{ $i }}"
+                                                            {{ request('rw') == $i ? 'selected' : '' }}>
+                                                            RW {{ $i }}
+                                                        </option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+
+
+
+                                            <!-- TOMBOL CARI -->
+                                            <button type="submit" class="search-btn">
+                                                <i class="bi bi-search"></i>
+                                                Cari Pengaduan
+                                            </button>
+
+                                            <!-- TOMBOL RESET -->
+                                            <a href="{{ route('pengaduan.index') }}"
+                                                class="btn btn-outline-secondary reset-btn"
+                                                style="background: transparent; color: var(--default-color); border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%); border-radius: 50px; padding: 18px 24px; text-decoration: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: all 0.3s ease;">
+                                                <i class="bi bi-arrow-clockwise"></i>
+                                                Reset
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Search & Filter Section -->
+
+                <!-- Search & Filter Results -->
+                @if (request()->anyFilled(['search', 'status', 'kategori_id', 'rt', 'rw']))
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="alert alert-info alert-dismissible fade show" role="alert"
+                                style="background: var(--surface-color); border: 1px solid color-mix(in srgb, var(--default-color), transparent 95%); border-radius: 16px; color: var(--default-color);">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-search me-2"></i>
+                                    <div>
+                                        <strong style="color: var(--heading-color);">Filter Aktif:</strong>
+                                        @if (request('search'))
+                                            <span class="badge"
+                                                style="background: color-mix(in srgb, var(--accent-color), transparent 90%); color: var(--accent-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                                Pencarian: "{{ request('search') }}"
+                                            </span>
+                                        @endif
+                                        @if (request('status'))
+                                            @php
+                                                $statusLabels = [
+                                                    'pending' => 'Menunggu',
+                                                    'diproses' => 'Diproses',
+                                                    'selesai' => 'Selesai',
+                                                    'ditolak' => 'Ditolak',
+                                                ];
+                                            @endphp
+                                            <span class="badge"
+                                                style="background: color-mix(in srgb, var(--accent-color), transparent 90%); color: var(--accent-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                                Status: {{ $statusLabels[request('status')] ?? request('status') }}
+                                            </span>
+                                        @endif
+                                        @if (request('kategori_id'))
+                                            @php
+                                                $kategoriName =
+                                                    $kategories->where('kategori_id', request('kategori_id'))->first()
+                                                        ->nama ?? 'Kategori';
+                                            @endphp
+                                            <span class="badge"
+                                                style="background: color-mix(in srgb, var(--accent-color), transparent 90%); color: var(--accent-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                                Kategori: {{ $kategoriName }}
+                                            </span>
+                                        @endif
+                                        @if (request('rt'))
+                                            <span class="badge"
+                                                style="background: color-mix(in srgb, var(--accent-color), transparent 90%); color: var(--accent-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                                RT: {{ request('rt') }}
+                                            </span>
+                                        @endif
+                                        @if (request('rw'))
+                                            <span class="badge"
+                                                style="background: color-mix(in srgb, var(--accent-color), transparent 90%); color: var(--accent-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                                RW: {{ request('rw') }}
+                                            </span>
+                                        @endif
+                                        <span class="badge"
+                                            style="background: var(--accent-color); color: var(--contrast-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                            {{ $pengaduan->total() }} data ditemukan
+                                        </span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- card --}}
+                <div class="row gy-4">
                     @foreach ($pengaduan as $item)
                         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
                             <div class="pengaduan-card">
@@ -127,14 +298,16 @@
                                     </div>
 
                                     <div class="action-buttons">
-                                        <a href="{{ route('pengaduan.show', $item->pengaduan_id) }}" class="btn-info-full">
+                                        <a href="{{ route('pengaduan.show', $item->pengaduan_id) }}"
+                                            class="btn-info-full">
                                             <i class="bi bi-eye"></i> Detail
                                         </a>
-                                        <a href="{{ route('pengaduan.edit', $item->pengaduan_id) }}" class="btn-edit-full">
+                                        <a href="{{ route('pengaduan.edit', $item->pengaduan_id) }}"
+                                            class="btn-edit-full">
                                             <i class="bi bi-pencil"></i> Edit
                                         </a>
-                                        <form action="{{ route('pengaduan.destroy', $item->pengaduan_id) }}" method="POST"
-                                            style="display: inline;">
+                                        <form action="{{ route('pengaduan.destroy', $item->pengaduan_id) }}"
+                                            method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn-delete-full"
@@ -147,8 +320,15 @@
                             </div>
                         </div><!-- End Pengaduan Card -->
                     @endforeach
-
                 </div>
+
+                {{-- START: Pagination Links --}}
+                <div class="row mt-4">
+                    <div class="col-12 d-flex justify-content-center">
+                        {{ $pengaduan->links('pagination::bootstrap-5') }}
+                    </div>
+                </div>
+                {{-- END: Pagination Links --}}
 
                 @if ($pengaduan->isEmpty())
                     <div class="row">
@@ -382,5 +562,115 @@
         .empty-state i {
             font-size: 4rem;
         }
+
+        /* Tambahkan di CSS Anda */
+        .search-section .search-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .search-section .search-subtitle {
+            font-size: 1.125rem;
+            color: color-mix(in srgb, var(--default-color), transparent 20%);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .search-section .search-form .search-input-group {
+            display: flex;
+            align-items: stretch;
+            background: var(--surface-color);
+            border-radius: 60px;
+            padding: 8px;
+            box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color), transparent 94%);
+            transition: all 0.4s ease;
+            gap: 8px;
+        }
+
+        .search-section .search-form .search-input-group:focus-within {
+            box-shadow: 0 25px 80px color-mix(in srgb, var(--accent-color), transparent 90%);
+        }
+
+        .search-section .search-form .input-wrapper,
+        .search-section .search-form .select-wrapper {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-section .search-form .input-wrapper i,
+        .search-section .search-form .select-wrapper i {
+            position: absolute;
+            left: 20px;
+            color: color-mix(in srgb, var(--default-color), transparent 40%);
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+
+        .search-section .search-form .form-control,
+        .search-section .search-form .form-select {
+            border: none;
+            background: transparent;
+            padding: 20px 20px 20px 50px;
+            font-size: 1rem;
+            color: var(--default-color);
+            border-radius: 0;
+            width: 100%;
+        }
+
+        .search-section .search-form .form-control:focus,
+        .search-section .search-form .form-select:focus {
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .search-section .search-form .form-control::placeholder {
+            color: color-mix(in srgb, var(--default-color), transparent 50%);
+            font-weight: 300;
+        }
+
+        .search-section .search-form .search-btn {
+            background: var(--accent-color);
+            color: var(--contrast-color);
+            border: none;
+            border-radius: 50px;
+            padding: 18px 32px;
+            font-weight: 500;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .search-section .search-form .search-btn:hover {
+            background: color-mix(in srgb, var(--accent-color), black 10%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .search-section .search-form .search-input-group {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+
+            .search-section .search-form .search-input-group .search-btn,
+            .search-section .search-form .search-input-group .reset-btn {
+                border-radius: 16px;
+                justify-content: center;
+            }
+        }
+    </style>
     </style>
 @endsection

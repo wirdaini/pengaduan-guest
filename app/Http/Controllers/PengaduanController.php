@@ -8,12 +8,48 @@ use Illuminate\Http\Request;
 
 class PengaduanController extends Controller
 {
-    public function index()
-    {
-        $pengaduan = Pengaduan::with(['warga', 'kategori'])->latest()->get(); // TAMBAH with('kategori')
-        $dataWarga = Warga::all();
-        return view('pages.pengaduan.index', compact('pengaduan', 'dataWarga'));
-    }
+    // public function index(Request $request)
+    // {
+    //     // Ambil data kategori untuk dropdown filter
+    //     $kategories = KategoriPengaduan::all();
+
+    //     // Kolom yang bisa di-filter
+    //     $filterableColumns = ['status', 'kategori_id', 'rt', 'rw'];
+
+    //     // Kolom yang bisa di-search
+    //     $searchableColumns = ['judul', 'deskripsi', 'nomor_tiket', 'lokasi_text'];
+
+    //     // Query dengan filter DAN search
+    //     $pengaduan = Pengaduan::with(['kategori', 'warga'])
+    //         ->filter($request, $filterableColumns)
+    //         ->search($request, $searchableColumns)
+    //         ->orderBy('created_at', 'desc')
+    //         ->paginate(9)
+    //         ->withQueryString();
+
+    //     return view('pages.pengaduan.index', compact('pengaduan', 'kategories'));
+    // }
+
+    public function index(Request $request)
+{
+    $kategories = KategoriPengaduan::all();
+
+    // Kolom yang bisa di-filter
+    $filterableColumns = ['status', 'kategori_id', 'rt', 'rw'];
+
+    // Kolom yang bisa di-search
+    $searchableColumns = ['judul', 'deskripsi', 'nomor_tiket', 'lokasi_text'];
+
+    // Query dengan scope filter DAN search (SESUAI MODUL)
+    $pengaduan = Pengaduan::with(['kategori', 'warga'])
+        ->filter($request, $filterableColumns)
+        ->search($request, $searchableColumns)
+        ->orderBy('created_at', 'desc')
+        ->paginate(9)
+        ->withQueryString();
+
+    return view('pages.pengaduan.index', compact('pengaduan', 'kategories'));
+}
 
     public function create()
     {

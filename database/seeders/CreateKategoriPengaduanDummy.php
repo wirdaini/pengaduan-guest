@@ -13,7 +13,7 @@ class CreateKategoriPengaduanDummy extends Seeder
 
         // Data kategori pengaduan yang umum
         $kategoriList = [
-            'Infrastruktur Jalan', 'Kebersihan Lingkungan', 'Penerangan Jalan',
+            'Infrastruktur Jalan', 'Kebersihan Lingkungan',
             'Saluran Air', 'Keamanan Lingkungan', 'Layanan Kesehatan',
             'Aspirasi Pembangunan', 'Pengaduan Sosial', 'Fasilitas Umum',
             'Lingkungan Hidup', 'Transportasi', 'Pendidikan', 'Kesehatan Masyarakat',

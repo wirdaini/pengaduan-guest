@@ -53,6 +53,147 @@
                     </div>
                 </div>
 
+                <!-- START: Search & Filter Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="search-section">
+                            <div class="card" style="background: transparent; border: none; box-shadow: none;">
+                                <div class="card-body" style="padding: 0;">
+                                    <h3 class="search-title">Cari & Filter Warga</h3>
+                                    <p class="search-subtitle">Temukan dan kelola semua data warga dengan mudah</p>
+
+                                    <form method="GET" action="{{ route('warga.index') }}" class="search-form">
+                                        <div class="search-input-group">
+                                            <!-- SEARCH INPUT -->
+                                            <div class="input-wrapper">
+                                                <i class="bi bi-search"></i>
+                                                <input type="text" class="form-control" name="search"
+                                                    value="{{ request('search') }}"
+                                                    placeholder="Cari nama, no KTP, atau email...">
+                                            </div>
+
+                                            <!-- FILTER JENIS KELAMIN -->
+                                            <div class="select-wrapper">
+                                                <i class="bi bi-gender-ambiguous"></i>
+                                                <select class="form-select" name="jenis_kelamin">
+                                                    <option value="">Semua Jenis Kelamin</option>
+                                                    <option value="L"
+                                                        {{ request('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki
+                                                    </option>
+                                                    <option value="P"
+                                                        {{ request('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <!-- FILTER AGAMA -->
+                                            <div class="select-wrapper">
+                                                <i class="bi bi-heart"></i>
+                                                <select class="form-select" name="agama">
+                                                    <option value="">Semua Agama</option>
+                                                    <option value="Islam"
+                                                        {{ request('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                                    <option value="Kristen"
+                                                        {{ request('agama') == 'Kristen' ? 'selected' : '' }}>Kristen
+                                                    </option>
+                                                    <option value="Katolik"
+                                                        {{ request('agama') == 'Katolik' ? 'selected' : '' }}>Katolik
+                                                    </option>
+                                                    <option value="Hindu"
+                                                        {{ request('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                                    <option value="Buddha"
+                                                        {{ request('agama') == 'Buddha' ? 'selected' : '' }}>Buddha
+                                                    </option>
+                                                    <option value="Konghucu"
+                                                        {{ request('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <!-- FILTER PEKERJAAN -->
+                                            <div class="select-wrapper">
+                                                <i class="bi bi-briefcase"></i>
+                                                <select class="form-select" name="pekerjaan">
+                                                    <option value="">Semua Pekerjaan</option>
+                                                    @foreach ($listPekerjaan as $pekerjaan)
+                                                        <option value="{{ $pekerjaan }}"
+                                                            {{ request('pekerjaan') == $pekerjaan ? 'selected' : '' }}>
+                                                            {{ $pekerjaan }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <!-- TOMBOL CARI -->
+                                            <button type="submit" class="search-btn">
+                                                <i class="bi bi-search"></i>
+                                                Cari Warga
+                                            </button>
+
+                                            <!-- TOMBOL RESET -->
+                                            <a href="{{ route('warga.index') }}"
+                                                class="btn btn-outline-secondary reset-btn"
+                                                style="background: transparent; color: var(--default-color); border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%); border-radius: 50px; padding: 18px 24px; text-decoration: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: all 0.3s ease;">
+                                                <i class="bi bi-arrow-clockwise"></i>
+                                                Reset
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Search & Filter Section -->
+
+                <!-- Search & Filter Results -->
+                @if (request()->anyFilled(['search', 'jenis_kelamin', 'agama', 'pekerjaan']))
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="alert alert-info alert-dismissible fade show" role="alert"
+                                style="background: var(--surface-color); border: 1px solid color-mix(in srgb, var(--default-color), transparent 95%); border-radius: 16px; color: var(--default-color);">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-search me-2"></i>
+                                    <div>
+                                        <strong style="color: var(--heading-color);">Filter Aktif:</strong>
+                                        @if (request('search'))
+                                            <span class="badge"
+                                                style="background: color-mix(in srgb, var(--accent-color), transparent 90%); color: var(--accent-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                                Pencarian: "{{ request('search') }}"
+                                            </span>
+                                        @endif
+                                        @if (request('jenis_kelamin'))
+                                            <span class="badge"
+                                                style="background: color-mix(in srgb, var(--accent-color), transparent 90%); color: var(--accent-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                                Jenis Kelamin:
+                                                {{ request('jenis_kelamin') == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                            </span>
+                                        @endif
+                                        @if (request('agama'))
+                                            <span class="badge"
+                                                style="background: color-mix(in srgb, var(--accent-color), transparent 90%); color: var(--accent-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                                Agama: {{ ucfirst(request('agama')) }}
+                                            </span>
+                                        @endif
+                                        @if (request('pekerjaan'))
+                                            <span class="badge"
+                                                style="background: color-mix(in srgb, var(--accent-color), transparent 90%); color: var(--accent-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                                Pekerjaan: {{ ucfirst(request('pekerjaan')) }}
+                                            </span>
+                                        @endif
+                                        <span class="badge"
+                                            style="background: var(--accent-color); color: var(--contrast-color); padding: 6px 12px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; margin-left: 8px;">
+                                            {{ $warga->total() }} data ditemukan
+                                        </span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <!-- Warga Grid -->
                 <div class="row gy-4">
 
@@ -132,8 +273,15 @@
                             </div>
                         </div><!-- End Warga Card -->
                     @endforeach
-
                 </div>
+
+                {{-- START: Pagination Links --}}
+                <div class="row mt-4">
+                    <div class="col-12 d-flex justify-content-center">
+                        {{ $warga->links('pagination::bootstrap-5') }}
+                    </div>
+                </div>
+                {{-- END: Pagination Links --}}
 
                 @if ($warga->isEmpty())
                     <div class="row">
@@ -149,9 +297,7 @@
                         </div>
                     </div>
                 @endif
-
             </div>
-
         </section><!-- /Warga Section -->
 
     </main>
@@ -353,6 +499,115 @@
 
         .empty-state i {
             font-size: 4rem;
+        }
+
+        /* Tambahkan di CSS Anda */
+        .search-section .search-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .search-section .search-subtitle {
+            font-size: 1.125rem;
+            color: color-mix(in srgb, var(--default-color), transparent 20%);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .search-section .search-form .search-input-group {
+            display: flex;
+            align-items: stretch;
+            background: var(--surface-color);
+            border-radius: 60px;
+            padding: 8px;
+            box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color), transparent 94%);
+            transition: all 0.4s ease;
+            gap: 8px;
+        }
+
+        .search-section .search-form .search-input-group:focus-within {
+            box-shadow: 0 25px 80px color-mix(in srgb, var(--accent-color), transparent 90%);
+        }
+
+        .search-section .search-form .input-wrapper,
+        .search-section .search-form .select-wrapper {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-section .search-form .input-wrapper i,
+        .search-section .search-form .select-wrapper i {
+            position: absolute;
+            left: 20px;
+            color: color-mix(in srgb, var(--default-color), transparent 40%);
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+
+        .search-section .search-form .form-control,
+        .search-section .search-form .form-select {
+            border: none;
+            background: transparent;
+            padding: 20px 20px 20px 50px;
+            font-size: 1rem;
+            color: var(--default-color);
+            border-radius: 0;
+            width: 100%;
+        }
+
+        .search-section .search-form .form-control:focus,
+        .search-section .search-form .form-select:focus {
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .search-section .search-form .form-control::placeholder {
+            color: color-mix(in srgb, var(--default-color), transparent 50%);
+            font-weight: 300;
+        }
+
+        .search-section .search-form .search-btn {
+            background: var(--accent-color);
+            color: var(--contrast-color);
+            border: none;
+            border-radius: 50px;
+            padding: 18px 32px;
+            font-weight: 500;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .search-section .search-form .search-btn:hover {
+            background: color-mix(in srgb, var(--accent-color), black 10%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .search-section .search-form .search-input-group {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+
+            .search-section .search-form .search-input-group .search-btn,
+            .search-section .search-form .search-input-group .reset-btn {
+                border-radius: 16px;
+                justify-content: center;
+            }
         }
     </style>
 @endsection

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -12,9 +11,45 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->get();
+        // Kolom yang bisa di-filter (PAKAI email_verified_at)
+        $filterableColumns = []; 
+
+        $searchableColumns = ['name', 'email'];
+
+        $query = User::query();
+
+        // FILTER VERIFIKASI (MASUKKIN KE QUERY BIASA)
+        if ($request->filled('email_verified')) {
+            if ($request->email_verified === 'verified') {
+                $query->whereNotNull('email_verified_at');
+            } else {
+                $query->whereNull('email_verified_at');
+            }
+        }
+
+        // SEARCH (PAKAI SCOPE)
+        $query->search($request, $searchableColumns);
+
+        // // SORTING
+        // $sort = $request->get('sort', 'newest');
+        // switch ($sort) {
+        //     case 'oldest':
+        //         $query->orderBy('created_at', 'asc');
+        //         break;
+        //     case 'name_asc':
+        //         $query->orderBy('name', 'asc');
+        //         break;
+        //     case 'name_desc':
+        //         $query->orderBy('name', 'desc');
+        //         break;
+        //     default:
+        //         $query->orderBy('created_at', 'desc');
+        // }
+
+        $users = $query->paginate(9)->withQueryString();
+
         return view('pages.user.index', compact('users'));
     }
 
@@ -32,14 +67,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
@@ -69,13 +104,13 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $data = [
-            'name' => $request->name,
+            'name'  => $request->name,
             'email' => $request->email,
         ];
 

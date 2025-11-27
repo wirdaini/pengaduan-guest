@@ -89,7 +89,7 @@
                                             <label for="kategori_id" class="form-label">Kategori *</label>
                                             <select name="kategori_id" class="form-select" required>
                                                 <option value="">Pilih Kategori</option>
-                                                @foreach ($kategoris as $kategori)
+                                                @foreach ($kategori as $kategori)
                                                     <option value="{{ $kategori->kategori_id }}"
                                                         {{ old('kategori_id', $pengaduan->kategori_id) == $kategori->kategori_id ? 'selected' : '' }}>
                                                         {{ $kategori->nama }} - SLA: {{ $kategori->sla_hari }} hari

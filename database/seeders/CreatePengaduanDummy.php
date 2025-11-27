@@ -37,7 +37,7 @@ class CreatePengaduanDummy extends Seeder
             'gangguan keamanan', 'kebisingan', 'penerangan jalan tidak memadai'
         ];
 
-        foreach (range(1, 10) as $index) {
+        foreach (range(1, 200) as $index) {
             $issue = $faker->randomElement($kataIndo);
 
             DB::table('pengaduan')->insert([
@@ -47,8 +47,8 @@ class CreatePengaduanDummy extends Seeder
                 'judul'       => 'Pengaduan ' . $issue . ' di ' . $faker->city,
                 'deskripsi'   => 'Warga mengeluhkan ' . $issue . ' yang terjadi di ' . $faker->streetAddress . '. Kejadian ini sudah berlangsung selama ' . $faker->numberBetween(1, 7) . ' hari dan sangat mengganggu aktivitas warga sehari-hari.',
                 'lokasi_text' => $faker->streetAddress,
-                'rt'          => $faker->randomElement(['01', '02', '03']),
-                'rw'          => $faker->randomElement(['01', '02']),
+                'rt'          => $faker->randomElement(['001', '002', '003']),
+                'rw'          => $faker->randomElement(['001', '002']),
                 'bukti_foto'  => null,
                 'status'      => $faker->randomElement(['menunggu', 'diproses', 'selesai', 'ditolak']),
                 'tanggapan'   => $faker->optional()->sentence(),
