@@ -1,6 +1,6 @@
 @extends('layouts.guest.app')
 
-@section('title', 'Detail Pengaduan - Bina Desa')
+@section('title', 'Detail Tindak Lanjut - Bina Desa')
 
 @section('content')
     <main class="main">
@@ -11,8 +11,8 @@
                 <div class="container">
                     <div class="row d-flex justify-content-center text-center">
                         <div class="col-lg-8">
-                            <h1 class="heading-title">Detail Pengaduan</h1>
-                            <p class="mb-0">Informasi lengkap tentang pengaduan warga</p>
+                            <h1 class="heading-title">Detail Tindak Lanjut</h1>
+                            <p class="mb-0">Informasi lengkap tentang tindak lanjut pengaduan</p>
                         </div>
                     </div>
                 </div>
@@ -21,15 +21,15 @@
                 <div class="container">
                     <ol>
                         <li><a href="{{ url('/') }}">Home</a></li>
-                        <li><a href="{{ route('pengaduan.index') }}">Data Pengaduan</a></li>
-                        <li class="current">Detail Pengaduan</li>
+                        <li><a href="{{ route('tindak_lanjut.index') }}">Data Tindak Lanjut</a></li>
+                        <li class="current">Detail Tindak Lanjut</li>
                     </ol>
                 </div>
             </nav>
         </div><!-- End Page Title -->
 
-        <!-- Detail Pengaduan Section -->
-        <section id="detail-pengaduan" class="detail-pengaduan section">
+        <!-- Detail Tindak Lanjut Section -->
+        <section id="detail-tindak-lanjut" class="detail-tindak-lanjut section">
             <div class="container" data-aos="fade-up" data-aos-delay="100">
                 <div class="row justify-content-center">
                     <div class="col-lg-10">
@@ -38,7 +38,7 @@
                             <div class="card-header"
                                 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
                                 <h4 class="card-title mb-0">
-                                    <i class="fas fa-clipboard-check me-2"></i>Informasi Pengaduan
+                                    <i class="fas fa-clipboard-check me-2"></i>Informasi Tindak Lanjut
                                 </h4>
                             </div>
                             <div class="card-body">
@@ -46,11 +46,11 @@
                                 <div class="row mb-4">
                                     <div class="col-12">
                                         <div class="d-flex justify-content-end gap-2">
-                                            <a href="{{ route('pengaduan.edit', $pengaduan->pengaduan_id) }}"
+                                            <a href="{{ route('tindak_lanjut.edit', $tindakLanjut->tindak_id) }}"
                                                 class="btn btn-warning">
-                                                <i class="fas fa-edit me-2"></i>Edit Pengaduan
+                                                <i class="fas fa-edit me-2"></i>Edit Tindak Lanjut
                                             </a>
-                                            <a href="{{ route('pengaduan.index') }}" class="btn btn-secondary">
+                                            <a href="{{ route('tindak_lanjut.index') }}" class="btn btn-secondary">
                                                 <i class="fas fa-arrow-left me-2"></i>Kembali
                                             </a>
                                         </div>
@@ -58,117 +58,122 @@
                                 </div>
 
                                 <div class="row">
-                                    <!-- Kolom Kiri - Informasi Pengaduan -->
+                                    <!-- Kolom Kiri - Informasi Tindak Lanjut -->
                                     <div class="col-md-6">
                                         <div class="info-section mb-4">
                                             <h5 class="section-title" style="color: #667eea;">
-                                                <i class="fas fa-ticket-alt me-2"></i>Informasi Tiket
+                                                <i class="fas fa-user-tie me-2"></i>Informasi Petugas
+                                            </h5>
+                                            <div class="info-item">
+                                                <label class="fw-bold">Nama Petugas</label>
+                                                <p class="info-value">{{ $tindakLanjut->petugas }}</p>
+                                            </div>
+                                            <div class="info-item">
+                                                <label class="fw-bold">Tanggal Tindak Lanjut</label>
+                                                <p class="info-value">
+                                                    {{ $tindakLanjut->created_at->format('d/m/Y H:i') }}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="info-section mb-4">
+                                            <h5 class="section-title" style="color: #667eea;">
+                                                <i class="fas fa-clipboard-list me-2"></i>Informasi Pengaduan
                                             </h5>
                                             <div class="info-item">
                                                 <label class="fw-bold">No Tiket</label>
-                                                <p class="info-value">{{ $pengaduan->nomor_tiket }}</p>
+                                                <p class="info-value">{{ $tindakLanjut->pengaduan->nomor_tiket }}</p>
                                             </div>
                                             <div class="info-item">
-                                                <label class="fw-bold">Status</label>
+                                                <label class="fw-bold">Judul Pengaduan</label>
+                                                <p class="info-value">{{ $tindakLanjut->pengaduan->judul }}</p>
+                                            </div>
+                                            <div class="info-item">
+                                                <label class="fw-bold">Status Pengaduan</label>
                                                 <p class="info-value">
-                                                    @if ($pengaduan->status == 'menunggu')
+                                                    @if ($tindakLanjut->pengaduan->status == 'menunggu')
                                                         <span class="badge bg-warning text-dark">Menunggu</span>
-                                                    @elseif($pengaduan->status == 'diproses')
+                                                    @elseif($tindakLanjut->pengaduan->status == 'diproses')
                                                         <span class="badge bg-primary">Diproses</span>
-                                                    @elseif($pengaduan->status == 'selesai')
+                                                    @elseif($tindakLanjut->pengaduan->status == 'selesai')
                                                         <span class="badge bg-success">Selesai</span>
-                                                    @elseif($pengaduan->status == 'ditolak')
+                                                    @elseif($tindakLanjut->pengaduan->status == 'ditolak')
                                                         <span class="badge bg-danger">Ditolak</span>
                                                     @endif
                                                 </p>
                                             </div>
-                                            <div class="info-item">
-                                                <label class="fw-bold">Kategori</label>
-                                                <p class="info-value">{{ $pengaduan->kategori->nama }}</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="info-section mb-4">
-                                            <h5 class="section-title" style="color: #667eea;">
-                                                <i class="fas fa-user me-2"></i>Informasi Pengajuan
-                                            </h5>
-                                            <div class="info-item">
-                                                <label class="fw-bold">Nama Warga</label>
-                                                <p class="info-value">{{ $pengaduan->warga->nama }}</p>
-                                            </div>
-                                            <div class="info-item">
-                                                <label class="fw-bold">NIK</label>
-                                                <p class="info-value">{{ $pengaduan->warga->no_ktp }}</p>
-                                            </div>
-                                            <div class="info-item">
-                                                <label class="fw-bold">Telepon</label>
-                                                <p class="info-value">{{ $pengaduan->warga->telp }}</p>
-                                            </div>
-                                            <div class="info-item">
-                                                <label class="fw-bold">Email</label>
-                                                <p class="info-value">{{ $pengaduan->warga->email }}</p>
-                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- Kolom Kanan - Informasi Lokasi & Deskripsi -->
+                                    <!-- Kolom Kanan - Aksi & Catatan -->
                                     <div class="col-md-6">
                                         <div class="info-section mb-4">
                                             <h5 class="section-title" style="color: #667eea;">
-                                                <i class="fas fa-map-marker-alt me-2"></i>Informasi Lokasi
+                                                <i class="fas fa-tasks me-2"></i>Detail Tindakan
                                             </h5>
                                             <div class="info-item">
-                                                <label class="fw-bold">Lokasi Kejadian</label>
-                                                <p class="info-value">{{ $pengaduan->lokasi_text }}</p>
+                                                <label class="fw-bold">Aksi yang Dilakukan</label>
+                                                <div class="description-box p-3 bg-light rounded">
+                                                    <p class="mb-0">{{ $tindakLanjut->aksi }}</p>
+                                                </div>
                                             </div>
-                                            <div class="info-item">
-                                                <label class="fw-bold">RT</label>
-                                                <p class="info-value">{{ $pengaduan->rt }}</p>
-                                            </div>
-                                            <div class="info-item">
-                                                <label class="fw-bold">RW</label>
-                                                <p class="info-value">{{ $pengaduan->rw }}</p>
-                                            </div>
+                                            @if ($tindakLanjut->catatan)
+                                                <div class="info-item">
+                                                    <label class="fw-bold">Catatan Tambahan</label>
+                                                    <div class="description-box p-3 bg-light rounded">
+                                                        <p class="mb-0">{{ $tindakLanjut->catatan }}</p>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
 
                                         <div class="info-section mb-4">
                                             <h5 class="section-title" style="color: #667eea;">
-                                                <i class="fas fa-file-alt me-2"></i>Deskripsi Pengaduan
+                                                <i class="fas fa-history me-2"></i>Riwayat Sistem
                                             </h5>
                                             <div class="info-item">
-                                                <label class="fw-bold">Judul Pengaduan</label>
-                                                <p class="info-value">{{ $pengaduan->judul }}</p>
+                                                <label class="fw-bold">Dibuat Pada</label>
+                                                <p class="info-value">
+                                                    {{ $tindakLanjut->created_at->format('d/m/Y H:i') }}
+                                                </p>
                                             </div>
                                             <div class="info-item">
-                                                <label class="fw-bold">Deskripsi Lengkap</label>
-                                                <div class="description-box p-3 bg-light rounded">
-                                                    <p class="mb-0">{{ $pengaduan->deskripsi }}</p>
-                                                </div>
+                                                <label class="fw-bold">Terakhir Diupdate</label>
+                                                <p class="info-value">
+                                                    {{ $tindakLanjut->updated_at->format('d/m/Y H:i') }}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Info Riwayat Sistem -->
+                                <!-- Info Warga -->
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="info-section">
                                             <h5 class="section-title" style="color: #667eea;">
-                                                <i class="fas fa-history me-2"></i>Riwayat Sistem
+                                                <i class="fas fa-user me-2"></i>Informasi Warga
                                             </h5>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="info-item">
-                                                        <label class="fw-bold">Tanggal Diajukan</label>
-                                                        <p class="info-value">
-                                                            {{ $pengaduan->created_at->format('d/m/Y H:i') }}</p>
+                                                        <label class="fw-bold">Nama Warga</label>
+                                                        <p class="info-value">{{ $tindakLanjut->pengaduan->warga->nama }}
+                                                        </p>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="info-item">
-                                                        <label class="fw-bold">Terakhir Diupdate</label>
+                                                        <label class="fw-bold">NIK</label>
                                                         <p class="info-value">
-                                                            {{ $pengaduan->updated_at->format('d/m/Y H:i') }}</p>
+                                                            {{ $tindakLanjut->pengaduan->warga->no_ktp }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="info-item">
+                                                        <label class="fw-bold">Telepon</label>
+                                                        <p class="info-value">{{ $tindakLanjut->pengaduan->warga->telp }}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -178,13 +183,13 @@
                             </div>
                         </div>
 
-                        <!-- TAMBAH: Section File Upload - PERSIS seperti Tindak Lanjut -->
+                        <!-- TAMBAH: Section File Upload -->
                         @if ($mediaFiles && $mediaFiles->count() > 0)
                             <div class="card shadow-sm mt-4">
                                 <div class="card-header"
                                     style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white;">
                                     <h4 class="card-title mb-0">
-                                        <i class="fas fa-paperclip me-2"></i>Bukti Pendukung
+                                        <i class="fas fa-paperclip me-2"></i>Dokumentasi Tindak Lanjut
                                         <span class="badge bg-light text-dark ms-2">{{ $mediaFiles->count() }} file</span>
                                     </h4>
                                 </div>
@@ -199,7 +204,7 @@
                                                             <img src="{{ asset('storage/' . $media->file_name) }}"
                                                                 class="card-img-top"
                                                                 style="height: 180px; object-fit: cover; border-radius: 8px 8px 0 0;"
-                                                                alt="{{ $media->file_name }}"
+                                                                alt="{{ $media->caption }}"
                                                                 onclick="openImageModal('{{ asset('storage/' . $media->file_name) }}')"
                                                                 style="cursor: pointer">
                                                             <div class="position-absolute top-0 end-0 m-2">
@@ -229,9 +234,9 @@
                                                     @endif
 
                                                     <div class="card-footer bg-white border-top-0">
-                                                        @if ($media->caption)
+                                                        @if ($media->file_name)
                                                             <p class="small text-muted mb-2 text-center">
-                                                                <i class="fas fa-comment me-1"></i>{{ $media->caption }}
+                                                                <i class="fas fa-comment me-1"></i>{{ $media->file_name }}
                                                             </p>
                                                         @endif
 
@@ -241,13 +246,13 @@
                                                                 title="Lihat File">
                                                                 <i class="fas fa-eye"></i>
                                                             </a>
-                                                            <a href="{{ route('pengaduan.download.media', [$pengaduan->pengaduan_id, $media->media_id]) }}"
+                                                            <a href="{{ route('tindak_lanjut.download.media', [$tindakLanjut->tindak_id, $media->media_id]) }}"
                                                                 class="btn btn-sm btn-outline-success" title="Download">
                                                                 <i class="fas fa-download"></i>
                                                             </a>
                                                             @if (auth()->check())
                                                                 <form
-                                                                    action="{{ route('pengaduan.destroy.media', [$pengaduan->pengaduan_id, $media->media_id]) }}"
+                                                                    action="{{ route('tindak_lanjut.destroy.media', [$tindakLanjut->tindak_id, $media->media_id]) }}"
                                                                     method="POST" class="d-inline"
                                                                     onsubmit="return confirm('Hapus file ini?')">
                                                                     @csrf @method('DELETE')
@@ -272,15 +277,15 @@
                                 <div class="card-header"
                                     style="background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%); color: white;">
                                     <h4 class="card-title mb-0">
-                                        <i class="fas fa-paperclip me-2"></i>Bukti Pendukung
+                                        <i class="fas fa-paperclip me-2"></i>Dokumentasi Tindak Lanjut
                                     </h4>
                                 </div>
                                 <div class="card-body text-center py-5">
                                     <div class="empty-state">
                                         <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
-                                        <h5 class="text-muted">Belum Ada Bukti Pendukung</h5>
-                                        <p class="text-muted mb-4">Belum ada file yang diupload untuk pengaduan ini</p>
-                                        <a href="{{ route('pengaduan.edit', $pengaduan->pengaduan_id) }}"
+                                        <h5 class="text-muted">Belum Ada Dokumentasi</h5>
+                                        <p class="text-muted mb-4">Belum ada file yang diupload untuk tindak lanjut ini</p>
+                                        <a href="{{ route('tindak_lanjut.edit', $tindakLanjut->tindak_id) }}"
                                             class="btn btn-primary">
                                             <i class="fas fa-plus me-2"></i>Tambah File
                                         </a>
@@ -292,7 +297,7 @@
                     </div>
                 </div>
             </div>
-        </section><!-- /Detail Pengaduan Section -->
+        </section><!-- /Detail Tindak Lanjut Section -->
 
         <!-- Modal untuk gambar -->
         <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">

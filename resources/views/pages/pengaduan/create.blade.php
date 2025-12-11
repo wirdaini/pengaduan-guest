@@ -3,9 +3,7 @@
 @section('title', 'Ajukan Pengaduan - Bina Desa')
 
 @section('content')
-
     <main class="main">
-
         <!-- Page Title -->
         <div class="page-title">
             <div class="heading">
@@ -30,7 +28,6 @@
                 </div>
             </nav>
         </div>
-        <!-- End Page Title -->
 
         <!-- Pengaduan Section -->
         <section id="pengaduan" class="appointmnet section">
@@ -38,7 +35,6 @@
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
                         <div class="booking-wrapper">
-
                             <div class="booking-header text-center" data-aos="fade-up" data-aos-delay="200">
                                 <h2>Form Pengaduan Warga</h2>
                                 <p>Isi data dengan lengkap untuk membantu kami menindaklanjuti laporan Anda dengan lebih
@@ -46,18 +42,17 @@
                             </div>
 
                             <div class="appointment-form" data-aos="fade-up" data-aos-delay="300">
-
                                 @if (session('success'))
                                     <div class="alert alert-success">
                                         {{ session('success') }}
                                     </div>
                                 @endif
 
-                                <form action="{{ route('pengaduan.store') }}" method="POST" class="php-email-form">
+                                <form action="{{ route('pengaduan.store') }}" method="POST" class="php-email-form"
+                                    enctype="multipart/form-data">
                                     @csrf
 
                                     <div class="row gy-4">
-
                                         <div class="col-12">
                                             <label for="warga_id" class="form-label">Data Diri *</label>
                                             <select name="warga_id" class="form-select" required>
@@ -110,28 +105,52 @@
                                             <textarea name="deskripsi" class="form-control" rows="6" placeholder="Jelaskan detail pengaduan Anda..." required></textarea>
                                         </div>
 
+                                        <!-- TAMBAH: Upload File Baru -->
+                                        <div class="col-12">
+                                            <div class="card border-warning mt-3">
+                                                <div class="card-header bg-warning">
+                                                    <h5 class="mb-0">
+                                                        <i class="bi bi-plus-circle"></i> Upload Bukti Pendukung
+                                                        <small class="text-dark">(Opsional, bisa lebih dari satu)</small>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="mb-3">
+                                                        <label for="files" class="form-label">Pilih File</label>
+                                                        <input type="file" name="files[]" id="files"
+                                                            class="form-control" multiple
+                                                            accept="image/*,.pdf,.doc,.docx,.xlsx">
+                                                        <div class="form-text">
+                                                            Format: JPG, PNG, PDF, DOC, XLSX. Max 10MB per file.
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Keterangan File</label>
+                                                        <textarea name="caption" class="form-control" rows="2"
+                                                            placeholder="Keterangan untuk file (misal: Foto kondisi awal, Bukti dokumen, dll)"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="col-12 text-center">
                                             <button type="submit" class="btn-book">Ajukan Pengaduan</button>
                                             <a href="{{ route('pengaduan.index') }}"
                                                 class="btn btn-secondary mt-2">Kembali</a>
                                         </div>
-
                                     </div>
                                 </form>
                             </div>
 
                             <div class="emergency-info text-center mt-4" data-aos="fade-up" data-aos-delay="400">
-                                <p><i class="bi bi-info-circle"></i> Pengaduan Anda akan segera diproses oleh pihak terkait.
+                                <p><i class="bi bi-info-circle"></i> Pengaduan Anda akan segera diproses oleh pihak
+                                    terkait.
                                     Harap isi data dengan benar agar kami dapat menghubungi Anda jika diperlukan.</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- /Pengaduan Section -->
-
     </main>
-
 @endsection

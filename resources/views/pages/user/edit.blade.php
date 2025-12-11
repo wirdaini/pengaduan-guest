@@ -1,3 +1,4 @@
+{{-- resources/views/pages/user/edit.blade.php --}}
 @extends('layouts.guest.app')
 
 @section('title', 'Edit User - Bina Desa')
@@ -52,8 +53,7 @@
                                     </div>
                                 @endif
 
-                                <form action="{{ route('user.update', $user->id) }}" method="POST"
-                                    class="php-email-form">
+                                <form action="{{ route('user.update', $user->id) }}" method="POST" class="php-email-form">
                                     @csrf
                                     @method('PUT')
 
@@ -75,8 +75,27 @@
                                             <label for="email" class="form-label">Email *</label>
                                             <input type="email" name="email"
                                                 class="form-control @error('email') is-invalid @enderror"
-                                                value="{{ old('email', $user->email) }}" placeholder="Alamat Email" required>
+                                                value="{{ old('email', $user->email) }}" placeholder="Alamat Email"
+                                                required>
                                             @error('email')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <!-- ROLE (TAMBAHKAN INI) -->
+                                        <div class="col-12">
+                                            <label for="role" class="form-label">Role *</label>
+                                            <select name="role" class="form-control @error('role') is-invalid @enderror"
+                                                required>
+                                                <option value="">Pilih Role</option>
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role }}"
+                                                        {{ old('role', $user->role) == $role ? 'selected' : '' }}>
+                                                        {{ ucfirst($role) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('role')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -87,6 +106,7 @@
                                             <input type="password" name="password"
                                                 class="form-control @error('password') is-invalid @enderror"
                                                 placeholder="Kosongkan jika tidak ingin mengubah password">
+                                            <small class="text-muted">Minimal 8 karakter</small>
                                             @error('password')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -94,7 +114,8 @@
 
                                         <!-- Konfirmasi Password -->
                                         <div class="col-12">
-                                            <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                                            <label for="password_confirmation" class="form-label">Konfirmasi
+                                                Password</label>
                                             <input type="password" name="password_confirmation" class="form-control"
                                                 placeholder="Konfirmasi password">
                                         </div>
@@ -102,8 +123,7 @@
                                         <!-- Action Buttons -->
                                         <div class="col-12 text-center">
                                             <button type="submit" class="btn-book">Update User</button>
-                                            <a href="{{ route('user.index') }}"
-                                                class="btn btn-secondary mt-2">Kembali</a>
+                                            <a href="{{ route('user.index') }}" class="btn btn-secondary mt-2">Kembali</a>
                                         </div>
 
                                     </div>

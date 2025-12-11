@@ -79,74 +79,89 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="info-item">
-                                                        <label class="fw-bold">User ID</label>
-                                                        <p class="info-value">#{{ $user->id }}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="info-item">
-                                                        <label class="fw-bold">Status Email</label>
+                                                        <label class="fw-bold">Role</label>
                                                         <p class="info-value">
-                                                            @if ($user->email_verified_at)
-                                                                <span class="badge bg-success">
-                                                                    <i class="fas fa-check me-1"></i>Terverifikasi
-                                                                </span>
+                                                            @if ($user->role == 'admin')
+                                                                <span class="badge bg-danger">Admin</span>
+                                                            @elseif($user->role == 'petugas')
+                                                                <span class="badge bg-warning text-dark">Petugas</span>
                                                             @else
-                                                                <span class="badge bg-warning text-dark">
-                                                                    <i class="fas fa-clock me-1"></i>Belum Verifikasi
-                                                                </span>
+                                                                <span class="badge bg-success">Warga</span>
                                                             @endif
                                                         </p>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <div class="info-item">
+                                                        <label class="fw-bold">User ID</label>
+                                                        <p class="info-value">#{{ $user->id }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="info-item">
+                                                    <label class="fw-bold">Status Email</label>
+                                                    <p class="info-value">
+                                                        @if ($user->email_verified_at)
+                                                            <span class="badge bg-success">
+                                                                <i class="fas fa-check me-1"></i>Terverifikasi
+                                                            </span>
+                                                        @else
+                                                            <span class="badge bg-warning text-dark">
+                                                                <i class="fas fa-clock me-1"></i>Belum Verifikasi
+                                                            </span>
+                                                        @endif
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <!-- Riwayat Sistem -->
-                                    <div class="col-12">
-                                        <div class="info-section">
-                                            <h5 class="section-title text-primary mb-3">
-                                                <i class="fas fa-history me-2"></i>Riwayat Sistem
-                                            </h5>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="info-item">
-                                                        <label class="fw-bold">Tanggal Registrasi</label>
-                                                        <p class="info-value">{{ $user->created_at->format('d/m/Y H:i') }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="info-item">
-                                                        <label class="fw-bold">Terakhir Update</label>
-                                                        <p class="info-value">{{ $user->updated_at->format('d/m/Y H:i') }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @if ($user->email_verified_at)
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="info-item">
-                                                            <label class="fw-bold">Email Terverifikasi Pada</label>
-                                                            <p class="info-value">
-                                                                {{ $user->email_verified_at->format('d/m/Y H:i') }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
-                        </div>
 
+                            <div class="row">
+                                <!-- Riwayat Sistem -->
+                                <div class="col-12">
+                                    <div class="info-section">
+                                        <h5 class="section-title text-primary mb-3">
+                                            <i class="fas fa-history me-2"></i>Riwayat Sistem
+                                        </h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="info-item">
+                                                    <label class="fw-bold">Tanggal Registrasi</label>
+                                                    <p class="info-value">{{ $user->created_at->format('d/m/Y H:i') }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="info-item">
+                                                    <label class="fw-bold">Terakhir Update</label>
+                                                    <p class="info-value">{{ $user->updated_at->format('d/m/Y H:i') }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if ($user->email_verified_at)
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="info-item">
+                                                        <label class="fw-bold">Email Terverifikasi Pada</label>
+                                                        <p class="info-value">
+                                                            {{ $user->email_verified_at->format('d/m/Y H:i') }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+
                 </div>
+            </div>
             </div>
         </section><!-- /Detail User Section -->
 

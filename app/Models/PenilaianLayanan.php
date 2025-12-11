@@ -1,29 +1,27 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pengaduan extends Model
+class PenilaianLayanan extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'pengaduan_id';
-    protected $table      = 'pengaduan';
+    protected $table = 'penilaian_layanan';
+    protected $primaryKey = 'penilaian_id';
 
     protected $fillable = [
-        'nomor_tiket',
-        'warga_id',
-        'kategori_id',
-        'judul',
-        'deskripsi',
-        'status',
-        'lokasi_text',
-        'rt',
-        'rw',
+        'pengaduan_id',
+        'rating',
+        'komentar',
     ];
 
+    /**
+     * Scope filter 
+     */
     public function scopeFilter(Builder $query, $request, array $filterableColumns): Builder
     {
         foreach ($filterableColumns as $column) {
@@ -48,27 +46,34 @@ class Pengaduan extends Model
         }
     }
 
-    // Relasi ke warga
-    public function warga()
+    /**
+     * Relasi ke pengaduan
+     */
+    public function pengaduan()
     {
-        return $this->belongsTo(Warga::class, 'warga_id');
+        return $this->belongsTo(Pengaduan::class, 'pengaduan_id', 'pengaduan_id');
     }
 
-    // Relasi ke kategori
-    public function kategori()
+    /**
+     * Accessor untuk rating bintang
+     */
+    public function getRatingBintangAttribute()
     {
-        return $this->belongsTo(KategoriPengaduan::class, 'kategori_id', 'kategori_id');
+        return str_repeat('⭐', $this->rating) . str_repeat('☆', 5 - $this->rating);
     }
 
-    // ⭐⭐ TAMBAHKAN RELASI KE PENILAIAN ⭐⭐
-    public function penilaian()
+    /**
+     * Accessor untuk rating text
+     */
+    public function getRatingTextAttribute()
     {
-        return $this->hasOne(PenilaianLayanan::class, 'pengaduan_id', 'pengaduan_id');
-    }
-
-    // Relasi ke tindak lanjut (jika belum ada)
-    public function tindakLanjut()
-    {
-        return $this->hasMany(TindakLanjut::class, 'pengaduan_id', 'pengaduan_id');
+        $texts = [
+            1 => 'Sangat Tidak Puas',
+            2 => 'Tidak Puas',
+            3 => 'Cukup Puas',
+            4 => 'Puas',
+            5 => 'Sangat Puas',
+        ];
+        return $texts[$this->rating] ?? 'Tidak Ada Rating';
     }
 }

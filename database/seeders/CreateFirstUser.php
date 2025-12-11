@@ -17,7 +17,8 @@ class CreateFirstUser extends Seeder
         User::create([
             'name' => 'Guest',
             'email' => 'quin@ub.ac.id',
-            'password' => Hash::make('quinub')
+            'password' => Hash::make('quinub'),
+            'role' => 'admin',
         ]);
     }
 }

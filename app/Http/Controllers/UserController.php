@@ -13,73 +13,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        // Kolom yang bisa di-filter (PAKAI email_verified_at)
-        $filterableColumns = []; 
-
-        $searchableColumns = ['name', 'email'];
-
-        $query = User::query();
-
-        // FILTER VERIFIKASI (MASUKKIN KE QUERY BIASA)
-        if ($request->filled('email_verified')) {
-            if ($request->email_verified === 'verified') {
-                $query->whereNotNull('email_verified_at');
-            } else {
-                $query->whereNull('email_verified_at');
-            }
-        }
-
-        // SEARCH (PAKAI SCOPE)
-        $query->search($request, $searchableColumns);
-
-        // // SORTING
-        // $sort = $request->get('sort', 'newest');
-        // switch ($sort) {
-        //     case 'oldest':
-        //         $query->orderBy('created_at', 'asc');
-        //         break;
-        //     case 'name_asc':
-        //         $query->orderBy('name', 'asc');
-        //         break;
-        //     case 'name_desc':
-        //         $query->orderBy('name', 'desc');
-        //         break;
-        //     default:
-        //         $query->orderBy('created_at', 'desc');
-        // }
-
-        $users = $query->paginate(9)->withQueryString();
-
+        $users = User::orderBy('name')->paginate(9);
         return view('pages.user.index', compact('users'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('pages.user.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('user.index')
-            ->with('success', 'User berhasil ditambahkan!');
     }
 
     /**
@@ -91,11 +26,44 @@ class UserController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $roles = ['admin', 'petugas', 'warga'];
+        return view('pages.user.create', compact('roles'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role'     => 'required|in:admin,petugas,warga',
+        ]);
+
+        User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => $request->role,
+        ]);
+
+        return redirect()->route('user.index')
+            ->with('success', 'User berhasil ditambahkan!');
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(User $user)
     {
-        return view('pages.user.edit', compact('user'));
+        $roles = ['admin', 'petugas', 'warga'];
+        return view('pages.user.edit', compact('user', 'roles'));
     }
 
     /**
@@ -107,11 +75,13 @@ class UserController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            'role'     => 'required|in:admin,petugas,warga',
         ]);
 
         $data = [
             'name'  => $request->name,
             'email' => $request->email,
+            'role'  => $request->role,
         ];
 
         if ($request->filled('password')) {

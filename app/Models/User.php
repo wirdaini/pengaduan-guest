@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -15,6 +14,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     // Scope filter
@@ -49,25 +49,25 @@ class User extends Authenticatable
             case 'week':
                 $query->whereBetween('created_at', [
                     now()->startOfWeek(),
-                    now()->endOfWeek()
+                    now()->endOfWeek(),
                 ]);
                 break;
             case 'month':
                 $query->whereBetween('created_at', [
                     now()->startOfMonth(),
-                    now()->endOfMonth()
+                    now()->endOfMonth(),
                 ]);
                 break;
         }
     }
 
-     /**
-     * Scope search 
+    /**
+     * Scope search
      */
     public function scopeSearch($query, $request, array $columns)
     {
         if ($request->filled('search')) {
-            $query->where(function($q) use ($request, $columns) {
+            $query->where(function ($q) use ($request, $columns) {
                 foreach ($columns as $column) {
                     $q->orWhere($column, 'LIKE', '%' . $request->search . '%');
                 }
@@ -84,7 +84,34 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
+    }
+
+    // Relationship dengan pengaduan jika user adalah warga
+    public function pengaduans()
+    {
+        return $this->hasMany(Pengaduan::class, 'warga_id');
+    }
+
+    // Helper method untuk mengecek role
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isPetugas()
+    {
+        return $this->role === 'petugas';
+    }
+
+    public function isWarga()
+    {
+        return $this->role === 'warga';
     }
 }

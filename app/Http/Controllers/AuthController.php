@@ -64,17 +64,11 @@ class AuthController extends Controller
         Auth::login($user, $request->has('remember'));
         $request->session()->regenerate();
 
-        // STEP 5: CEK DATA WARGA
-        $dataWarga = Warga::where('user_id', auth()->id())->first();
-
-        if (! $dataWarga) {
-            // JIKA BELUM ADA DATA WARGA → ke form warga
-            return redirect()->route('warga.create')
-                ->with('success', 'Login berhasil! Silakan lengkapi data warga dulu.');
-        }
-
-        // JIKA SUDAH ADA DATA WARGA → ke home (sesuai kode awal Anda)
-        return redirect()->route('home')->with('success', 'Login berhasil! Selamat datang.');
+        // ========== PERUBAHAN DI SINI ==========
+        // SEMUA ROLE LANGSUNG KE DASHBOARD, TANPA CEK DATA WARGA
+        return redirect()->route('dashboard')
+            ->with('success', 'Login berhasil! Selamat datang ' . $user->name . '.');
+        // ========== END PERUBAHAN ==========
     }
 
     /**
@@ -102,20 +96,27 @@ class AuthController extends Controller
         ]);
 
         try {
+            // TAMBAHKAN ROLE DEFAULT 'warga' SAAT REGISTRASI
             $user = User::create([
-                'name'     => $request->name, // Sekarang menggunakan name
+                'name'     => $request->name,
                 'email'    => $request->email,
                 'password' => Hash::make($request->password),
+                'role'     => 'warga', // DEFAULT ROLE UNTUK USER BARU
             ]);
 
             auth()->login($user);
 
-            return redirect()->route('login')->with('success', 'Registration successful!');
+            // ========== PERUBAHAN DI SINI ==========
+            // Redirect ke DASHBOARD setelah registrasi
+            return redirect()->route('dashboard')
+                ->with('success', 'Registrasi berhasil! Selamat datang ' . $user->name . '.');
+            // ========== END PERUBAHAN ==========
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Registration failed: ' . $e->getMessage());
+            return back()->with('error', 'Registrasi gagal: ' . $e->getMessage());
         }
     }
+
     /**
      * Logout user
      */
