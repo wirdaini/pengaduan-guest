@@ -15,6 +15,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'profile_picture',
     ];
 
     // Scope filter
@@ -113,5 +114,17 @@ class User extends Authenticatable
     public function isWarga()
     {
         return $this->role === 'warga';
+    }
+
+    // Di dalam class User
+/**
+ * Get the URL for the profile picture.
+ */
+    public function getProfilePictureUrlAttribute()
+    {
+        if ($this->profile_picture) {
+            return asset('storage/' . $this->profile_picture);
+        }
+        return asset('images/default-profile.jpg'); // Foto default
     }
 }

@@ -63,6 +63,15 @@
                                     <p class="search-subtitle">Temukan dan kelola semua data warga dengan mudah</p>
 
                                     <form method="GET" action="{{ route('warga.index') }}" class="search-form">
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <p class="search-subtitle mb-0">Temukan dan kelola semua data warga dengan mudah
+                                            </p>
+                                            <div class="total-badge">
+                                                <i class="bi bi-person-vcard me-1"></i>
+                                                <span class="total-number">{{ $warga->total() }}</span>
+                                                <span class="total-text">warga</span>
+                                            </div>
+                                        </div>
                                         <div class="search-input-group">
                                             <!-- SEARCH INPUT -->
                                             <div class="input-wrapper">
@@ -607,6 +616,55 @@
             .search-section .search-form .search-input-group .reset-btn {
                 border-radius: 16px;
                 justify-content: center;
+            }
+        }
+
+        /* CSS untuk total-badge (tambahkan di dalam <style>) */
+        .total-badge {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #495057;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .total-badge:hover {
+            border-color: #175cdd;
+            background: #f0f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(23, 92, 221, 0.1);
+        }
+
+        .total-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #175cdd;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .total-text {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Responsif untuk mobile */
+        @media (max-width: 768px) {
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+
+            .total-badge {
+                align-self: flex-start;
+                margin-top: 5px;
             }
         }
     </style>

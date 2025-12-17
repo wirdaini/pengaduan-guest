@@ -13,7 +13,8 @@
                         <div class="col-lg-8">
                             <h1 class="heading-title">Data Tindak Lanjut</h1>
                             <p class="mb-0">
-                                Kelola semua tindak lanjut dari pengaduan warga. Pantau perkembangan penanganan setiap laporan.
+                                Kelola semua tindak lanjut dari pengaduan warga. Pantau perkembangan penanganan setiap
+                                laporan.
                             </p>
                         </div>
                     </div>
@@ -59,7 +60,15 @@
                             <div class="card" style="background: transparent; border: none; box-shadow: none;">
                                 <div class="card-body" style="padding: 0;">
                                     <h3 class="search-title">Cari & Filter Tindak Lanjut</h3>
-                                    <p class="search-subtitle">Temukan dan kelola semua tindak lanjut dengan mudah</p>
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <p class="search-subtitle mb-0">Temukan dan kelola semua tindak lanjut dengan mudah
+                                        </p>
+                                        <div class="total-badge">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            <span class="total-number">{{ $tindak_lanjut->total() }}</span>
+                                            <span class="total-text">tindak lanjut</span>
+                                        </div>
+                                    </div>
 
                                     <form method="GET" action="{{ route('tindak_lanjut.index') }}" class="search-form">
                                         <div class="search-input-group">
@@ -188,6 +197,17 @@
                                         <p><strong>Pengaduan:</strong> {{ Str::limit($item->pengaduan->judul, 30) }}</p>
                                         <p><strong>No Tiket:</strong> {{ $item->pengaduan->nomor_tiket }}</p>
                                         <p><strong>Catatan:</strong> {{ Str::limit($item->catatan, 80) }}</p>
+                                        <div class="file-info-compact">
+                                            <div class="file-icon-small">
+                                                <i class="bi bi-paperclip"></i>
+                                            </div>
+                                            <div>
+                                                <div class="file-number">
+                                                    {{ \App\Models\Media::where('ref_table', 'tindak_lanjut')->where('ref_id', $item->tindak_id)->count() }}
+                                                </div>
+                                                <div class="file-text-small">Files</div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="tindak-meta">
@@ -580,6 +600,91 @@
                 border-radius: 16px;
                 justify-content: center;
             }
+        }
+
+        /* CSS untuk total-badge (tambahkan di dalam <style>) */
+        .total-badge {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #495057;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .total-badge:hover {
+            border-color: #175cdd;
+            background: #f0f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(23, 92, 221, 0.1);
+        }
+
+        .total-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #175cdd;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .total-text {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Responsif untuk mobile */
+        @media (max-width: 768px) {
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+
+            .total-badge {
+                align-self: flex-start;
+                margin-top: 5px;
+            }
+        }
+
+        .file-info-compact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 10px;
+            max-width: 100px;
+        }
+
+        .file-icon-small {
+            width: 28px;
+            height: 28px;
+            background: #175cdd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .file-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #175cdd;
+            line-height: 1;
+        }
+
+        .file-text-small {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 2px;
         }
     </style>
 @endsection

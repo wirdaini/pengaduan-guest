@@ -1,4 +1,3 @@
-{{-- resources/views/pages/user/edit.blade.php --}}
 @extends('layouts.guest.app')
 
 @section('title', 'Edit User - Bina Desa')
@@ -53,11 +52,42 @@
                                     </div>
                                 @endif
 
-                                <form action="{{ route('user.update', $user->id) }}" method="POST" class="php-email-form">
+                                <!-- PERUBAHAN: Tambah enctype -->
+                                <form action="{{ route('user.update', $user->id) }}" method="POST" class="php-email-form"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
 
                                     <div class="row gy-4">
+
+                                        <!-- Foto Profil -->
+                                        <div class="col-12 text-center">
+                                            <label class="form-label">Foto Profil Saat Ini</label>
+                                            <div class="mb-3">
+                                                <div class="current-photo mb-3">
+                                                    @if ($user->profile_picture)
+                                                        <img src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                            alt="Foto Profil" class="rounded-circle" width="150"
+                                                            height="150" style="object-fit: cover;">
+                                                    @else
+                                                        <div class="no-photo rounded-circle d-inline-flex align-items-center justify-content-center bg-secondary"
+                                                            style="width: 150px; height: 150px;">
+                                                            <i class="bi bi-person-circle"
+                                                                style="font-size: 60px; color: white;"></i>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <label for="profile_picture" class="form-label">Ubah Foto Profil</label>
+                                                <input type="file" name="profile_picture" id="profile_picture"
+                                                    class="form-control @error('profile_picture') is-invalid @enderror"
+                                                    accept="image/*">
+                                                @error('profile_picture')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                                <small class="text-muted">Kosongkan jika tidak ingin mengubah foto. Format:
+                                                    JPEG, PNG, JPG, GIF. Maks: 2MB</small>
+                                            </div>
+                                        </div>
 
                                         <!-- Nama Lengkap -->
                                         <div class="col-12">
@@ -82,7 +112,7 @@
                                             @enderror
                                         </div>
 
-                                        <!-- ROLE (TAMBAHKAN INI) -->
+                                        <!-- ROLE -->
                                         <div class="col-12">
                                             <label for="role" class="form-label">Role *</label>
                                             <select name="role" class="form-control @error('role') is-invalid @enderror"
@@ -123,7 +153,8 @@
                                         <!-- Action Buttons -->
                                         <div class="col-12 text-center">
                                             <button type="submit" class="btn-book">Update User</button>
-                                            <a href="{{ route('user.index') }}" class="btn btn-secondary mt-2">Kembali</a>
+                                            <a href="{{ route('user.index') }}"
+                                                class="btn btn-secondary mt-2">Kembali</a>
                                         </div>
 
                                     </div>
@@ -143,4 +174,18 @@
         <!-- /Edit User Section -->
 
     </main>
+
+    <style>
+        .current-photo {
+            display: inline-block;
+            border: 3px solid #dee2e6;
+            border-radius: 50%;
+            padding: 5px;
+            background: white;
+        }
+
+        .no-photo {
+            display: inline-flex !important;
+        }
+    </style>
 @endsection

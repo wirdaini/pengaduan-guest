@@ -16,13 +16,11 @@
         </div>
     </div><!-- End Top Bar -->
 
-    <div class="branding d-flex align-items-cente">
-
+    <div class="branding d-flex align-items-center">
         <div class="container position-relative d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <!-- <img src="assets/img/logo.webp" alt=""> -->
-                <h1 class="sitename">Lapor Desa</h1>
+            <!-- Logo dengan class khusus -->
+            <a href="{{ url('/') }}" class="logo d-flex align-items-center">
+                <img src="{{ asset('assets/img/logobdvertikal.png') }}" alt="Bina Desa Logo" class="header-logo">
             </a>
 
             <nav id="navmenu" class="navmenu">
@@ -70,7 +68,7 @@
 
                     <!-- ========== LOGIN/USER MENU ========== -->
                     @auth
-                        <!-- Jika sudah login: Tampilkan nama user dengan dropdown -->
+                        <!-- JIKA SUDAH LOGIN: Tampilkan NAMA USER dengan dropdown -->
                         <li class="dropdown">
                             <a href="#" class="nav-link dropdown-toggle">
                                 <i class="bi bi-person-circle me-1"></i>
@@ -110,8 +108,11 @@
                             </ul>
                         </li>
                     @else
-                        <!-- Jika belum login: Tampilkan tombol login -->
-                        <li><a href="{{ route('login') }}" class="{{ request()->is('login') ? 'active' : '' }}">Login</a>
+                        <!-- JIKA BELUM LOGIN: Tampilkan "Login" -->
+                        <li>
+                            <a href="{{ route('login') }}" class="{{ request()->is('login') ? 'active' : '' }}">
+                                <i class="bi bi-person-circle me-1"></i> Login
+                            </a>
                         </li>
                     @endauth
                     <!-- ========== END LOGIN/USER MENU ========== -->

@@ -33,6 +33,13 @@
                     <div class="col-lg-8 mx-auto">
                         <div class="register-wrapper">
                             <div class="register-header text-center">
+                                <!-- Logo Bina Desa -->
+                                <div class="logo-container mb-4">
+                                    <a href="{{ url('/') }}" class="logo d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('assets/img/logobdhorizontal.png') }}" alt="Bina Desa Logo" class="header-logo" style="max-height: 80px;">
+                                    </a>
+                                </div>
+
                                 <h2>Buat Akun Anda</h2>
                                 <p>Bergabung dengan platform kami untuk mengakses layanan pengaduan desa</p>
                             </div>
@@ -129,6 +136,23 @@
     </main>
 
     <style>
+        /* Tambahan styling untuk logo */
+        .logo-container {
+            margin-bottom: 30px !important;
+            text-align: center;
+        }
+
+        .header-logo {
+            max-height: 80px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Tampilan asli tetap dipertahankan */
         .register .register-wrapper {
             background-color: var(--surface-color);
             border-radius: 15px;
@@ -173,6 +197,12 @@
             border-color: var(--accent-color);
             box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--accent-color), transparent 80%);
             outline: none;
+        }
+
+        .register .register-form input[type=text]::placeholder,
+        .register .register-form input[type=email]::placeholder,
+        .register .register-form input[type=password]::placeholder {
+            color: color-mix(in srgb, var(--default-color), transparent 70%);
         }
 
         .register .register-form .btn-register {
@@ -245,6 +275,16 @@
 
             .register .register-header h2 {
                 font-size: 1.8rem;
+            }
+
+            .header-logo {
+                max-height: 70px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-logo {
+                max-height: 60px;
             }
         }
     </style>

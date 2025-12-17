@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriPengaduanController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PenilaianLayananController;
 use App\Http\Controllers\TindakLanjutController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,6 +59,15 @@ Route::middleware(['checkislogin'])->group(function () {
 
     // ========== ROUTES UNTUK ADMIN & PETUGAS ==========
     Route::middleware(['checkrole:admin,petugas'])->group(function () {
+        // User Management
+        Route::resource('user', UserController::class);
+
+        // Warga Management
+        Route::resource('warga', WargaController::class);
+
+        // Kategori Pengaduan
+        Route::resource('kategori_pengaduan', KategoriPengaduanController::class);
+
         // Tindak Lanjut
         Route::resource('tindak_lanjut', TindakLanjutController::class);
         Route::delete('/tindak_lanjut/{tindak_id}/media/{media_id}',

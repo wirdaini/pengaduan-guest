@@ -60,7 +60,7 @@ class Pengaduan extends Model
         return $this->belongsTo(KategoriPengaduan::class, 'kategori_id', 'kategori_id');
     }
 
-    // ⭐⭐ TAMBAHKAN RELASI KE PENILAIAN ⭐⭐
+    // TAMBAHKAN RELASI KE PENILAIAN
     public function penilaian()
     {
         return $this->hasOne(PenilaianLayanan::class, 'pengaduan_id', 'pengaduan_id');

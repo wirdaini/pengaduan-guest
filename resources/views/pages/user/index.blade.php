@@ -58,7 +58,15 @@
                             <div class="card" style="background: transparent; border: none; box-shadow: none;">
                                 <div class="card-body" style="padding: 0;">
                                     <h3 class="search-title">Cari & Filter Users</h3>
-                                    <p class="search-subtitle">Temukan dan kelola semua user sistem dengan mudah</p>
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <p class="search-subtitle mb-0">Temukan dan kelola semua user sistem dengan mudah
+                                        </p>
+                                        <div class="total-badge">
+                                            <i class="bi bi-people me-1"></i>
+                                            <span class="total-number">{{ $users->total() }}</span>
+                                            <span class="total-text">user</span>
+                                        </div>
+                                    </div>
 
                                     <form method="GET" action="{{ route('user.index') }}" class="search-form">
                                         <div class="search-input-group">
@@ -70,19 +78,20 @@
                                                     value="{{ request('search') }}" placeholder="Cari nama atau email...">
                                             </div>
 
-                                            {{-- <!-- FILTER ROLE -->
+                                            <!-- FILTER ROLE -->
                                             <div class="select-wrapper">
                                                 <i class="bi bi-person-badge"></i>
                                                 <select class="form-select" name="role">
                                                     <option value="">Semua Role</option>
                                                     <option value="admin"
                                                         {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                                                    <option value="user"
-                                                        {{ request('role') == 'user' ? 'selected' : '' }}>User</option>
+                                                    <option value="petugas"
+                                                        {{ request('role') == 'petugas' ? 'selected' : '' }}>Petugas
+                                                    </option>
                                                     <option value="warga"
                                                         {{ request('role') == 'warga' ? 'selected' : '' }}>Warga</option>
                                                 </select>
-                                            </div> --}}
+                                            </div>
 
                                             <!-- FILTER VERIFIKASI -->
                                             <div class="select-wrapper">
@@ -168,10 +177,21 @@
                         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
                             <div class="user-card">
                                 <div class="user-header">
-                                    <!-- Avatar dengan inisial nama -->
-                                    <div class="user-avatar bg-primary">
-                                        {{ strtoupper(substr($user->name, 0, 2)) }}
+                                    <!-- ========== PERUBAHAN DISINI ========== -->
+                                    <!-- SAMA PERSIS SEPERTI SHOW VIEW -->
+                                    <div class="user-avatar-container">
+                                        @if ($user->profile_picture && Illuminate\Support\Facades\Storage::disk('public')->exists($user->profile_picture))
+                                            <!-- USER PUNYA FOTO: TAMPILKAN FOTO ASLI -->
+                                            <img src="{{ Illuminate\Support\Facades\Storage::url($user->profile_picture) }}"
+                                                alt="{{ $user->name }}" class="user-avatar-img">
+                                        @else
+                                            <!-- USER TIDAK PUNYA FOTO: ICON ORANG DI LINGKARAN ABU-ABU -->
+                                            <div class="user-avatar-default">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                        @endif
                                     </div>
+                                    <!-- ========== END PERUBAHAN ========== -->
                                     <div class="user-overlay">
                                         <div class="action-links">
                                             <a href="{{ route('user.show', $user->id) }}" class="btn-info"
@@ -293,21 +313,46 @@
             background: linear-gradient(135deg, #175cdd 0%, #1a4bb8 100%);
         }
 
-        .user-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: white;
+        /* ========== PERUBAHAN CSS DISINI ========== */
+        .user-avatar-container {
             position: absolute;
             top: 20px;
             left: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
             border: 3px solid white;
+            overflow: hidden;
+            background: white;
+            /* Background putih untuk foto */
         }
+
+        .user-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ICON ORANG UNTUK USER TANPA FOTO */
+        .user-avatar-default {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #6c757d;
+            /* ABU-ABU seperti show view */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            /* Ukuran icon */
+        }
+
+        .user-avatar-default i {
+            opacity: 0.8;
+        }
+
+        /* ========== END PERUBAHAN ========== */
 
         .user-overlay {
             position: absolute;
@@ -584,6 +629,55 @@
             .search-section .search-form .search-input-group .reset-btn {
                 border-radius: 16px;
                 justify-content: center;
+            }
+        }
+
+        /* CSS untuk total-badge (tambahkan di dalam <style>) */
+        .total-badge {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #495057;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .total-badge:hover {
+            border-color: #175cdd;
+            background: #f0f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(23, 92, 221, 0.1);
+        }
+
+        .total-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #175cdd;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .total-text {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Responsif untuk mobile */
+        @media (max-width: 768px) {
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+
+            .total-badge {
+                align-self: flex-start;
+                margin-top: 5px;
             }
         }
     </style>

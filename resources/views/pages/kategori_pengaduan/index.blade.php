@@ -57,7 +57,14 @@
                             <div class="card" style="background: transparent; border: none; box-shadow: none;">
                                 <div class="card-body" style="padding: 0;">
                                     <h3 class="search-title">Cari & Filter Kategori</h3>
-                                    <p class="search-subtitle">Temukan dan kelola kategori pengaduan dengan mudah</p>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <p class="search-subtitle mb-0">Temukan dan kelola kategori pengaduan dengan mudah
+                                        </p>
+                                        <div class="total-count">
+                                            <i class="bi bi-tags me-1"></i>
+                                            <strong>{{ $kategoris->total() }}</strong> kategori
+                                        </div>
+                                    </div>
 
                                     <form method="GET" action="{{ route('kategori_pengaduan.index') }}"
                                         class="search-form">
@@ -613,6 +620,29 @@
                 border-radius: 16px;
                 justify-content: center;
             }
+        }
+
+        .total-count {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.95rem;
+            color: #495057;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .total-count strong {
+            color: #175cdd;
+            font-size: 1.1rem;
+        }
+
+        .total-count:hover {
+            background: #e9ecef;
+            border-color: #175cdd;
         }
     </style>
 @endsection

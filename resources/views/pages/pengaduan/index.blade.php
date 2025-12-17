@@ -60,8 +60,15 @@
                             <div class="card" style="background: transparent; border: none; box-shadow: none;">
                                 <div class="card-body" style="padding: 0;">
                                     <h3 class="search-title">Cari & Filter Pengaduan</h3>
-                                    <p class="search-subtitle">Temukan dan kelola semua pengaduan warga dengan mudah</p>
-
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <p class="search-subtitle mb-0">Temukan dan kelola semua pengaduan warga dengan
+                                            mudah</p>
+                                        <div class="total-badge">
+                                            <i class="bi bi-inbox me-1"></i>
+                                            <span class="total-number">{{ $pengaduan->total() }}</span>
+                                            <span class="total-text">pengaduan</span>
+                                        </div>
+                                    </div>
                                     <form method="GET" action="{{ route('pengaduan.index') }}" class="search-form">
                                         <div class="search-input-group">
                                             <!-- SEARCH INPUT -->
@@ -263,7 +270,6 @@
 
                                     <div class="pengaduan-info">
                                         <p><strong>Pengajuan:</strong> {{ $item->warga->nama }}</p>
-                                        {{-- <p><strong>Kategori:</strong> {{ $item->kategori->nama }}</p> --}}
                                         <p><strong>Kategori:</strong>
                                             @if ($item->kategori && $item->kategori->nama)
                                                 {{ $item->kategori->nama }}
@@ -273,6 +279,17 @@
                                         </p>
                                         <p><strong>Lokasi:</strong> {{ Str::limit($item->lokasi_text, 30) }}</p>
                                         <p><strong>Deskripsi:</strong> {{ Str::limit($item->deskripsi, 80) }}</p>
+                                        <div class="file-info-compact">
+                                            <div class="file-icon-small">
+                                                <i class="bi bi-paperclip"></i>
+                                            </div>
+                                            <div>
+                                                <div class="file-number">
+                                                    {{ \App\Models\Media::where('ref_table', 'pengaduan')->where('ref_id', $item->pengaduan_id)->count() }}
+                                                </div>
+                                                <div class="file-text-small">Files</div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="pengaduan-meta">
@@ -671,6 +688,146 @@
                 justify-content: center;
             }
         }
-    </style>
+
+        /* Tambahkan di dalam <style> yang sudah ada */
+
+        .total-badge {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #495057;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .total-badge:hover {
+            border-color: #175cdd;
+            background: #f0f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(23, 92, 221, 0.1);
+        }
+
+        .total-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #175cdd;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .total-text {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Responsif untuk mobile */
+        @media (max-width: 768px) {
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+
+            .total-badge {
+                align-self: flex-start;
+                margin-top: 5px;
+            }
+        }
+
+        /* File attachment styling - mirip dengan tindak lanjut */
+        .file-info-compact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 12px;
+            margin-bottom: 0;
+            max-width: 100px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-info-compact:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-info-compact:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-icon-small {
+            width: 28px;
+            height: 28px;
+            background: #175cdd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .file-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #175cdd;
+            line-height: 1;
+        }
+
+        .file-text-small {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        /* Responsif mobile */
+        @media (max-width: 768px) {
+            .file-info-compact {
+                max-width: 90px;
+                padding: 6px 10px;
+                gap: 8px;
+            }
+
+            .file-icon-small {
+                width: 26px;
+                height: 26px;
+                font-size: 0.85rem;
+            }
+
+            .file-number {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .file-info-compact {
+                max-width: 85px;
+                padding: 5px 8px;
+            }
+
+            .file-icon-small {
+                width: 24px;
+                height: 24px;
+                font-size: 0.8rem;
+            }
+
+            .file-number {
+                font-size: 0.95rem;
+            }
+
+            .file-text-small {
+                font-size: 0.7rem;
+            }
+        }
     </style>
 @endsection

@@ -102,7 +102,7 @@
 
                     <div class="col-lg-6">
                         <div class="copyright">
-                            <p>© <span class="sitename">Bina Desa</span>. Seluruh hak cipta dilindungi.</p>
+                            <p>© <span class="sitename">Lapor Desa</span>. Seluruh hak cipta dilindungi.</p>
                         </div>
                     </div>
 

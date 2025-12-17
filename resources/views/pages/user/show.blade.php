@@ -41,10 +41,27 @@
                                 </h4>
                             </div>
                             <div class="card-body">
-                                <!-- Action Buttons -->
+                                <!-- PERUBAHAN: Tambah foto profil di bagian atas -->
                                 <div class="row mb-4">
-                                    <div class="col-12">
-                                        <div class="d-flex justify-content-end gap-2">
+                                    <div class="col-md-4 text-center">
+                                        <div class="profile-photo-container">
+                                            @if($user->profile_picture)
+                                                <img src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                     alt="Foto Profil {{ $user->name }}"
+                                                     class="profile-photo rounded-circle shadow">
+                                            @else
+                                                <div class="profile-photo-default rounded-circle bg-secondary d-flex align-items-center justify-content-center shadow">
+                                                    <i class="fas fa-user text-white" style="font-size: 60px;"></i>
+                                                </div>
+                                            @endif
+                                            <div class="mt-3">
+                                                <h5 class="mb-0">{{ $user->name }}</h5>
+                                                <span class="text-muted">{{ ucfirst($user->role) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="d-flex justify-content-end gap-2 mb-3">
                                             <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning">
                                                 <i class="fas fa-edit me-2"></i>Edit User
                                             </a>
@@ -98,76 +115,115 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="info-item">
-                                                    <label class="fw-bold">Status Email</label>
-                                                    <p class="info-value">
-                                                        @if ($user->email_verified_at)
-                                                            <span class="badge bg-success">
-                                                                <i class="fas fa-check me-1"></i>Terverifikasi
-                                                            </span>
-                                                        @else
-                                                            <span class="badge bg-warning text-dark">
-                                                                <i class="fas fa-clock me-1"></i>Belum Verifikasi
-                                                            </span>
-                                                        @endif
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <!-- Riwayat Sistem -->
-                                <div class="col-12">
-                                    <div class="info-section">
-                                        <h5 class="section-title text-primary mb-3">
-                                            <i class="fas fa-history me-2"></i>Riwayat Sistem
-                                        </h5>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="info-item">
-                                                    <label class="fw-bold">Tanggal Registrasi</label>
-                                                    <p class="info-value">{{ $user->created_at->format('d/m/Y H:i') }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="info-item">
-                                                    <label class="fw-bold">Terakhir Update</label>
-                                                    <p class="info-value">{{ $user->updated_at->format('d/m/Y H:i') }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @if ($user->email_verified_at)
                                             <div class="row">
-                                                <div class="col-12">
+                                                <div class="col-md-6">
                                                     <div class="info-item">
-                                                        <label class="fw-bold">Email Terverifikasi Pada</label>
+                                                        <label class="fw-bold">Status Email</label>
                                                         <p class="info-value">
-                                                            {{ $user->email_verified_at->format('d/m/Y H:i') }}</p>
+                                                            @if ($user->email_verified_at)
+                                                                <span class="badge bg-success">
+                                                                    <i class="fas fa-check me-1"></i>Terverifikasi
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-warning text-dark">
+                                                                    <i class="fas fa-clock me-1"></i>Belum Verifikasi
+                                                                </span>
+                                                            @endif
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <!-- PERUBAHAN: Tambah informasi foto profil -->
+                                                <div class="col-md-6">
+                                                    <div class="info-item">
+                                                        <label class="fw-bold">Foto Profil</label>
+                                                        <p class="info-value">
+                                                            @if($user->profile_picture)
+                                                                <span class="badge bg-success">
+                                                                    <i class="fas fa-check me-1"></i>Ada
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-secondary">
+                                                                    <i class="fas fa-times me-1"></i>Tidak Ada
+                                                                </span>
+                                                            @endif
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <!-- Riwayat Sistem -->
+                                    <div class="col-12">
+                                        <div class="info-section">
+                                            <h5 class="section-title text-primary mb-3">
+                                                <i class="fas fa-history me-2"></i>Riwayat Sistem
+                                            </h5>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="info-item">
+                                                        <label class="fw-bold">Tanggal Registrasi</label>
+                                                        <p class="info-value">{{ $user->created_at->format('d/m/Y H:i') }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="info-item">
+                                                        <label class="fw-bold">Terakhir Update</label>
+                                                        <p class="info-value">{{ $user->updated_at->format('d/m/Y H:i') }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if ($user->email_verified_at)
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="info-item">
+                                                            <label class="fw-bold">Email Terverifikasi Pada</label>
+                                                            <p class="info-value">
+                                                                {{ $user->email_verified_at->format('d/m/Y H:i') }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
             </div>
         </section><!-- /Detail User Section -->
 
     </main>
 
     <style>
+        .profile-photo-container {
+            padding: 20px;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .profile-photo-default {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 5px solid white;
+        }
+
         .info-section {
             background: #f8f9fa;
             border-radius: 10px;

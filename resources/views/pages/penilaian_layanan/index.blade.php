@@ -68,7 +68,18 @@
                                     <h3 class="search-title">Cari & Filter Penilaian</h3>
                                     <p class="search-subtitle">Temukan dan analisis semua penilaian dari warga</p>
 
-                                    <form method="GET" action="{{ route('penilaian_layanan.index') }}" class="search-form">
+                                    <form method="GET" action="{{ route('penilaian_layanan.index') }}"
+                                        class="search-form">
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <p class="search-subtitle mb-0">Temukan dan analisis semua penilaian dari warga
+                                            </p>
+                                            <div class="total-badge">
+                                                <i class="bi bi-star me-1"></i>
+                                                <span class="total-number">{{ $penilaian->total() }}</span>
+                                                <span class="total-text">penilaian</span>
+                                            </div>
+                                        </div>
+
                                         <div class="search-input-group">
                                             <!-- SEARCH INPUT -->
                                             <div class="input-wrapper">
@@ -83,11 +94,18 @@
                                                 <i class="bi bi-star"></i>
                                                 <select class="form-select" name="rating">
                                                     <option value="">Semua Rating</option>
-                                                    <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>⭐ (1) - Sangat Tidak Puas</option>
-                                                    <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>⭐⭐ (2) - Tidak Puas</option>
-                                                    <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>⭐⭐⭐ (3) - Cukup Puas</option>
-                                                    <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>⭐⭐⭐⭐ (4) - Puas</option>
-                                                    <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>⭐⭐⭐⭐⭐ (5) - Sangat Puas</option>
+                                                    <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>
+                                                        ⭐ (1) - Sangat Tidak Puas</option>
+                                                    <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>
+                                                        ⭐⭐ (2) - Tidak Puas</option>
+                                                    <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>
+                                                        ⭐⭐⭐ (3) - Cukup Puas</option>
+                                                    <option value="4"
+                                                        {{ request('rating') == '4' ? 'selected' : '' }}>⭐⭐⭐⭐ (4) - Puas
+                                                    </option>
+                                                    <option value="5"
+                                                        {{ request('rating') == '5' ? 'selected' : '' }}>⭐⭐⭐⭐⭐ (5) - Sangat
+                                                        Puas</option>
                                                 </select>
                                             </div>
 
@@ -143,13 +161,13 @@
                                             <p>Rata-rata Rating</p>
                                         </div>
                                     </div>
-                                    @foreach($ratings as $stars => $count)
-                                    <div class="col-md-2 col-4">
-                                        <div class="stat-box">
-                                            <h3>{{ $count }}</h3>
-                                            <p>{{ str_repeat('⭐', $stars) }}</p>
+                                    @foreach ($ratings as $stars => $count)
+                                        <div class="col-md-2 col-4">
+                                            <div class="stat-box">
+                                                <h3>{{ $count }}</h3>
+                                                <p>{{ str_repeat('⭐', $stars) }}</p>
+                                            </div>
                                         </div>
-                                    </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -209,15 +227,15 @@
                                     </div>
                                     <div class="penilaian-overlay">
                                         <div class="action-links">
-                                            <a href="{{ route('penilaian_layanan.show', $item->penilaian_id) }}" class="btn-info"
-                                                title="Lihat Detail">
+                                            <a href="{{ route('penilaian_layanan.show', $item->penilaian_id) }}"
+                                                class="btn-info" title="Lihat Detail">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             @if ($item->created_at->diffInHours(now()) <= 24)
-                                            <a href="{{ route('penilaian_layanan.edit', $item->penilaian_id) }}" class="btn-edit"
-                                                title="Edit Penilaian">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
+                                                <a href="{{ route('penilaian_layanan.edit', $item->penilaian_id) }}"
+                                                    class="btn-edit" title="Edit Penilaian">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
                                             @endif
                                             <form action="{{ route('penilaian_layanan.destroy', $item->penilaian_id) }}"
                                                 method="POST" style="display: inline;">
@@ -250,7 +268,8 @@
                                         <p><strong>Warga:</strong> {{ $item->pengaduan->warga->nama }}</p>
                                         <p><strong>Tanggal Penilaian:</strong> {{ $item->created_at->format('d M Y') }}</p>
                                         @if ($item->komentar)
-                                            <p class="komentar"><strong>Komentar:</strong> {{ Str::limit($item->komentar, 80) }}</p>
+                                            <p class="komentar"><strong>Komentar:</strong>
+                                                {{ Str::limit($item->komentar, 80) }}</p>
                                         @endif
                                     </div>
 
@@ -271,10 +290,10 @@
                                             <i class="bi bi-eye"></i> Detail
                                         </a>
                                         @if ($item->created_at->diffInHours(now()) <= 24)
-                                        <a href="{{ route('penilaian_layanan.edit', $item->penilaian_id) }}"
-                                            class="btn-edit-full">
-                                            <i class="bi bi-pencil"></i> Edit
-                                        </a>
+                                            <a href="{{ route('penilaian_layanan.edit', $item->penilaian_id) }}"
+                                                class="btn-edit-full">
+                                                <i class="bi bi-pencil"></i> Edit
+                                            </a>
                                         @endif
                                         <form action="{{ route('penilaian_layanan.destroy', $item->penilaian_id) }}"
                                             method="POST" style="display: inline;">
@@ -671,6 +690,55 @@
 
             .stat-box {
                 margin-bottom: 15px;
+            }
+        }
+
+        /* CSS untuk total-badge (jika belum ada) */
+        .total-badge {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #495057;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .total-badge:hover {
+            border-color: #175cdd;
+            background: #f0f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(23, 92, 221, 0.1);
+        }
+
+        .total-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #175cdd;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .total-text {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Responsif untuk mobile */
+        @media (max-width: 768px) {
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+
+            .total-badge {
+                align-self: flex-start;
+                margin-top: 5px;
             }
         }
     </style>

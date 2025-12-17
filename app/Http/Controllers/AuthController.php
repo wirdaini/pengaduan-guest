@@ -4,7 +4,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Warga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -43,32 +42,24 @@ class AuthController extends Controller
             'password.min'      => 'Kata sandi minimal 6 karakter.',
         ]);
 
-        // STEP 1: Cari user by email
-        $user = User::where('email', $request->email)->first();
+        // PAKAI Auth::attempt() - INI YANG BENAR UNTUK LARAVEL!
+        if (Auth::attempt([
+            'email'    => $request->email,
+            'password' => $request->password,
+        ], $request->has('remember'))) {
 
-        // STEP 2: CEK EMAIL
-        if (! $user) {
-            return back()
-                ->withErrors(['email' => 'Email tidak ditemukan dalam sistem.'])
-                ->withInput($request->except('password'));
+            $request->session()->regenerate();
+
+            // Dapatkan user yang baru login
+            $user = Auth::user();
+
+            return redirect()->route('dashboard')
+                ->with('success', 'Login berhasil! Selamat datang ' . $user->name . '.');
         }
 
-        // STEP 3: CEK PASSWORD dengan Hash::check
-        if (! Hash::check($request->password, $user->password)) {
-            return back()
-                ->withErrors(['password' => 'Password yang Anda masukkan salah.'])
-                ->withInput($request->except('password'));
-        }
-
-        // STEP 4: LOGIN BERHASIL
-        Auth::login($user, $request->has('remember'));
-        $request->session()->regenerate();
-
-        // ========== PERUBAHAN DI SINI ==========
-        // SEMUA ROLE LANGSUNG KE DASHBOARD, TANPA CEK DATA WARGA
-        return redirect()->route('dashboard')
-            ->with('success', 'Login berhasil! Selamat datang ' . $user->name . '.');
-        // ========== END PERUBAHAN ==========
+        return back()
+            ->withErrors(['email' => 'Email atau password salah.'])
+            ->withInput($request->except('password'));
     }
 
     /**

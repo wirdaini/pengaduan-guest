@@ -449,5 +449,564 @@
 
         </section><!-- /Call To Action Section -->
 
+        <!-- Profil Pengembang -->
+        <section class="profil-pengembang py-5">
+            <div class="container">
+                <div class="dev-card">
+                    <!-- Header -->
+                    <div class="dev-header">
+                        <div class="dev-header-pattern"></div>
+
+                        <!-- Area Profil -->
+                        <div class="dev-profile-area">
+                            <!-- Foto Profil -->
+                            <div class="dev-avatar-wrapper">
+                                @if (file_exists(public_path('assets/img/developer1.jpg')))
+                                    <img src="{{ asset('assets/img/developer1.jpg') }}" alt="Pengembang"
+                                        class="dev-avatar">
+                                @else
+                                    <div class="dev-avatar-default">
+                                        <i class="bi bi-person-circle"></i>
+                                    </div>
+                                @endif
+                                <div class="dev-status-online"></div>
+                            </div>
+
+                            <!-- Info -->
+                            <div class="dev-profile-info">
+                                <h1 class="dev-name">Wirda Aini Maqhfiroh</h1>
+                                <p class="dev-username">@wirdaini678</p>
+                                <p class="dev-bio">
+                                    <i class="bi bi-code-slash"></i>
+                                    Full Stack Developer • Sistem Bina Desa
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Konten Utama -->
+                    <div class="dev-content">
+                        <!-- Statistik -->
+                        <div class="dev-stats-grid">
+                            <div class="dev-stat-item">
+                                <div class="dev-stat-icon">
+                                    <i class="bi bi-person-badge"></i>
+                                </div>
+                                <div class="dev-stat-details">
+                                    <div class="dev-stat-number">2457301153</div>
+                                    <div class="dev-stat-label">NIM</div>
+                                </div>
+                            </div>
+
+                            <div class="dev-stat-item">
+                                <div class="dev-stat-icon">
+                                    <i class="bi bi-mortarboard"></i>
+                                </div>
+                                <div class="dev-stat-details">
+                                    <div class="dev-stat-number">Sistem Informasi</div>
+                                    <div class="dev-stat-label">Program Studi</div>
+                                </div>
+                            </div>
+
+                            <div class="dev-stat-item">
+                                <div class="dev-stat-icon">
+                                    <i class="bi bi-building"></i>
+                                </div>
+                                <div class="dev-stat-details">
+                                    <div class="dev-stat-number">Politeknik Caltex Riau</div>
+                                    <div class="dev-stat-label">Universitas</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tentang -->
+                        <div class="dev-about-section">
+                            <div class="dev-section-title">
+                                <i class="bi bi-person-lines-fill"></i>
+                                <span>Tentang Saya</span>
+                            </div>
+                            <p class="dev-about-text">
+                                Pengembang yang passionate dalam menciptakan solusi digital untuk pembangunan desa.
+                                Membangun Sistem Bina Desa untuk meningkatkan pelayanan desa melalui teknologi.
+                            </p>
+                        </div>
+
+                        <!-- Link Sosial Media -->
+                        <div class="dev-social-section">
+                            <div class="dev-section-title">
+                                <i class="bi bi-link-45deg"></i>
+                                <span>Hubungi Saya</span>
+                            </div>
+
+                            <div class="dev-social-grid">
+                                <!-- GitHub -->
+                                <a href="https://github.com/wirdaini" class="dev-social-card" target="_blank">
+                                    <div class="dev-social-icon dev-github">
+                                        <i class="bi bi-github"></i>
+                                    </div>
+                                    <div class="dev-social-info">
+                                        <div class="dev-social-title">GitHub</div>
+                                        <div class="dev-social-desc">@wirdaini</div>
+                                    </div>
+                                    <div class="dev-social-arrow">
+                                        <i class="bi bi-arrow-up-right"></i>
+                                    </div>
+                                </a>
+
+                                <!-- LinkedIn -->
+                                <a href="https://linkedin.com/in/username" class="dev-social-card" target="_blank">
+                                    <div class="dev-social-icon dev-linkedin">
+                                        <i class="bi bi-linkedin"></i>
+                                    </div>
+                                    <div class="dev-social-info">
+                                        <div class="dev-social-title">LinkedIn</div>
+                                        <div class="dev-social-desc">Profil Profesional</div>
+                                    </div>
+                                    <div class="dev-social-arrow">
+                                        <i class="bi bi-arrow-up-right"></i>
+                                    </div>
+                                </a>
+
+                                <!-- Instagram -->
+                                <a href="https://instagram.com/wirdainimqh" class="dev-social-card" target="_blank">
+                                    <div class="dev-social-icon dev-instagram">
+                                        <i class="bi bi-instagram"></i>
+                                    </div>
+                                    <div class="dev-social-info">
+                                        <div class="dev-social-title">Instagram</div>
+                                        <div class="dev-social-desc">@wirdainimqh</div>
+                                    </div>
+                                    <div class="dev-social-arrow">
+                                        <i class="bi bi-arrow-up-right"></i>
+                                    </div>
+                                </a>
+
+                                <!-- Twitter/X -->
+                                <a href="https://twitter.com/wirdaa123" class="dev-social-card" target="_blank">
+                                    <div class="dev-social-icon dev-twitter">
+                                        <i class="bi bi-twitter-x"></i>
+                                    </div>
+                                    <div class="dev-social-info">
+                                        <div class="dev-social-title">Twitter/X</div>
+                                        <div class="dev-social-desc">@wirdaa123</div>
+                                    </div>
+                                    <div class="dev-social-arrow">
+                                        <i class="bi bi-arrow-up-right"></i>
+                                    </div>
+                                </a>
+
+                                <!-- Email -->
+                                <a href="mailto:wirda24si@mahasiswa.pcr.ac.id" class="dev-social-card">
+                                    <div class="dev-social-icon dev-email">
+                                        <i class="bi bi-envelope"></i>
+                                    </div>
+                                    <div class="dev-social-info">
+                                        <div class="dev-social-title">Email</div>
+                                        <div class="dev-social-desc">wirda24si@mahasiswa.pcr.ac.id</div>
+                                    </div>
+                                    <div class="dev-social-arrow">
+                                        <i class="bi bi-arrow-up-right"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Teknologi -->
+                        <div class="dev-tech-section">
+                            <div class="dev-section-title">
+                                <i class="bi bi-tools"></i>
+                                <span>Teknologi yang Digunakan</span>
+                            </div>
+                            <div class="dev-tech-tags">
+                                <span class="dev-tech-tag">Laravel</span>
+                                <span class="dev-tech-tag">Bootstrap</span>
+                                <span class="dev-tech-tag">MySQL</span>
+                                <span class="dev-tech-tag">JavaScript</span>
+                                <span class="dev-tech-tag">Git</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="dev-footer">
+                        <div class="dev-footer-content">
+                            <div class="dev-footer-icon">
+                                <i class="bi bi-heart-fill"></i>
+                            </div>
+                            <div class="dev-footer-text">
+                                <div class="dev-footer-title">Sistem Bina Desa</div>
+                                <div class="dev-footer-subtitle">Dibangun dengan passion untuk pembangunan desa</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <style>
+            /* ====== HANYA UNTUK PROFIL PENGEMBANG ====== */
+            .profil-pengembang {
+                background: #0d1117;
+                padding: 80px 0;
+            }
+
+            .dev-card {
+                background: #161b22;
+                border-radius: 16px;
+                border: 1px solid #30363d;
+                overflow: hidden;
+                max-width: 900px;
+                margin: 0 auto;
+            }
+
+            /* Header */
+            .dev-header {
+                background: #0d1117;
+                padding: 40px;
+                position: relative;
+                border-bottom: 1px solid #30363d;
+            }
+
+            .dev-header-pattern {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                opacity: 0.1;
+                background:
+                    radial-gradient(circle at 20% 80%, rgba(88, 166, 255, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(247, 129, 102, 0.3) 0%, transparent 50%);
+            }
+
+            .dev-profile-area {
+                display: flex;
+                align-items: center;
+                gap: 30px;
+                position: relative;
+                z-index: 2;
+            }
+
+            .dev-avatar-wrapper {
+                position: relative;
+                width: 140px;
+                height: 140px;
+                flex-shrink: 0;
+            }
+
+            .dev-avatar {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                border: 4px solid #30363d;
+                background: #161b22;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .dev-avatar-default {
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, #21262d 0%, #0d1117 100%);
+                border-radius: 50%;
+                border: 4px solid #30363d;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #58a6ff;
+                font-size: 3.5rem;
+            }
+
+            .dev-status-online {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                width: 20px;
+                height: 20px;
+                background: #238636;
+                border-radius: 50%;
+                border: 3px solid #161b22;
+            }
+
+            .dev-profile-info {
+                flex: 1;
+            }
+
+            .dev-name {
+                color: #f0f6fc;
+                font-size: 2.2rem;
+                font-weight: 700;
+                margin: 0 0 5px 0;
+            }
+
+            .dev-username {
+                color: #8b949e;
+                font-size: 1.2rem;
+                margin: 0 0 15px 0;
+                font-weight: 400;
+            }
+
+            .dev-bio {
+                color: #c9d1d9;
+                font-size: 1.1rem;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .dev-bio i {
+                color: #58a6ff;
+            }
+
+            /* Konten */
+            .dev-content {
+                padding: 40px;
+            }
+
+            /* Statistik */
+            .dev-stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 20px;
+                margin-bottom: 40px;
+            }
+
+            .dev-stat-item {
+                background: #0d1117;
+                border: 1px solid #30363d;
+                border-radius: 12px;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .dev-stat-icon {
+                width: 50px;
+                height: 50px;
+                background: #21262d;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #58a6ff;
+                font-size: 1.5rem;
+                flex-shrink: 0;
+            }
+
+            .dev-stat-details {
+                flex: 1;
+            }
+
+            .dev-stat-number {
+                color: #f0f6fc !important;
+                font-size: 1.4rem !important;
+                font-weight: 600 !important;
+                margin-bottom: 5px !important;
+            }
+
+            .dev-stat-label {
+                color: #8b949e !important;
+                font-size: 0.9rem !important;
+            }
+
+            /* Section Title */
+            .dev-section-title {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: #f0f6fc;
+                font-size: 1.2rem;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+            .dev-section-title i {
+                color: #58a6ff;
+                font-size: 1.3rem;
+            }
+
+            /* Tentang */
+            .dev-about-section {
+                margin-bottom: 40px;
+            }
+
+            .dev-about-text {
+                color: #c9d1d9;
+                line-height: 1.7;
+                font-size: 1.05rem;
+                padding: 20px;
+                background: rgba(13, 17, 23, 0.5);
+                border-radius: 12px;
+                border: 1px solid #30363d;
+            }
+
+            /* Sosial Media */
+            .dev-social-section {
+                margin-bottom: 40px;
+            }
+
+            .dev-social-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 15px;
+            }
+
+            .dev-social-card {
+                background: #0d1117;
+                border: 1px solid #30363d;
+                border-radius: 12px;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                text-decoration: none;
+            }
+
+            .dev-social-icon {
+                width: 50px;
+                height: 50px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                flex-shrink: 0;
+            }
+
+            .dev-github {
+                background: rgba(88, 166, 255, 0.1);
+                color: #58a6ff;
+            }
+
+            .dev-linkedin {
+                background: rgba(10, 102, 194, 0.1);
+                color: #0a66c2;
+            }
+
+            .dev-instagram {
+                background: linear-gradient(45deg, rgba(225, 48, 108, 0.1), rgba(251, 180, 53, 0.1));
+                color: #e1306c;
+            }
+
+            .dev-twitter {
+                background: rgba(0, 0, 0, 0.1);
+                color: #000;
+            }
+
+            .dev-email {
+                background: rgba(234, 67, 53, 0.1);
+                color: #ea4335;
+            }
+
+            .dev-social-info {
+                flex: 1;
+            }
+
+            .dev-social-title {
+                color: #f0f6fc;
+                font-weight: 600;
+                margin-bottom: 5px;
+                font-size: 1.1rem;
+            }
+
+            .dev-social-desc {
+                color: #8b949e;
+                font-size: 0.9rem;
+            }
+
+            .dev-social-arrow {
+                color: #58a6ff;
+            }
+
+            /* Teknologi */
+            .dev-tech-section {
+                margin-bottom: 30px;
+            }
+
+            .dev-tech-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .dev-tech-tag {
+                background: rgba(88, 166, 255, 0.1);
+                color: #58a6ff;
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                font-weight: 500;
+                border: 1px solid rgba(88, 166, 255, 0.2);
+            }
+
+            /* Footer */
+            .dev-footer {
+                background: #0d1117;
+                padding: 25px 40px;
+                border-top: 1px solid #30363d;
+                text-align: center;
+            }
+
+            .dev-footer-content {
+                display: inline-flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .dev-footer-icon {
+                width: 40px;
+                height: 40px;
+                background: rgba(247, 129, 102, 0.1);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #f78166;
+                font-size: 1.2rem;
+            }
+
+            .dev-footer-text {
+                flex: 1;
+            }
+
+            .dev-footer-title {
+                color: #f0f6fc;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+
+            .dev-footer-subtitle {
+                color: #8b949e;
+                font-size: 0.9rem;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .dev-profile-area {
+                    flex-direction: column;
+                    text-align: center;
+                    gap: 20px;
+                }
+
+                .dev-content {
+                    padding: 30px 20px;
+                }
+
+                .dev-stats-grid,
+                .dev-social-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .dev-name {
+                    font-size: 1.8rem;
+                }
+
+                .dev-avatar-wrapper {
+                    width: 120px;
+                    height: 120px;
+                }
+            }
+        </style>
     </main>
 @endsection
