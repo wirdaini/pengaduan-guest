@@ -43,7 +43,5 @@
             <span class="whatsapp-tooltip">Chat via WhatsApp</span>
         </a>
     </div>
-
 </body>
-
 </html>

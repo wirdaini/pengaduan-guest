@@ -8,7 +8,7 @@
                 <div class="col-lg-5">
                     <div class="brand-section">
                         <a href="{{ url('/') }}" class="logo d-flex align-items-center mb-4">
-                            <span class="sitename">Bina Desa</span>
+                            <span class="sitename">Lapor Desa</span>
                         </a>
                         <p class="brand-description">Membangun desa yang lebih baik melalui partisipasi aktif warga dan
                             pelayanan yang transparan untuk kemajuan bersama.</p>
