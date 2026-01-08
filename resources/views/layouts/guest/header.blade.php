@@ -29,8 +29,8 @@
                     <li><a href="{{ url('/') }}" class="{{ request()->routeIs('/') ? 'active' : '' }}">
                             <i class="bi bi-house"></i>
                         </a></li>
-                    <li><a href="{{ route('about') }}"
-                            class="{{ request()->routeIs('about') ? 'active' : '' }}">Tentang Kami</a>
+                    <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">Tentang
+                            Kami</a>
                     </li>
                     <li><a href="{{ route('services') }}"
                             class="{{ request()->routeIs('services') ? 'active' : '' }}">Layanan</a></li>
@@ -100,7 +100,7 @@
                                             <i class="bi bi-gear me-2"></i>Pengaturan
                                         </a></li>
 
-                                <!-- Menu untuk Admin Desa -->
+                                    <!-- Menu untuk Admin Desa -->
                                 @elseif(auth()->user()->role == 'admin')
                                     <li><a class="dropdown-item" href="{{ route('pengaduan.index') }}">
                                             <i class="bi bi-inbox me-2"></i>Kelola Pengaduan
@@ -134,7 +134,7 @@
                                             <i class="bi bi-gear me-2"></i>Pengaturan
                                         </a></li>
 
-                                <!-- Menu untuk Petugas -->
+                                    <!-- Menu untuk Petugas -->
                                 @elseif(auth()->user()->role == 'petugas')
                                     <li><a class="dropdown-item" href="{{ route('pengaduan.index') }}">
                                             <i class="bi bi-inbox me-2"></i>Daftar Pengaduan Warga
@@ -147,6 +147,10 @@
                                     <li><a class="dropdown-item" href="{{ route('penilaian_layanan.index') }}">
                                             <i class="bi bi-star me-2"></i>Lihat Penilaian Layanan
                                         </a></li>
+
+                                        {{-- <li><a class="dropdown-item" href="{{ route('warga.index') }}">
+                                            <i class="bi bi-people me-2"></i>Akun Saya
+                                        </a></li> --}}
 
                                     <li>
                                         <hr class="dropdown-divider">
@@ -163,10 +167,11 @@
                                 </li>
                                 <li class="logout-item">
                                     <a href="#" class="dropdown-item text-danger"
-                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <i class="bi bi-box-arrow-right me-2"></i>Logout
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
                                         @csrf
                                     </form>
                                 </li>

@@ -92,14 +92,21 @@ Route::middleware(['checkislogin'])->group(function () {
             ->name('penilaian_layanan.create_by_pengaduan');
     });
 
-
     // ========== ROUTES KHUSUS WARGA ==========
     Route::middleware(['checkrole:warga'])->group(function () {
-        // Pengaduan Saya - halaman khusus untuk warga melihat pengaduan mereka
-        Route::get('/pengaduan-saya', [PengaduanController::class, 'pengaduanSaya'])->name('pengaduan.saya');
+        Route::get('/pengaduan-saya', [PengaduanController::class, 'pengaduanSaya'])
+            ->name('pengaduan.saya');
 
-        // Beri penilaian untuk pengaduan yang selesai
         Route::post('/pengaduan/{id}/penilaian', [PengaduanController::class, 'beriPenilaian'])
             ->name('pengaduan.penilaian');
     });
-});
+
+    // ⭐⭐ ROUTE KHUSUS LENGKAPI DATA WARGA - TANPA MIDDLEWARE ROLE ⭐⭐
+    // Route ini untuk SEMUA user yang belum punya data warga
+    Route::get('/data-warga-saya', [WargaController::class, 'createForUser'])
+        ->name('warga.create.user');
+
+    Route::post('/data-warga-saya', [WargaController::class, 'storeForUser'])
+        ->name('warga.store.user');
+
+}); 

@@ -107,4 +107,52 @@ class WargaController extends Controller
         return redirect()->route('warga.index')
             ->with('success', 'Data warga berhasil dihapus!');
     }
+
+    // Method untuk warga lengkapi data sendiri
+public function createForUser()
+{
+    $user = auth()->user();
+
+    // Jika sudah punya data warga, redirect
+    if ($user->warga) {
+        return redirect()->route('pengaduan.create')
+            ->with('success', 'Data warga sudah lengkap.');
+    }
+
+    return view('pages.warga.create', [
+        'user' => $user
+    ]);
 }
+
+public function storeForUser(Request $request)
+{
+    $user = auth()->user();
+
+    // Validasi (sama seperti store() tapi untuk user)
+    $request->validate([
+        'no_ktp' => 'required|digits:16|unique:warga',
+        'nama' => 'required',
+        'jenis_kelamin' => 'required|in:L,P',
+        'agama' => 'required',
+        'pekerjaan' => 'required',
+        'telp' => 'required',
+        'email' => 'required|email|unique:warga,email',
+    ]);
+
+    // Buat data warga dengan user_id = user yang login
+    $warga = Warga::create([
+        'user_id' => $user->id, // ⭐ INI YANG PENTING!
+        'no_ktp' => $request->no_ktp,
+        'nama' => $request->nama,
+        'jenis_kelamin' => $request->jenis_kelamin,
+        'agama' => $request->agama,
+        'pekerjaan' => $request->pekerjaan,
+        'telp' => $request->telp,
+        'email' => $request->email,
+    ]);
+
+    return redirect()->route('pengaduan.create')
+        ->with('success', 'Data warga berhasil disimpan! Sekarang Anda bisa membuat pengaduan.');
+}
+}
+

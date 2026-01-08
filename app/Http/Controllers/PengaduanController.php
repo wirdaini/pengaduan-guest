@@ -30,11 +30,11 @@ class PengaduanController extends Controller
             $warga = $user->warga;
 
             if ($warga) {
-                // ✅ PAKAI warga->warga_id
                 $query->where('warga_id', $warga->warga_id);
             } else {
-                return view('pages.pengaduan.link-required')
-                    ->with('warning', 'Data warga belum terhubung dengan akun Anda.');
+                // ⭐ PERBAIKAN: Redirect ke route yang SAMA dengan create()
+                return redirect()->route('warga.create.user')
+                    ->with('warning', 'Data warga belum terhubung dengan akun Anda. Silakan lengkapi data warga terlebih dahulu.');
             }
         }
 
@@ -48,14 +48,13 @@ class PengaduanController extends Controller
         $kategori = KategoriPengaduan::all();
 
         if ($user->role == 'warga') {
-            $wargaData = $user->warga;
-
-            if (! $wargaData) {
-                return redirect()->route('profile.edit')
-                    ->with('error', 'Lengkapi data warga terlebih dahulu sebelum membuat pengaduan.');
+            if (! $user->warga) {
+                // Redirect ke route BARU untuk warga
+                return redirect()->route('warga.create.user')
+                    ->with('info', 'Silakan lengkapi data warga terlebih dahulu sebelum membuat pengaduan.');
             }
 
-            $warga = [$wargaData];
+            $warga = [$user->warga];
             return view('pages.pengaduan.create', compact('warga', 'kategori'));
         }
 
