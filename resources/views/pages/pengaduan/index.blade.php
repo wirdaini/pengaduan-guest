@@ -7,23 +7,10 @@
 
         <!-- Page Title -->
         <div class="page-title">
-            <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="heading-title">Data Pengaduan</h1>
-                            <p class="mb-0">
-                                Kelola semua pengaduan yang telah diajukan oleh warga. Lihat, edit, atau tanggapi pengaduan
-                                dengan mudah.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}"><i class="bi bi-house"></i></a></li>
                         <li class="current">Data Pengaduan</li>
                     </ol>
                 </div>
@@ -50,6 +37,13 @@
                                 <i class="bi bi-plus-circle"></i> Ajukan Pengaduan Baru
                             </a>
                         </div>
+                        <!-- ========== TOTAL PENGADUAN DI SINI ========== -->
+                        <div class="mt-2">
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-inbox me-1"></i>
+                                Total: <strong>{{ $pengaduan->total() }}</strong> pengaduan
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -59,16 +53,6 @@
                         <div class="search-section">
                             <div class="card" style="background: transparent; border: none; box-shadow: none;">
                                 <div class="card-body" style="padding: 0;">
-                                    <h3 class="search-title">Cari & Filter Pengaduan</h3>
-                                    <div class="d-flex justify-content-between align-items-center mb-4">
-                                        <p class="search-subtitle mb-0">Temukan dan kelola semua pengaduan warga dengan
-                                            mudah</p>
-                                        <div class="total-badge">
-                                            <i class="bi bi-inbox me-1"></i>
-                                            <span class="total-number">{{ $pengaduan->total() }}</span>
-                                            <span class="total-text">pengaduan</span>
-                                        </div>
-                                    </div>
                                     <form method="GET" action="{{ route('pengaduan.index') }}" class="search-form">
                                         <div class="search-input-group">
                                             <!-- SEARCH INPUT -->
@@ -119,9 +103,13 @@
                                                 <select class="form-select" name="rt">
                                                     <option value="">Semua RT</option>
                                                     @for ($i = 1; $i <= 20; $i++)
-                                                        <option value="{{ $i }}"
-                                                            {{ request('rt') == $i ? 'selected' : '' }}>
-                                                            RT {{ $i }}
+                                                        @php
+                                                            // Format menjadi 3 digit: 001, 002, etc
+                                                            $rtFormatted = str_pad($i, 3, '0', STR_PAD_LEFT);
+                                                        @endphp
+                                                        <option value="{{ $rtFormatted }}"
+                                                            {{ request('rt') == $rtFormatted ? 'selected' : '' }}>
+                                                            RT {{ $rtFormatted }}
                                                         </option>
                                                     @endfor
                                                 </select>
@@ -133,15 +121,17 @@
                                                 <select class="form-select" name="rw">
                                                     <option value="">Semua RW</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}"
-                                                            {{ request('rw') == $i ? 'selected' : '' }}>
-                                                            RW {{ $i }}
+                                                        @php
+                                                            // Format menjadi 3 digit: 001, 002, etc
+                                                            $rwFormatted = str_pad($i, 3, '0', STR_PAD_LEFT);
+                                                        @endphp
+                                                        <option value="{{ $rwFormatted }}"
+                                                            {{ request('rw') == $rwFormatted ? 'selected' : '' }}>
+                                                            RW {{ $rwFormatted }}
                                                         </option>
                                                     @endfor
                                                 </select>
                                             </div>
-
-
 
                                             <!-- TOMBOL CARI -->
                                             <button type="submit" class="search-btn">
@@ -231,32 +221,35 @@
                     </div>
                 @endif
 
-                {{-- card --}}
+                <!-- PENGADUAN GRID - 4 PER BARIS -->
                 <div class="row gy-4">
                     @foreach ($pengaduan as $item)
-                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
-                            <div class="pengaduan-card">
-                                <div class="pengaduan-header">
-                                    <!-- Avatar dengan inisial nama warga -->
-                                    <div class="pengaduan-avatar"
-                                        style="background: {{ $item->warga->jenis_kelamin == 'L' ? '#3498db' : '#e84393' }};">
-                                        {{ strtoupper(substr($item->warga->nama, 0, 2)) }}
+                        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+                            <div class="user-card">
+                                <!-- Bagian Avatar Bulat -->
+                                <div class="user-picture-area">
+                                    <div class="user-picture-circle">
+                                        <div class="pengadu-icon">
+                                            <i class="bi bi-inbox"></i>
+                                        </div>
                                     </div>
-                                    <div class="pengaduan-overlay">
-                                        <div class="action-links">
-                                            <a href="{{ route('pengaduan.show', $item->pengaduan_id) }}" class="btn-info"
-                                                title="Lihat Detail">
+
+                                    <!-- Overlay untuk Action Buttons -->
+                                    <div class="user-overlay-circle">
+                                        <div class="user-action-links">
+                                            <a href="{{ route('pengaduan.show', $item->pengaduan_id) }}"
+                                                class="user-action-btn user-view-btn">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="{{ route('pengaduan.edit', $item->pengaduan_id) }}" class="btn-edit"
-                                                title="Edit Data">
+                                            <a href="{{ route('pengaduan.edit', $item->pengaduan_id) }}"
+                                                class="user-action-btn user-edit-btn">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <form action="{{ route('pengaduan.destroy', $item->pengaduan_id) }}"
                                                 method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-delete" title="Hapus Data"
+                                                <button type="submit" class="user-action-btn user-delete-btn"
                                                     onclick="return confirm('Yakin ingin menghapus pengaduan ini?')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -264,74 +257,73 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="pengaduan-content">
-                                    <h4>{{ Str::limit($item->judul, 40) }}</h4>
-                                    <span class="no-tiket">{{ $item->nomor_tiket }}</span>
 
-                                    <div class="pengaduan-info">
-                                        <p><strong>Pengajuan:</strong> {{ $item->warga->nama }}</p>
-                                        <p><strong>Kategori:</strong>
+                                <!-- Informasi Pengaduan -->
+                                <div class="user-content">
+                                    <h4 class="user-name">{{ Str::limit($item->judul, 40) }}</h4>
+                                    <span class="user-role-badge status-{{ $item->status }}">
+                                        @if ($item->status == 'menunggu')
+                                            <i class="bi bi-clock me-1"></i>Menunggu
+                                        @elseif($item->status == 'diproses')
+                                            <i class="bi bi-gear me-1"></i>Diproses
+                                        @elseif($item->status == 'selesai')
+                                            <i class="bi bi-check-circle me-1"></i>Selesai
+                                        @elseif($item->status == 'ditolak')
+                                            <i class="bi bi-x-circle me-1"></i>Ditolak
+                                        @endif
+                                    </span>
+
+                                    <!-- Nomor Tiket -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-ticket"></i>
+                                        <span class="user-info-text">
+                                            {{ $item->nomor_tiket }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Pengadu -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-person"></i>
+                                        <span class="user-info-text">
+                                            {{ $item->warga->nama }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Kategori -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-tags"></i>
+                                        <span class="user-info-text">
                                             @if ($item->kategori && $item->kategori->nama)
                                                 {{ $item->kategori->nama }}
                                             @else
                                                 <span class="text-warning">Belum ada kategori</span>
                                             @endif
-                                        </p>
-                                        <p><strong>Lokasi:</strong> {{ Str::limit($item->lokasi_text, 30) }}</p>
-                                        <p><strong>Deskripsi:</strong> {{ Str::limit($item->deskripsi, 80) }}</p>
-                                        <div class="file-info-compact">
-                                            <div class="file-icon-small">
-                                                <i class="bi bi-paperclip"></i>
-                                            </div>
-                                            <div>
-                                                <div class="file-number">
-                                                    {{ \App\Models\Media::where('ref_table', 'pengaduan')->where('ref_id', $item->pengaduan_id)->count() }}
-                                                </div>
-                                                <div class="file-text-small">Files</div>
-                                            </div>
-                                        </div>
+                                        </span>
                                     </div>
 
-                                    <div class="pengaduan-meta">
-                                        <div class="status-badge">
-                                            @if ($item->status == 'menunggu')
-                                                <i class="bi bi-clock"></i>
-                                                <span class="status-menunggu">Menunggu</span>
-                                            @elseif($item->status == 'diproses')
-                                                <i class="bi bi-gear"></i>
-                                                <span class="status-diproses">Diproses</span>
-                                            @elseif($item->status == 'selesai')
-                                                <i class="bi bi-check-circle"></i>
-                                                <span class="status-selesai">Selesai</span>
-                                            @elseif($item->status == 'ditolak')
-                                                <i class="bi bi-x-circle"></i>
-                                                <span class="status-ditolak">Ditolak</span>
-                                            @endif
-                                        </div>
-                                        <div class="tanggal">
-                                            <i class="bi bi-calendar"></i>
-                                            <span>{{ $item->created_at->format('d M Y') }}</span>
-                                        </div>
+                                    <!-- Tanggal Dibuat -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-calendar-event"></i>
+                                        <span class="user-info-text">
+                                            {{ $item->created_at->format('d M Y') }}
+                                        </span>
                                     </div>
 
-                                    <div class="action-buttons">
-                                        <a href="{{ route('pengaduan.show', $item->pengaduan_id) }}"
-                                            class="btn-info-full">
-                                            <i class="bi bi-eye"></i> Detail
-                                        </a>
-                                        <a href="{{ route('pengaduan.edit', $item->pengaduan_id) }}"
-                                            class="btn-edit-full">
-                                            <i class="bi bi-pencil"></i> Edit
-                                        </a>
-                                        <form action="{{ route('pengaduan.destroy', $item->pengaduan_id) }}"
-                                            method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-delete-full"
-                                                onclick="return confirm('Yakin ingin menghapus pengaduan ini?')">
-                                                <i class="bi bi-trash"></i> Hapus
-                                            </button>
-                                        </form>
+                                    <!-- File Attachment - MIRIP TINDAK LANJUT -->
+                                    @php
+                                        $fileCount = \App\Models\Media::where('ref_table', 'pengaduan')
+                                            ->where('ref_id', $item->pengaduan_id)
+                                            ->count();
+                                        $hasFiles = $fileCount > 0;
+                                    @endphp
+                                    <div class="file-info-compact {{ !$hasFiles ? 'no-files' : '' }}">
+                                        <div class="file-icon-small">
+                                            <i class="bi bi-paperclip"></i>
+                                        </div>
+                                        <div>
+                                            <span class="file-number">{{ $fileCount }}</span>
+                                            <span class="file-text-small">Files</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -369,218 +361,279 @@
     </main>
 
     <style>
-        .pengaduan-card {
+        /* ===========================================
+                           CARD PENGGUNAAN DESAIN BULAT (DENGAN ATTACHMENT MIRIP TINDAK LANJUT)
+                        =========================================== */
+        .user-card {
             background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             height: 100%;
-        }
-
-        .pengaduan-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
-        }
-
-        .pengaduan-header {
+            border: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 320px;
             position: relative;
-            height: 120px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #175cdd 0%, #1a4bb8 100%);
-            /* ← Biru sesuai template */
         }
 
-        .pengaduan-avatar {
-            width: 80px;
-            height: 80px;
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Area Gambar Bulat di Tengah */
+        .user-picture-area {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 12px auto;
+            flex-shrink: 0;
+        }
+
+        /* Lingkaran untuk Foto/Icon */
+        .user-picture-circle {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #f0f5ff;
+            background: #f8f9fa;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Avatar untuk Pengadu */
+        .pengadu-icon {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            font-weight: bold;
+            background: linear-gradient(135deg, #175cdd 0%, #0e3d8b 100%);
+            /* Warna biru seperti di show */
             color: white;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            border: 3px solid white;
+            font-size: 2rem;
+            /* Ukuran icon */
         }
 
-        .pengaduan-overlay {
+        /* Overlay Lingkaran untuk Action Buttons */
+        .user-overlay-circle {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(23, 92, 221, 0.9);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 2;
         }
 
-        .pengaduan-card:hover .pengaduan-overlay {
+        .user-card:hover .user-overlay-circle {
             opacity: 1;
         }
 
-        .action-links {
+        /* Tombol Action */
+        .user-action-links {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .btn-info,
-        .btn-edit,
-        .btn-delete {
-            width: 40px;
-            height: 40px;
+        .user-action-btn {
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-decoration: none;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            border: 1.5px solid white;
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            font-size: 0.75rem;
         }
 
-        .btn-info {
-            background: #17a2b8;
-        }
-
-        .btn-edit {
-            background: #ffc107;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-            border: none;
-        }
-
-        .btn-info:hover,
-        .btn-edit:hover,
-        .btn-delete:hover {
+        .user-view-btn:hover {
+            background: rgba(23, 162, 184, 0.9);
             transform: scale(1.1);
-            color: white;
         }
 
-        .pengaduan-content {
-            padding: 20px;
+        .user-edit-btn:hover {
+            background: rgba(255, 193, 7, 0.9);
+            transform: scale(1.1);
         }
 
-        .pengaduan-content h4 {
+        .user-delete-btn:hover {
+            background: rgba(220, 53, 69, 0.9);
+            transform: scale(1.1);
+        }
+
+        /* User Content */
+        .user-content {
+            padding: 0 5px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        /* Judul Pengaduan */
+        .user-name {
             color: #2c3e50;
-            margin-bottom: 5px;
-            font-weight: 600;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 1rem;
             line-height: 1.3;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 5px;
         }
 
-        .no-tiket {
-            color: #6c757d;
-            font-size: 0.8em;
-            font-weight: 500;
+        /* Badge Status */
+        .user-role-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+            white-space: nowrap;
         }
 
-        .pengaduan-info {
-            margin: 15px 0;
-        }
-
-        .pengaduan-info p {
-            margin-bottom: 5px;
-            font-size: 0.85em;
-            color: #495057;
-            line-height: 1.4;
-        }
-
-        .pengaduan-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            padding: 10px 0;
-            border-top: 1px solid #e9ecef;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .status-badge,
-        .tanggal {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.8em;
-            font-weight: 500;
-        }
-
+        /* Warna Status */
         .status-menunggu {
-            color: #ffc107;
+            background: #fff3cd;
+            color: #856404;
+            border-color: #ffeaa7;
         }
 
         .status-diproses {
-            color: #17a2b8;
+            background: #cce5ff;
+            color: #004085;
+            border-color: #b8daff;
         }
 
         .status-selesai {
-            color: #28a745;
+            background: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
         }
 
         .status-ditolak {
-            color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
         }
 
-        .tanggal {
-            color: #6c757d;
-        }
-
-        .action-buttons {
+        /* Info Item */
+        .user-info-item {
             display: flex;
+            align-items: center;
+            justify-content: flex-start;
             gap: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+            width: 100%;
+            text-align: left;
+            padding: 3px 8px;
+            min-height: 22px;
+            margin-left: 4px;
         }
 
-        .btn-info-full,
-        .btn-edit-full,
-        .btn-delete-full {
-            flex: 1;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
+        .user-info-item i {
+            color: #175cdd;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+            width: 18px;
             text-align: center;
-            font-size: 0.8em;
+        }
+
+        .user-info-text {
+            color: #6c757d;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            flex: 1;
+            line-height: 1.3;
+            max-height: 2.6em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-size: 0.8rem;
+        }
+
+        /* File Attachment - STYLING MIRIP TINDAK LANJUT */
+        .file-info-compact {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 8px;
+            width: 100%;
+            justify-content: center;
             transition: all 0.3s ease;
+        }
+
+        .file-info-compact.no-files {
+            opacity: 0.7;
+            background: #f1f3f4;
+        }
+
+        .file-icon-small {
+            width: 24px;
+            height: 24px;
+            background: #175cdd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .file-info-compact.no-files .file-icon-small {
+            background: #adb5bd;
+        }
+
+        .file-number {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #175cdd;
+            transition: all 0.3s ease;
+        }
+
+        .file-info-compact.no-files .file-number {
+            color: #6c757d;
             font-weight: 500;
         }
 
-        .btn-info-full {
-            background: #17a2b8;
-            color: white;
+        .file-text-small {
+            font-size: 0.7rem;
+            color: #6c757d;
+            margin-left: 4px;
         }
 
-        .btn-edit-full {
-            background: #ffc107;
-            color: #212529;
-        }
-
-        .btn-delete-full {
-            background: #dc3545;
-            color: white;
-        }
-
-        .btn-info-full:hover,
-        .btn-edit-full:hover,
-        .btn-delete-full:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .empty-state {
-            padding: 60px 20px;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-        }
-
-        /* Tambahkan di CSS Anda */
+        /* CSS untuk search-section */
         .search-section .search-title {
             font-size: 2rem;
             font-weight: 300;
@@ -673,24 +726,7 @@
             box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .search-section .search-form .search-input-group {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1.5rem;
-                border-radius: 24px;
-            }
-
-            .search-section .search-form .search-input-group .search-btn,
-            .search-section .search-form .search-input-group .reset-btn {
-                border-radius: 16px;
-                justify-content: center;
-            }
-        }
-
-        /* Tambahkan di dalam <style> yang sudah ada */
-
+        /* CSS untuk total-badge */
         .total-badge {
             background: #f8f9fa;
             border: 2px solid #e9ecef;
@@ -725,8 +761,102 @@
             white-space: nowrap;
         }
 
-        /* Responsif untuk mobile */
+        /* Empty State */
+        .empty-state {
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #6c757d;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .user-info-text {
+                max-width: 160px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .col-lg-3 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .user-picture-area {
+                width: 90px;
+                height: 90px;
+            }
+
+            .user-picture-circle {
+                width: 90px;
+                height: 90px;
+            }
+
+            .user-name {
+                font-size: 0.95rem;
+            }
+
+            .user-info-text {
+                max-width: 140px;
+            }
+
+            .user-card {
+                min-height: 310px;
+            }
+
+            .user-action-btn {
+                width: 24px;
+                height: 24px;
+                font-size: 0.7rem;
+            }
+
+            .user-info-item {
+                padding: 3px 6px;
+                margin-left: 2px;
+                margin-bottom: 5px;
+                font-size: 0.75rem;
+            }
+        }
+
         @media (max-width: 768px) {
+            .col-lg-3 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .user-picture-area {
+                width: 100px;
+                height: 100px;
+            }
+
+            .user-picture-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .user-info-text {
+                max-width: 220px;
+            }
+
+            .user-card {
+                min-height: 300px;
+            }
+
+            .search-section .search-form .search-input-group {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+
+            .search-section .search-form .search-input-group .search-btn,
+            .search-section .search-form .search-input-group .reset-btn {
+                border-radius: 16px;
+                justify-content: center;
+            }
+
             .d-flex.justify-content-between {
                 flex-direction: column;
                 align-items: flex-start !important;
@@ -739,94 +869,43 @@
             }
         }
 
-        /* File attachment styling - mirip dengan tindak lanjut */
-        .file-info-compact {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            margin-top: 12px;
-            margin-bottom: 0;
-            max-width: 100px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .file-info-compact:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .file-info-compact:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .file-icon-small {
-            width: 28px;
-            height: 28px;
-            background: #175cdd;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .file-number {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #175cdd;
-            line-height: 1;
-        }
-
-        .file-text-small {
-            font-size: 0.75rem;
-            color: #6c757d;
-            margin-top: 2px;
-        }
-
-        /* Responsif mobile */
-        @media (max-width: 768px) {
-            .file-info-compact {
-                max-width: 90px;
-                padding: 6px 10px;
-                gap: 8px;
+        @media (max-width: 480px) {
+            .user-info-text {
+                max-width: 180px;
             }
 
-            .file-icon-small {
-                width: 26px;
-                height: 26px;
-                font-size: 0.85rem;
+            .user-card {
+                min-height: 290px;
+                padding: 15px 12px;
             }
 
-            .file-number {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .file-info-compact {
-                max-width: 85px;
-                padding: 5px 8px;
+            .user-picture-area {
+                width: 85px;
+                height: 85px;
+                margin-bottom: 10px;
             }
 
-            .file-icon-small {
-                width: 24px;
-                height: 24px;
-                font-size: 0.8rem;
+            .user-picture-circle {
+                width: 85px;
+                height: 85px;
             }
 
-            .file-number {
-                font-size: 0.95rem;
-            }
-
-            .file-text-small {
+            .user-info-item {
                 font-size: 0.7rem;
+                margin-bottom: 5px;
+                padding: 2px 4px;
+                margin-left: 0;
+            }
+
+            .user-info-item i {
+                font-size: 0.85rem;
+                width: 16px;
+            }
+
+            .user-action-btn {
+                width: 22px;
+                height: 22px;
+                font-size: 0.65rem;
             }
         }
     </style>

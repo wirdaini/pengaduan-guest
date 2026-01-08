@@ -6,22 +6,10 @@
     <main class="main">
         <!-- Page Title -->
         <div class="page-title">
-            <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="heading-title">Kategori Pengaduan</h1>
-                            <p class="mb-0">
-                                Kelola kategori pengaduan untuk memudahkan klasifikasi dan penanganan laporan warga.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}"><i class="bi bi-house"></i></a></li>
                         <li class="current">Kategori Pengaduan</li>
                     </ol>
                 </div>
@@ -47,6 +35,14 @@
                                 <i class="bi bi-plus-circle"></i> Tambah Kategori Baru
                             </a>
                         </div>
+
+                        <!-- ========== TOTAL KATEGORI DI SINI ========== -->
+                        <div class="mt-2">
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-tags me-1"></i>
+                                Total: <strong>{{ $kategoris->total() }}</strong> kategori
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -56,15 +52,7 @@
                         <div class="search-section">
                             <div class="card" style="background: transparent; border: none; box-shadow: none;">
                                 <div class="card-body" style="padding: 0;">
-                                    <h3 class="search-title">Cari & Filter Kategori</h3>
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <p class="search-subtitle mb-0">Temukan dan kelola kategori pengaduan dengan mudah
-                                        </p>
-                                        <div class="total-count">
-                                            <i class="bi bi-tags me-1"></i>
-                                            <strong>{{ $kategoris->total() }}</strong> kategori
-                                        </div>
-                                    </div>
+
 
                                     <form method="GET" action="{{ route('kategori_pengaduan.index') }}"
                                         class="search-form">
@@ -177,30 +165,35 @@
                     </div>
                 @endif
 
+                <!-- Kategori Grid -->
                 <div class="row gy-4">
                     @foreach ($kategoris as $item)
-                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
-                            <div class="kategori-card">
-                                <div class="kategori-header">
-                                    <!-- Icon kategori -->
-                                    <div class="kategori-icon">
-                                        <i class="bi bi-tags"></i>
+                        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+                            <div class="user-card">
+                                <!-- Bagian Icon Bulat -->
+                                <div class="user-picture-area">
+                                    <div class="user-picture-circle">
+                                        <div class="user-picture-default kategori-icon-bg">
+                                            <i class="bi bi-tags"></i>
+                                        </div>
                                     </div>
-                                    <div class="kategori-overlay">
-                                        <div class="action-links">
+
+                                    <!-- Overlay untuk Action Buttons -->
+                                    <div class="user-overlay-circle">
+                                        <div class="user-action-links">
                                             <a href="{{ route('kategori_pengaduan.show', $item->kategori_id) }}"
-                                                class="btn-info" title="Lihat Detail">
+                                                class="user-action-btn user-view-btn">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             <a href="{{ route('kategori_pengaduan.edit', $item->kategori_id) }}"
-                                                class="btn-edit" title="Edit Kategori">
+                                                class="user-action-btn user-edit-btn">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <form action="{{ route('kategori_pengaduan.destroy', $item->kategori_id) }}"
                                                 method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-delete" title="Hapus Kategori"
+                                                <button type="submit" class="user-action-btn user-delete-btn"
                                                     onclick="return confirm('Yakin ingin menghapus kategori ini?')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -208,51 +201,50 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="kategori-content">
-                                    <h4>{{ $item->nama }}</h4>
-                                    <span class="kategori-id">ID: {{ $item->kategori_id }}</span>
 
-                                    <div class="kategori-info">
-                                        <p><strong>SLA:</strong> {{ $item->sla_hari }} hari</p>
-                                        <p><strong>Prioritas:</strong>
-                                            <span class="prioritas-badge prioritas-{{ strtolower($item->prioritas) }}">
-                                                {{ $item->prioritas }}
+                                <!-- Informasi Kategori -->
+                                <div class="user-content">
+                                    <h4 class="user-name">{{ $item->nama }}</h4>
+                                    <span class="user-role-badge prioritas-{{ strtolower($item->prioritas) }}">
+                                        {{ $item->prioritas }}
+                                    </span>
+
+                                    <!-- SLA -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-clock"></i>
+                                        <span class="user-info-text">
+                                            SLA: {{ $item->sla_hari }} hari
+                                        </span>
+                                    </div>
+
+                                    <!-- Deskripsi -->
+                                    @if ($item->deskripsi)
+                                        <div class="user-info-item">
+                                            <i class="bi bi-card-text"></i>
+                                            <span class="user-info-text">
+                                                {{ Str::limit($item->deskripsi, 50) }}
                                             </span>
-                                        </p>
-                                        <p><strong>Dibuat:</strong> {{ $item->created_at->format('d/m/Y') }}</p>
-                                        <p><strong>Diupdate:</strong> {{ $item->updated_at->format('d/m/Y') }}</p>
+                                        </div>
+                                    @endif
+
+                                    <!-- Tanggal Dibuat -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-calendar-plus"></i>
+                                        <span class="user-info-text">
+                                            Dibuat: {{ $item->created_at->format('d M Y') }}
+                                        </span>
                                     </div>
 
-                                    <div class="kategori-meta">
-                                        <div class="sla-info">
-                                            <i class="bi bi-clock"></i>
-                                            <span>Target: {{ $item->sla_hari }} hari</span>
+                                    <!-- Status Aktif (jika ada) -->
+                                    @if (isset($item->is_active))
+                                        <div class="user-info-item">
+                                            <i class="bi bi-toggle2-{{ $item->is_active ? 'on' : 'off' }}"></i>
+                                            <span
+                                                class="user-info-text status-{{ $item->is_active ? 'aktif' : 'nonaktif' }}">
+                                                {{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
+                                            </span>
                                         </div>
-                                        <div class="prioritas-info">
-                                            <i class="bi bi-exclamation-circle"></i>
-                                            <span>{{ $item->prioritas }}</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="action-buttons">
-                                        <a href="{{ route('kategori_pengaduan.show', $item->kategori_id) }}"
-                                            class="btn-info-full">
-                                            <i class="bi bi-eye"></i> Detail
-                                        </a>
-                                        <a href="{{ route('kategori_pengaduan.edit', $item->kategori_id) }}"
-                                            class="btn-edit-full">
-                                            <i class="bi bi-pencil"></i> Edit
-                                        </a>
-                                        <form action="{{ route('kategori_pengaduan.destroy', $item->kategori_id) }}"
-                                            method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-delete-full"
-                                                onclick="return confirm('Yakin ingin menghapus kategori ini?')">
-                                                <i class="bi bi-trash"></i> Hapus
-                                            </button>
-                                        </form>
-                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div><!-- End Kategori Card -->
@@ -287,233 +279,245 @@
     </main>
 
     <style>
-        .kategori-card {
+        /* ===========================================
+                   CARD KATEGORI (tanpa ID)
+                =========================================== */
+        .user-card {
             background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             height: 100%;
-        }
-
-        .kategori-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
-        }
-
-        .kategori-header {
+            border: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 300px;
             position: relative;
-            height: 120px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #175cdd 0%, #1a4bb8 100%);
         }
 
-        .kategori-icon {
-            width: 80px;
-            height: 80px;
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Area Gambar Bulat di Tengah */
+        .user-picture-area {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 12px auto;
+            flex-shrink: 0;
+        }
+
+        /* Lingkaran untuk Icon */
+        .user-picture-circle {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #f0f5ff;
+            background: #f8f9fa;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Icon Kategori dengan warna BIRU */
+        .kategori-icon-bg {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            background: linear-gradient(135deg, #175cdd 0%, #0e3d8b 100%);
             color: white;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 3px solid white;
+            font-size: 2.5rem;
         }
 
-        .kategori-overlay {
+        .user-picture-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .user-card:hover .user-picture-img {
+            transform: scale(1.05);
+        }
+
+        /* Overlay Lingkaran untuk Action Buttons */
+        .user-overlay-circle {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(23, 92, 221, 0.9);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 2;
         }
 
-        .kategori-card:hover .kategori-overlay {
+        .user-card:hover .user-overlay-circle {
             opacity: 1;
         }
 
-        .action-links {
+        /* Tombol Action */
+        .user-action-links {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .btn-info,
-        .btn-edit,
-        .btn-delete {
-            width: 40px;
-            height: 40px;
+        .user-action-btn {
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-decoration: none;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            border: 1.5px solid white;
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            font-size: 0.75rem;
         }
 
-        .btn-info {
-            background: #17a2b8;
-        }
-
-        .btn-edit {
-            background: #ffc107;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-            border: none;
-        }
-
-        .btn-info:hover,
-        .btn-edit:hover,
-        .btn-delete:hover {
+        .user-view-btn:hover {
+            background: rgba(23, 162, 184, 0.9);
             transform: scale(1.1);
-            color: white;
         }
 
-        .kategori-content {
-            padding: 20px;
+        .user-edit-btn:hover {
+            background: rgba(255, 193, 7, 0.9);
+            transform: scale(1.1);
         }
 
-        .kategori-content h4 {
+        .user-delete-btn:hover {
+            background: rgba(220, 53, 69, 0.9);
+            transform: scale(1.1);
+        }
+
+        /* User Content */
+        .user-content {
+            padding: 0 5px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        /* Nama Kategori */
+        .user-name {
             color: #2c3e50;
-            margin-bottom: 5px;
-            font-weight: 600;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 1rem;
             line-height: 1.3;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 5px;
         }
 
-        .kategori-id {
-            color: #6c757d;
-            font-size: 0.8em;
-            font-weight: 500;
-        }
-
-        .kategori-info {
-            margin: 15px 0;
-        }
-
-        .kategori-info p {
-            margin-bottom: 5px;
-            font-size: 0.85em;
-            color: #495057;
-            line-height: 1.4;
-        }
-
-        .prioritas-badge {
-            padding: 2px 8px;
+        /* Badge Prioritas */
+        .user-role-badge {
+            display: inline-block;
+            padding: 3px 10px;
             border-radius: 12px;
-            font-size: 0.75em;
+            font-size: 0.75rem;
             font-weight: 600;
-            text-transform: uppercase;
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+            white-space: nowrap;
         }
 
+        /* Warna Prioritas */
         .prioritas-rendah {
-            background: #28a745;
-            color: white;
+            background: #e8f5e9;
+            color: #28a745;
+            border-color: #c3e6cb;
         }
 
         .prioritas-sedang {
-            background: #ffc107;
-            color: #212529;
+            background: #fff3cd;
+            color: #856404;
+            border-color: #ffeaa7;
         }
 
         .prioritas-tinggi {
-            background: #fd7e14;
-            color: white;
+            background: #ffe5d0;
+            color: #d35400;
+            border-color: #fdbe74;
         }
 
         .prioritas-kritis {
-            background: #dc3545;
-            color: white;
+            background: #f8d7da;
+            color: #c62828;
+            border-color: #f5c6cb;
         }
 
-        .kategori-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            padding: 10px 0;
-            border-top: 1px solid #e9ecef;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .sla-info,
-        .prioritas-info {
+        /* Info Item */
+        .user-info-item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.8em;
-            font-weight: 500;
-        }
-
-        .sla-info {
-            color: #17a2b8;
-        }
-
-        .prioritas-info {
-            color: #6c757d;
-        }
-
-        .action-buttons {
-            display: flex;
+            justify-content: flex-start;
             gap: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+            width: 100%;
+            text-align: left;
+            padding: 3px 8px;
+            min-height: 22px;
+            margin-left: 4px;
         }
 
-        .btn-info-full,
-        .btn-edit-full,
-        .btn-delete-full {
-            flex: 1;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
+        .user-info-item i {
+            color: #175cdd;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+            width: 18px;
             text-align: center;
-            font-size: 0.8em;
-            transition: all 0.3s ease;
+        }
+
+        .user-info-text {
+            color: #6c757d;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            flex: 1;
+            line-height: 1.3;
+            max-height: 2.6em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-size: 0.8rem;
+        }
+
+        /* Status Aktif/Nonaktif */
+        .status-aktif {
+            color: #28a745;
             font-weight: 500;
         }
 
-        .btn-info-full {
-            background: #17a2b8;
-            color: white;
+        .status-nonaktif {
+            color: #dc3545;
+            font-weight: 500;
         }
 
-        .btn-edit-full {
-            background: #ffc107;
-            color: #212529;
-        }
-
-        .btn-delete-full {
-            background: #dc3545;
-            color: white;
-        }
-
-        .btn-info-full:hover,
-        .btn-edit-full:hover,
-        .btn-delete-full:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .empty-state {
-            padding: 60px 20px;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-        }
-
-        /* Tambahkan di CSS Anda */
+        /* CSS untuk search-section */
         .search-section .search-title {
             font-size: 2rem;
             font-weight: 300;
@@ -606,8 +610,124 @@
             box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
         }
 
+        /* CSS untuk total-badge */
+        .total-badge {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #495057;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .total-badge:hover {
+            border-color: #175cdd;
+            background: #f0f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(23, 92, 221, 0.1);
+        }
+
+        .total-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #175cdd;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .total-text {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #6c757d;
+        }
+
         /* Responsive */
+        @media (max-width: 1200px) {
+            .user-info-text {
+                max-width: 160px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .col-lg-3 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .user-picture-area {
+                width: 90px;
+                height: 90px;
+            }
+
+            .user-picture-circle {
+                width: 90px;
+                height: 90px;
+            }
+
+            .user-name {
+                font-size: 0.95rem;
+            }
+
+            .user-info-text {
+                max-width: 140px;
+            }
+
+            .user-card {
+                min-height: 290px;
+            }
+
+            .user-action-btn {
+                width: 24px;
+                height: 24px;
+                font-size: 0.7rem;
+            }
+
+            .user-info-item {
+                padding: 3px 6px;
+                margin-left: 2px;
+                margin-bottom: 5px;
+                font-size: 0.75rem;
+            }
+        }
+
         @media (max-width: 768px) {
+            .col-lg-3 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .user-picture-area {
+                width: 100px;
+                height: 100px;
+            }
+
+            .user-picture-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .user-info-text {
+                max-width: 220px;
+            }
+
+            .user-card {
+                min-height: 280px;
+            }
+
             .search-section .search-form .search-input-group {
                 flex-direction: column;
                 gap: 1rem;
@@ -620,29 +740,57 @@
                 border-radius: 16px;
                 justify-content: center;
             }
+
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+
+            .total-badge {
+                align-self: flex-start;
+                margin-top: 5px;
+            }
         }
 
-        .total-count {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 0.95rem;
-            color: #495057;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-        }
+        @media (max-width: 480px) {
+            .user-info-text {
+                max-width: 180px;
+            }
 
-        .total-count strong {
-            color: #175cdd;
-            font-size: 1.1rem;
-        }
+            .user-card {
+                min-height: 270px;
+                padding: 15px 12px;
+            }
 
-        .total-count:hover {
-            background: #e9ecef;
-            border-color: #175cdd;
+            .user-picture-area {
+                width: 85px;
+                height: 85px;
+                margin-bottom: 10px;
+            }
+
+            .user-picture-circle {
+                width: 85px;
+                height: 85px;
+            }
+
+            .user-info-item {
+                font-size: 0.7rem;
+                margin-bottom: 5px;
+                padding: 2px 4px;
+                margin-left: 0;
+            }
+
+            .user-info-item i {
+                font-size: 0.85rem;
+                width: 16px;
+            }
+
+            .user-action-btn {
+                width: 22px;
+                height: 22px;
+                font-size: 0.65rem;
+            }
         }
     </style>
 @endsection

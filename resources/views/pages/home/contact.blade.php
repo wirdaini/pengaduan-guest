@@ -8,24 +8,10 @@
 
         <!-- Page Title -->
         <div class="page-title">
-            <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="heading-title">Kontak</h1>
-                            <p class="mb-0">
-                                Hubungi kami untuk informasi lebih lanjut tentang pelayanan desa.
-                                Tim kami siap membantu menjawab pertanyaan dan menangani pengaduan
-                                Anda dengan cepat dan profesional.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}"><i class="bi bi-house"></i></a></li>
                         <li class="current">Kontak</li>
                     </ol>
                 </div>

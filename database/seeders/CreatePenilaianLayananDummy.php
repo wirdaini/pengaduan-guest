@@ -23,8 +23,8 @@ class CreatePenilaianLayananDummy extends Seeder
             ->pluck('pengaduan_id')
             ->toArray();
 
-        // DEBUG: Cek data yang diambil
-        $this->command->info('Pengaduan Selesai (belum dinilai): ' . count($pengaduanSelesai) . ' data');
+        // // DEBUG: Cek data yang diambil
+        // $this->command->info('Pengaduan Selesai (belum dinilai): ' . count($pengaduanSelesai) . ' data');
 
         if (empty($pengaduanSelesai)) {
             $this->command->warn('Tidak ada pengaduan selesai yang belum dinilai. Ubah beberapa pengaduan jadi "selesai" dulu.');
@@ -41,7 +41,7 @@ class CreatePenilaianLayananDummy extends Seeder
                 ->update(['status' => 'selesai']);
 
             $pengaduanSelesai = $randomPengaduan;
-            $this->command->info('Mengubah ' . count($randomPengaduan) . ' pengaduan menjadi "selesai"');
+            // $this->command->info('Mengubah ' . count($randomPengaduan) . ' pengaduan menjadi "selesai"');
         }
 
         // Komentar dalam bahasa Indonesia
@@ -146,9 +146,9 @@ class CreatePenilaianLayananDummy extends Seeder
         }
 
         $totalPenilaian = DB::table('penilaian_layanan')->count();
-        $this->command->info('Seeder penilaian layanan berhasil!');
-        $this->command->info('Total penilaian baru: ' . $jumlahDinilai);
-        $this->command->info('Total penilaian di database: ' . $totalPenilaian);
+        // $this->command->info('Seeder penilaian layanan berhasil!');
+        // $this->command->info('Total penilaian baru: ' . $jumlahDinilai);
+        // $this->command->info('Total penilaian di database: ' . $totalPenilaian);
 
         // Tampilkan statistik rating
         $stats = DB::table('penilaian_layanan')
@@ -157,10 +157,10 @@ class CreatePenilaianLayananDummy extends Seeder
             ->orderBy('rating', 'desc')
             ->get();
 
-        $this->command->info("\nStatistik Rating:");
+        // $this->command->info("\nStatistik Rating:");
         foreach ($stats as $stat) {
             $bintang = str_repeat('⭐', $stat->rating) . str_repeat('☆', 5 - $stat->rating);
-            $this->command->info("  {$bintang} ({$stat->rating}): {$stat->jumlah} penilaian");
+            // $this->command->info("  {$bintang} ({$stat->rating}): {$stat->jumlah} penilaian");
         }
     }
 

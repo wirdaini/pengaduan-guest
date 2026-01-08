@@ -127,4 +127,26 @@ class User extends Authenticatable
         }
         return asset('images/default-profile.jpg'); // Foto default
     }
+
+    // Di dalam class User, tambah method:
+    public function warga()
+    {
+        return $this->hasOne(Warga::class, 'user_id');
+    }
+
+    public function getDataWarga()
+    {
+        if ($this->warga) {
+            return $this->warga;
+        }
+
+        // Jika belum punya data warga, buat default
+        return new Warga([
+            'nama'          => $this->name,
+            'email'         => $this->email,
+            'jenis_kelamin' => 'L',
+            'agama'         => 'Islam',
+            'pekerjaan'     => 'Wiraswasta',
+        ]);
+    }
 }

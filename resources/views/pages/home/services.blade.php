@@ -8,24 +8,10 @@
 
         <!-- Page Title -->
         <div class="page-title">
-            <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="heading-title">Layanan</h1>
-                            <p class="mb-0">
-                                Berbagai layanan unggulan yang kami sediakan untuk mendukung pembangunan desa
-                                dan kesejahteraan masyarakat. Setiap layanan dirancang untuk memenuhi kebutuhan
-                                warga secara komprehensif.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}"><i class="bi bi-house"></i></a></li>
                         <li class="current">Layanan</li>
                     </ol>
                 </div>

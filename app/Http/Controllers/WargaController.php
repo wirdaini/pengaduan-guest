@@ -24,13 +24,13 @@ class WargaController extends Controller
         $listPekerjaan = Warga::select('pekerjaan')->distinct()->pluck('pekerjaan');
 
         // Kolom yang bisa di-search - SESUAI MODUL
-        $searchableColumns = ['nama', 'no_ktp', 'email', 'telp']; // cari berdasarkan nama, no KTP, email, telp
+        $searchableColumns = ['nama', 'no_ktp', 'email', 'telp'];
 
         // Query dengan filter DAN search
         $warga = Warga::filter($request, $filterableColumns)
             ->search($request, $searchableColumns)
             ->orderBy('nama', 'asc')
-            ->paginate(9)
+            ->paginate(16)
             ->withQueryString();
 
         return view('pages.warga.index', compact('warga', 'request', 'listPekerjaan'));
@@ -54,7 +54,7 @@ class WargaController extends Controller
         ]);
 
         Warga::create([
-            'user_id'       => auth()->id() ?? 1,
+            'user_id'       => auth()->id(),
             'no_ktp'        => $request->no_ktp,
             'nama'          => $request->nama,
             'jenis_kelamin' => $request->jenis_kelamin,

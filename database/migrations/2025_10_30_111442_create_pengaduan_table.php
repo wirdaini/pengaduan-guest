@@ -15,12 +15,10 @@ return new class extends Migration
             $table->unsignedBigInteger('kategori_id');
             $table->string('judul', 255);
             $table->text('deskripsi');
+            $table->enum('status', ['menunggu', 'diproses', 'selesai', 'ditolak'])->default('menunggu');
             $table->string('lokasi_text', 255);
             $table->string('rt', 10);
             $table->string('rw', 10);
-            $table->string('bukti_foto')->nullable();
-            $table->enum('status', ['menunggu', 'diproses', 'selesai', 'ditolak'])->default('menunggu');
-            $table->text('tanggapan')->nullable();
             $table->timestamps();
 
             $table->foreign('kategori_id')

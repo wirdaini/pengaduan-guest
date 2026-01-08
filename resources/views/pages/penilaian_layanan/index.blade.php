@@ -7,22 +7,10 @@
 
         <!-- Page Title -->
         <div class="page-title">
-            <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="heading-title">Data Penilaian Layanan</h1>
-                            <p class="mb-0">
-                                Kelola semua penilaian layanan dari warga. Pantau kepuasan masyarakat terhadap pelayanan.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}"><i class="bi bi-house"></i></a></li>
                         <li class="current">Data Penilaian Layanan</li>
                     </ol>
                 </div>
@@ -56,6 +44,13 @@
                                 <i class="bi bi-star-fill"></i> Beri Penilaian Baru
                             </a>
                         </div>
+
+                        <div class="mt-2">
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-star me-1"></i>
+                                Total: <strong>{{ $penilaian->total() }}</strong> penilaian
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -65,21 +60,9 @@
                         <div class="search-section">
                             <div class="card" style="background: transparent; border: none; box-shadow: none;">
                                 <div class="card-body" style="padding: 0;">
-                                    <h3 class="search-title">Cari & Filter Penilaian</h3>
-                                    <p class="search-subtitle">Temukan dan analisis semua penilaian dari warga</p>
 
                                     <form method="GET" action="{{ route('penilaian_layanan.index') }}"
                                         class="search-form">
-                                        <div class="d-flex justify-content-between align-items-center mb-4">
-                                            <p class="search-subtitle mb-0">Temukan dan analisis semua penilaian dari warga
-                                            </p>
-                                            <div class="total-badge">
-                                                <i class="bi bi-star me-1"></i>
-                                                <span class="total-number">{{ $penilaian->total() }}</span>
-                                                <span class="total-text">penilaian</span>
-                                            </div>
-                                        </div>
-
                                         <div class="search-input-group">
                                             <!-- SEARCH INPUT -->
                                             <div class="input-wrapper">
@@ -210,30 +193,41 @@
                     </div>
                 @endif
 
-                {{-- card --}}
+                <!-- PENILAIAN GRID - 4 PER BARIS -->
                 <div class="row gy-4">
                     @foreach ($penilaian as $item)
-                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
-                            <div class="penilaian-card">
-                                <div class="penilaian-header">
-                                    <!-- Avatar dengan rating -->
-                                    <div class="penilaian-avatar"
-                                        style="background: linear-gradient(135deg,
-                                            {{ $item->rating >= 4 ? '#2ecc71' : ($item->rating >= 3 ? '#f39c12' : '#e74c3c') }}
-                                            0%,
-                                            {{ $item->rating >= 4 ? '#27ae60' : ($item->rating >= 3 ? '#e67e22' : '#c0392b') }}
-                                            100%);">
-                                        {{ $item->rating }}⭐
+                        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up"
+                            data-aos-delay="{{ $loop->iteration * 100 }}">
+                            <div class="user-card">
+                                <!-- Bagian Avatar Bulat dengan Rating -->
+                                <div class="user-picture-area">
+                                    <!-- Bagian Avatar Bulat dengan Rating -->
+                                    <div class="user-picture-circle rating-{{ $item->rating }}">
+                                        <div class="rating-avatar">
+                                            @if ($item->rating == 5)
+                                                <i class="bi bi-emoji-laughing"></i>
+                                            @elseif($item->rating == 4)
+                                                <i class="bi bi-emoji-smile"></i>
+                                            @elseif($item->rating == 3)
+                                                <i class="bi bi-emoji-neutral"></i>
+                                            @elseif($item->rating == 2)
+                                                <i class="bi bi-emoji-frown"></i>
+                                            @else
+                                                <i class="bi bi-emoji-angry"></i>
+                                            @endif
+                                        </div>
                                     </div>
-                                    <div class="penilaian-overlay">
-                                        <div class="action-links">
+
+                                    <!-- Overlay untuk Action Buttons -->
+                                    <div class="user-overlay-circle">
+                                        <div class="user-action-links">
                                             <a href="{{ route('penilaian_layanan.show', $item->penilaian_id) }}"
-                                                class="btn-info" title="Lihat Detail">
+                                                class="user-action-btn user-view-btn">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             @if ($item->created_at->diffInHours(now()) <= 24)
                                                 <a href="{{ route('penilaian_layanan.edit', $item->penilaian_id) }}"
-                                                    class="btn-edit" title="Edit Penilaian">
+                                                    class="user-action-btn user-edit-btn">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
                                             @endif
@@ -241,7 +235,7 @@
                                                 method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-delete" title="Hapus Penilaian"
+                                                <button type="submit" class="user-action-btn user-delete-btn"
                                                     onclick="return confirm('Yakin ingin menghapus penilaian ini?')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -249,61 +243,92 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="penilaian-content">
-                                    <h4>{{ $item->pengaduan->judul }}</h4>
-                                    <span class="no-tiket">{{ $item->pengaduan->nomor_tiket }}</span>
 
-                                    <div class="rating-display">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            @if ($i <= $item->rating)
-                                                <i class="bi bi-star-fill text-warning"></i>
-                                            @else
-                                                <i class="bi bi-star text-muted"></i>
-                                            @endif
-                                        @endfor
-                                        <span class="rating-text ms-2">{{ $item->ratingText }}</span>
-                                    </div>
+                                <!-- Informasi Penilaian -->
+                                <div class="user-content">
+                                    <h4 class="user-name">{{ Str::limit($item->pengaduan->judul, 35) }}</h4>
 
-                                    <div class="penilaian-info">
-                                        <p><strong>Warga:</strong> {{ $item->pengaduan->warga->nama }}</p>
-                                        <p><strong>Tanggal Penilaian:</strong> {{ $item->created_at->format('d M Y') }}</p>
-                                        @if ($item->komentar)
-                                            <p class="komentar"><strong>Komentar:</strong>
-                                                {{ Str::limit($item->komentar, 80) }}</p>
+                                    <!-- Badge Rating -->
+                                    <span class="user-role-badge rating-{{ $item->rating }}-badge">
+                                        @if ($item->rating == 5)
+                                            <i class="bi bi-emoji-laughing me-1"></i>Sangat Puas
+                                        @elseif($item->rating == 4)
+                                            <i class="bi bi-emoji-smile me-1"></i>Puas
+                                        @elseif($item->rating == 3)
+                                            <i class="bi bi-emoji-neutral me-1"></i>Cukup
+                                        @elseif($item->rating == 2)
+                                            <i class="bi bi-emoji-frown me-1"></i>Tidak
+                                        @else
+                                            <i class="bi bi-emoji-angry me-1"></i>Buruk
                                         @endif
+                                    </span>
+
+                                    <!-- Warga Pengadu -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-person"></i>
+                                        <span class="user-info-text">
+                                            {{ $item->pengaduan->warga->nama ?? '-' }}
+                                        </span>
                                     </div>
 
-                                    <div class="penilaian-meta">
-                                        <div class="status-pengaduan">
-                                            <i class="bi bi-check-circle"></i>
-                                            <span>Selesai</span>
-                                        </div>
-                                        <div class="waktu">
+                                    <!-- No Tiket -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-ticket"></i>
+                                        <span class="user-info-text tiket-number">
+                                            {{ $item->pengaduan->nomor_tiket ?? '-' }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Rating Bintang -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-star"></i>
+                                        <span class="user-info-text">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= $item->rating)
+                                                    <i class="bi bi-star-fill text-warning"
+                                                        style="font-size: 0.85em;"></i>
+                                                @else
+                                                    <i class="bi bi-star text-muted" style="font-size: 0.85em;"></i>
+                                                @endif
+                                            @endfor
+                                            ({{ $item->rating }}/5)
+                                        </span>
+                                    </div>
+
+                                    <!-- Komentar -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-chat-left-text"></i>
+                                        <span class="user-info-text">
+                                            {{ $item->komentar ? Str::limit($item->komentar, 50) : '-' }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Tanggal Penilaian -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-calendar-event"></i>
+                                        <span class="user-info-text">
+                                            {{ $item->created_at->format('d M Y') ?? '-' }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Status Waktu Edit - SELALU ADA DI BAWAH -->
+                                    <div
+                                        class="file-info-compact {{ $item->created_at->diffInHours(now()) <= 24 ? 'can-edit' : 'cannot-edit' }}">
+                                        <div class="file-icon-small">
                                             <i class="bi bi-clock"></i>
-                                            <span>{{ $item->created_at->diffForHumans() }}</span>
                                         </div>
-                                    </div>
-
-                                    <div class="action-buttons">
-                                        <a href="{{ route('penilaian_layanan.show', $item->penilaian_id) }}"
-                                            class="btn-info-full">
-                                            <i class="bi bi-eye"></i> Detail
-                                        </a>
-                                        @if ($item->created_at->diffInHours(now()) <= 24)
-                                            <a href="{{ route('penilaian_layanan.edit', $item->penilaian_id) }}"
-                                                class="btn-edit-full">
-                                                <i class="bi bi-pencil"></i> Edit
-                                            </a>
-                                        @endif
-                                        <form action="{{ route('penilaian_layanan.destroy', $item->penilaian_id) }}"
-                                            method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-delete-full"
-                                                onclick="return confirm('Yakin ingin menghapus penilaian ini?')">
-                                                <i class="bi bi-trash"></i> Hapus
-                                            </button>
-                                        </form>
+                                        <div>
+                                            <span class="file-number">
+                                                @if ($item->created_at->diffInHours(now()) <= 24)
+                                                    <span class="text-success">Bisa Edit</span>
+                                                @else
+                                                    <span class="text-secondary">Locked</span>
+                                                @endif
+                                            </span>
+                                            <span class="file-text-small">
+                                                {{ $item->created_at->diffForHumans() }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -341,223 +366,351 @@
     </main>
 
     <style>
-        .penilaian-card {
+        /* ===========================================
+                           CARD PENILAIAN LAYANAN DESAIN BULAT - 4 KOLOM
+                        =========================================== */
+        .user-card {
             background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             height: 100%;
-        }
-
-        .penilaian-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
-        }
-
-        .penilaian-header {
+            border: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 18px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 320px;
             position: relative;
-            height: 120px;
-            overflow: hidden;
         }
 
-        .penilaian-avatar {
-            width: 80px;
-            height: 80px;
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Area Gambar Bulat di Tengah */
+        .user-picture-area {
+            position: relative;
+            width: 95px;
+            height: 95px;
+            margin: 0 auto 10px auto;
+            flex-shrink: 0;
+        }
+
+        /* Lingkaran untuk Rating Avatar */
+        .user-picture-circle {
+            width: 95px;
+            height: 95px;
             border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #f0f5ff;
+            background: #f8f9fa;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Warna Rating Avatar */
+        .rating-5 {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+
+        .rating-4 {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        .rating-3 {
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        }
+
+        .rating-2 {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .rating-1 {
+            background: linear-gradient(135deg, #7f8c8d 0%, #34495e 100%);
+        }
+
+        /* Avatar untuk Rating */
+        /* Style untuk emoji di avatar */
+        .rating-avatar {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: white;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            border: 3px solid white;
         }
 
-        .penilaian-overlay {
+        .rating-avatar i {
+            font-size: 2.5rem;
+            /* Besarkan emoji */
+            color: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        /* Efek hover */
+        .user-card:hover .rating-avatar i {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        /* Overlay Lingkaran untuk Action Buttons */
+        .user-overlay-circle {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(23, 92, 221, 0.9);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 2;
         }
 
-        .penilaian-card:hover .penilaian-overlay {
+        .user-card:hover .user-overlay-circle {
             opacity: 1;
         }
 
-        .action-links {
+        /* Tombol Action */
+        .user-action-links {
             display: flex;
-            gap: 10px;
+            gap: 6px;
         }
 
-        .btn-info,
-        .btn-edit,
-        .btn-delete {
-            width: 40px;
-            height: 40px;
+        .user-action-btn {
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-decoration: none;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            border: 1.5px solid white;
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            font-size: 0.7rem;
         }
 
-        .btn-info {
-            background: #17a2b8;
-        }
-
-        .btn-edit {
-            background: #ffc107;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-            border: none;
-        }
-
-        .btn-info:hover,
-        .btn-edit:hover,
-        .btn-delete:hover {
+        .user-view-btn:hover {
+            background: rgba(23, 162, 184, 0.9);
             transform: scale(1.1);
-            color: white;
         }
 
-        .penilaian-content {
-            padding: 20px;
+        .user-edit-btn:hover {
+            background: rgba(255, 193, 7, 0.9);
+            transform: scale(1.1);
         }
 
-        .penilaian-content h4 {
+        .user-delete-btn:hover {
+            background: rgba(220, 53, 69, 0.9);
+            transform: scale(1.1);
+        }
+
+        /* User Content - FIXED HEIGHT */
+        .user-content {
+            padding: 0 3px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            min-height: 220px;
+        }
+
+        /* Judul Pengaduan */
+        .user-name {
             color: #2c3e50;
             margin-bottom: 5px;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.9rem;
             line-height: 1.3;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 3px;
         }
 
-        .no-tiket {
-            color: #6c757d;
-            font-size: 0.8em;
-            font-weight: 500;
+        /* Badge Rating */
+        .user-role-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+            white-space: nowrap;
         }
 
-        .rating-display {
-            margin: 10px 0;
+        /* Warna Badge Rating */
+        .rating-5-badge {
+            background: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        .rating-4-badge {
+            background: #cce5ff;
+            color: #004085;
+            border-color: #b8daff;
+        }
+
+        .rating-3-badge {
+            background: #fff3cd;
+            color: #856404;
+            border-color: #ffeaa7;
+        }
+
+        .rating-2-badge {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .rating-1-badge {
+            background: #e2e3e5;
+            color: #383d41;
+            border-color: #d6d8db;
+        }
+
+        /* Info Item - 5 ITEM TETAP */
+        .user-info-container {
+            width: 100%;
+            flex: 1;
+            margin-bottom: 10px;
+        }
+
+        .user-info-item {
             display: flex;
             align-items: center;
+            justify-content: flex-start;
+            gap: 6px;
+            font-size: 0.75rem;
+            margin-bottom: 6px;
+            width: 100%;
+            text-align: left;
+            padding: 3px 5px;
+            min-height: 22px;
+            border-radius: 6px;
         }
 
-        .rating-display .bi-star-fill {
-            color: #ffc107;
-            font-size: 1.2em;
+        .user-info-item.empty {
+            opacity: 0.6;
         }
 
-        .rating-text {
-            font-size: 0.9em;
+        .user-info-item i {
+            color: #175cdd;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        .user-info-item.empty i {
             color: #6c757d;
-            font-weight: 500;
         }
 
-        .penilaian-info {
-            margin: 15px 0;
+        .user-info-text {
+            color: #6c757d;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            flex: 1;
+            line-height: 1.2;
+            max-height: 2.4em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-size: 0.75rem;
         }
 
-        .penilaian-info p {
-            margin-bottom: 5px;
-            font-size: 0.85em;
-            color: #495057;
-            line-height: 1.4;
-        }
-
-        .komentar {
+        .user-info-item.empty .user-info-text {
+            color: #adb5bd;
             font-style: italic;
-            color: #6c757d;
         }
 
-        .penilaian-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            padding: 10px 0;
-            border-top: 1px solid #e9ecef;
-            border-bottom: 1px solid #e9ecef;
+        .tiket-number {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #495057;
         }
 
-        .status-pengaduan,
-        .waktu {
+        /* Status Waktu Edit - SELALU DI BAWAH */
+        .file-info-compact {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.8em;
-            font-weight: 500;
+            gap: 6px;
+            padding: 6px 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: auto;
+            width: 100%;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            min-height: 36px;
         }
 
-        .status-pengaduan {
+        .file-info-compact.can-edit {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .file-info-compact.cannot-edit {
+            background: #f1f3f4;
+            border-color: #dee2e6;
+        }
+
+        .file-icon-small {
+            width: 22px;
+            height: 22px;
+            background: #175cdd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+        }
+
+        .file-info-compact.can-edit .file-icon-small {
+            background: #28a745;
+        }
+
+        .file-info-compact.cannot-edit .file-icon-small {
+            background: #6c757d;
+        }
+
+        .file-number {
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .file-info-compact.can-edit .file-number {
             color: #28a745;
         }
 
-        .waktu {
+        .file-info-compact.cannot-edit .file-number {
             color: #6c757d;
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-info-full,
-        .btn-edit-full,
-        .btn-delete-full {
-            flex: 1;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            text-align: center;
-            font-size: 0.8em;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .btn-info-full {
-            background: #17a2b8;
-            color: white;
-        }
-
-        .btn-edit-full {
-            background: #ffc107;
-            color: #212529;
-        }
-
-        .btn-delete-full {
-            background: #dc3545;
-            color: white;
-        }
-
-        .btn-info-full:hover,
-        .btn-edit-full:hover,
-        .btn-delete-full:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .empty-state {
-            padding: 60px 20px;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
+        .file-text-small {
+            font-size: 0.65rem;
+            color: #6c757d;
+            margin-left: 4px;
         }
 
         /* Statistik */
@@ -566,12 +719,19 @@
             border-radius: 10px;
             background: #f8f9fa;
             margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .stat-box h3 {
             margin: 0;
             font-size: 2rem;
             color: #2c3e50;
+            font-weight: bold;
         }
 
         .stat-box p {
@@ -580,7 +740,7 @@
             font-size: 0.9em;
         }
 
-        /* Search Section Styling */
+        /* CSS untuk search-section */
         .search-section .search-title {
             font-size: 2rem;
             font-weight: 300;
@@ -673,27 +833,7 @@
             box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .search-section .search-form .search-input-group {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1.5rem;
-                border-radius: 24px;
-            }
-
-            .search-section .search-form .search-input-group .search-btn,
-            .search-section .search-form .search-input-group .reset-btn {
-                border-radius: 16px;
-                justify-content: center;
-            }
-
-            .stat-box {
-                margin-bottom: 15px;
-            }
-        }
-
-        /* CSS untuk total-badge (jika belum ada) */
+        /* CSS untuk total-badge */
         .total-badge {
             background: #f8f9fa;
             border: 2px solid #e9ecef;
@@ -728,8 +868,135 @@
             white-space: nowrap;
         }
 
-        /* Responsif untuk mobile */
+        /* Empty State */
+        .empty-state {
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #6c757d;
+        }
+
+        /* Responsive untuk 4 Kolom */
+        @media (max-width: 1400px) {
+            .col-xl-3 {
+                flex: 0 0 25%;
+                max-width: 25%;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .col-lg-4 {
+                flex: 0 0 33.333%;
+                max-width: 33.333%;
+            }
+
+            .user-picture-area {
+                width: 75px;
+                height: 75px;
+            }
+
+            .user-picture-circle {
+                width: 75px;
+                height: 75px;
+            }
+
+            .user-info-text {
+                max-width: 140px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .col-md-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .user-picture-area {
+                width: 70px;
+                height: 70px;
+            }
+
+            .user-picture-circle {
+                width: 70px;
+                height: 70px;
+            }
+
+            .rating-avatar {
+                font-size: 2rem;
+                font-weight: bold;
+            }
+
+            .user-name {
+                font-size: 0.85rem;
+            }
+
+            .user-info-text {
+                max-width: 120px;
+            }
+
+            .user-card {
+                min-height: 300px;
+                padding: 15px 10px;
+            }
+
+            .user-action-btn {
+                width: 22px;
+                height: 22px;
+                font-size: 0.65rem;
+            }
+
+            .user-info-item {
+                padding: 2px 4px;
+                margin-bottom: 5px;
+                font-size: 0.7rem;
+                gap: 5px;
+            }
+
+            .user-info-item i {
+                font-size: 0.75rem;
+                width: 14px;
+            }
+        }
+
         @media (max-width: 768px) {
+            .col-md-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .user-picture-area {
+                width: 80px;
+                height: 80px;
+            }
+
+            .user-picture-circle {
+                width: 80px;
+                height: 80px;
+            }
+
+            .user-info-text {
+                max-width: 150px;
+            }
+
+            .user-card {
+                min-height: 310px;
+            }
+
+            .search-section .search-form .search-input-group {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+
+            .search-section .search-form .search-input-group .search-btn,
+            .search-section .search-form .search-input-group .reset-btn {
+                border-radius: 16px;
+                justify-content: center;
+            }
+
             .d-flex.justify-content-between {
                 flex-direction: column;
                 align-items: flex-start !important;
@@ -740,6 +1007,118 @@
                 align-self: flex-start;
                 margin-top: 5px;
             }
+
+            .stat-box {
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .col-md-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .user-picture-area {
+                width: 85px;
+                height: 85px;
+            }
+
+            .user-picture-circle {
+                width: 85px;
+                height: 85px;
+            }
+
+            .user-info-text {
+                max-width: 200px;
+            }
+
+            .user-card {
+                min-height: 300px;
+                padding: 15px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info-text {
+                max-width: 180px;
+            }
+
+            .user-card {
+                min-height: 290px;
+                padding: 12px 10px;
+            }
+
+            .user-picture-area {
+                width: 75px;
+                height: 75px;
+                margin-bottom: 8px;
+            }
+
+            .user-picture-circle {
+                width: 75px;
+                height: 75px;
+            }
+
+            .user-info-item {
+                font-size: 0.65rem;
+                margin-bottom: 4px;
+                padding: 2px 3px;
+            }
+
+            .user-info-item i {
+                font-size: 0.7rem;
+                width: 12px;
+            }
+
+            .user-action-btn {
+                width: 20px;
+                height: 20px;
+                font-size: 0.6rem;
+            }
+
+            .stat-box h3 {
+                font-size: 1.5rem;
+            }
+
+            .stat-box p {
+                font-size: 0.8rem;
+            }
         }
     </style>
+
+    <script>
+        // Pastikan semua card memiliki tinggi yang sama
+        document.addEventListener('DOMContentLoaded', function() {
+            function equalizeCardHeights() {
+                const cards = document.querySelectorAll('.user-card');
+                if (cards.length === 0) return;
+
+                // Reset height
+                cards.forEach(card => {
+                    card.style.minHeight = '';
+                });
+
+                // Cari card dengan tinggi tertinggi
+                let maxHeight = 0;
+                cards.forEach(card => {
+                    const height = card.offsetHeight;
+                    if (height > maxHeight) {
+                        maxHeight = height;
+                    }
+                });
+
+                // Set semua card ke tinggi yang sama
+                cards.forEach(card => {
+                    card.style.minHeight = maxHeight + 'px';
+                });
+            }
+
+            // Jalankan saat halaman dimuat
+            equalizeCardHeights();
+
+            // Jalankan saat ukuran window berubah
+            window.addEventListener('resize', equalizeCardHeights);
+        });
+    </script>
 @endsection

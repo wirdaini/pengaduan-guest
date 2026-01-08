@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PenilaianLayanan;
 use App\Models\Pengaduan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PenilaianLayananController extends Controller
 {
@@ -13,6 +14,8 @@ class PenilaianLayananController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
+
         // Kolom yang bisa di-filter
         $filterableColumns = ['rating'];
 
@@ -20,12 +23,27 @@ class PenilaianLayananController extends Controller
         $searchableColumns = ['komentar'];
 
         // Query dengan scope filter DAN search
-        $penilaian = PenilaianLayanan::with(['pengaduan', 'pengaduan.warga'])
+        $query = PenilaianLayanan::with(['pengaduan', 'pengaduan.warga'])
             ->filter($request, $filterableColumns)
             ->search($request, $searchableColumns)
-            ->orderBy('created_at', 'desc')
-            ->paginate(9)
-            ->withQueryString();
+            ->orderBy('created_at', 'desc');
+
+        // ========== TAMBAH FILTER BERDASARKAN ROLE ==========
+        if ($user->role == 'warga') {
+            // WARGA: hanya lihat penilaian untuk pengaduan mereka sendiri
+            $warga = $user->warga;
+
+            if ($warga) {
+                $query->whereHas('pengaduan', function($q) use ($warga) {
+                    $q->where('warga_id', $warga->warga_id);
+                });
+            } else {
+                $query->where('id', 0); // Kosongkan hasil jika tidak ada data warga
+            }
+        }
+        // Admin & petugas lihat semua
+
+        $penilaian = $query->paginate(16)->withQueryString();
 
         return view('pages.penilaian_layanan.index', compact('penilaian'));
     }
@@ -35,11 +53,30 @@ class PenilaianLayananController extends Controller
      */
     public function create()
     {
-        // Ambil pengaduan yang sudah selesai dan belum dinilai
-        $pengaduan = Pengaduan::where('status', 'selesai')
-            ->whereDoesntHave('penilaian') // Hanya yang belum dinilai
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $user = Auth::user();
+
+        // ========== TAMBAH VALIDASI ROLE ==========
+        if ($user->role == 'warga') {
+            // WARGA: hanya bisa beri penilaian untuk pengaduan mereka sendiri
+            $warga = $user->warga;
+
+            if (!$warga) {
+                abort(403, 'Data warga tidak ditemukan. Hubungi admin.');
+            }
+
+            // Ambil pengaduan warga yang selesai dan belum dinilai
+            $pengaduan = Pengaduan::where('status', 'selesai')
+                ->where('warga_id', $warga->warga_id)
+                ->whereDoesntHave('penilaian')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            // ADMIN/PETUGAS: bisa pilih semua pengaduan selesai
+            $pengaduan = Pengaduan::where('status', 'selesai')
+                ->whereDoesntHave('penilaian')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
 
         return view('pages.penilaian_layanan.create', compact('pengaduan'));
     }
@@ -49,6 +86,8 @@ class PenilaianLayananController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+
         $request->validate([
             'pengaduan_id' => 'required|exists:pengaduan,pengaduan_id|unique:penilaian_layanan,pengaduan_id',
             'rating' => 'required|integer|min:1|max:5',
@@ -57,10 +96,20 @@ class PenilaianLayananController extends Controller
 
         // Cek apakah pengaduan sudah selesai
         $pengaduan = Pengaduan::findOrFail($request->pengaduan_id);
+
         if ($pengaduan->status !== 'selesai') {
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Hanya pengaduan dengan status "Selesai" yang dapat dinilai.');
+        }
+
+        // ========== TAMBAH VALIDASI UNTUK WARGA ==========
+        if ($user->role == 'warga') {
+            $warga = $user->warga;
+
+            if (!$warga || $pengaduan->warga_id != $warga->warga_id) {
+                abort(403, 'Anda hanya bisa memberi penilaian untuk pengaduan Anda sendiri');
+            }
         }
 
         PenilaianLayanan::create([
@@ -79,6 +128,17 @@ class PenilaianLayananController extends Controller
     public function show($id)
     {
         $penilaian = PenilaianLayanan::with(['pengaduan', 'pengaduan.warga'])->findOrFail($id);
+        $user = Auth::user();
+
+        // ========== TAMBAH VALIDASI UNTUK WARGA ==========
+        if ($user->role == 'warga') {
+            $warga = $user->warga;
+
+            if (!$warga || $penilaian->pengaduan->warga_id != $warga->warga_id) {
+                abort(403, 'Anda hanya bisa melihat penilaian untuk pengaduan Anda sendiri');
+            }
+        }
+
         return view('pages.penilaian_layanan.show', compact('penilaian'));
     }
 
@@ -88,6 +148,16 @@ class PenilaianLayananController extends Controller
     public function edit($id)
     {
         $penilaian = PenilaianLayanan::with(['pengaduan'])->findOrFail($id);
+        $user = Auth::user();
+
+        // ========== TAMBAH VALIDASI UNTUK WARGA ==========
+        if ($user->role == 'warga') {
+            $warga = $user->warga;
+
+            if (!$warga || $penilaian->pengaduan->warga_id != $warga->warga_id) {
+                abort(403, 'Anda hanya bisa mengedit penilaian untuk pengaduan Anda sendiri');
+            }
+        }
 
         // Hanya boleh edit dalam waktu 24 jam
         $waktuBuat = $penilaian->created_at;
@@ -112,6 +182,16 @@ class PenilaianLayananController extends Controller
         ]);
 
         $penilaian = PenilaianLayanan::findOrFail($id);
+        $user = Auth::user();
+
+        // ========== TAMBAH VALIDASI UNTUK WARGA ==========
+        if ($user->role == 'warga') {
+            $warga = $user->warga;
+
+            if (!$warga || $penilaian->pengaduan->warga_id != $warga->warga_id) {
+                abort(403, 'Anda hanya bisa mengupdate penilaian untuk pengaduan Anda sendiri');
+            }
+        }
 
         // Cek batas waktu edit
         $waktuBuat = $penilaian->created_at;
@@ -137,6 +217,17 @@ class PenilaianLayananController extends Controller
     public function destroy($id)
     {
         $penilaian = PenilaianLayanan::findOrFail($id);
+        $user = Auth::user();
+
+        // ========== TAMBAH VALIDASI UNTUK WARGA ==========
+        if ($user->role == 'warga') {
+            $warga = $user->warga;
+
+            if (!$warga || $penilaian->pengaduan->warga_id != $warga->warga_id) {
+                abort(403, 'Anda hanya bisa menghapus penilaian untuk pengaduan Anda sendiri');
+            }
+        }
+
         $penilaian->delete();
 
         return redirect()->route('penilaian_layanan.index')
@@ -149,6 +240,16 @@ class PenilaianLayananController extends Controller
     public function createByPengaduan($pengaduan_id)
     {
         $pengaduan = Pengaduan::with(['warga'])->findOrFail($pengaduan_id);
+        $user = Auth::user();
+
+        // ========== TAMBAH VALIDASI UNTUK WARGA ==========
+        if ($user->role == 'warga') {
+            $warga = $user->warga;
+
+            if (!$warga || $pengaduan->warga_id != $warga->warga_id) {
+                abort(403, 'Anda hanya bisa memberi penilaian untuk pengaduan Anda sendiri');
+            }
+        }
 
         // Cek apakah pengaduan sudah selesai
         if ($pengaduan->status !== 'selesai') {

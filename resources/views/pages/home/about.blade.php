@@ -8,24 +8,10 @@
 
         <!-- Page Title -->
         <div class="page-title">
-            <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="heading-title">Tentang Kami</h1>
-                            <p class="mb-0">
-                                Platform pengaduan warga untuk pembangunan desa yang lebih baik.
-                                Kami hadir sebagai jembatan antara masyarakat dan pemerintah desa
-                                dalam menciptakan perubahan positif.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}"><i class="bi bi-house"></i></a></li>
                         <li class="current">Tentang Kami</li>
                     </ol>
                 </div>
@@ -139,6 +125,57 @@
                     </div><!-- End Values Row -->
                 </div><!-- End Values Section -->
 
+                <!-- Logo Meaning Section -->
+                <div class="logo-meaning-section section" data-aos="fade-up" data-aos-delay="300">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12 text-center mb-4">
+                            <h3>Makna Logo Sistem Bina Desa</h3>
+                            <p class="section-description">
+                                Logo Sistem Bina Desa merepresentasikan komitmen terhadap pelayanan publik,
+                                keadilan, dan suara masyarakat desa yang disalurkan melalui teknologi.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <!-- Logo -->
+                        <div class="col-lg-4 text-center mb-4" data-aos="zoom-in">
+                            <img src="{{ asset('assets/img/logobdvertikal3.png') }}" class="img-fluid"
+                                style="max-width: 250px;" alt="Logo Sistem Bina Desa">
+                        </div>
+
+                        <!-- Makna -->
+                        <div class="col-lg-8" data-aos="fade-left">
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <strong>🔹 Pilar:</strong>
+                                    Melambangkan fondasi hukum, stabilitas, dan tata kelola desa yang kokoh
+                                    sebagai dasar pelayanan kepada masyarakat.
+                                </li>
+
+                                <li class="mb-3">
+                                    <strong>🔹 Pena:</strong>
+                                    Mewakili suara rakyat, aspirasi warga, serta pengaduan yang disampaikan
+                                    secara tertulis dan tercatat secara resmi melalui sistem.
+                                </li>
+
+                                <li class="mb-3">
+                                    <strong>🔹 Kombinasi Pilar & Pena:</strong>
+                                    Menunjukkan sinergi antara kekuatan hukum dan kebebasan masyarakat
+                                    dalam menyampaikan pendapat secara bertanggung jawab.
+                                </li>
+
+                                <li class="mb-3">
+                                    <strong>🔹 Warna Biru & Emas:</strong>
+                                    Biru mencerminkan kepercayaan, profesionalisme, dan teknologi,
+                                    sementara emas melambangkan nilai, keadilan, dan harapan bagi warga desa.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Logo Meaning Section -->
+
                 <div class="certifications-section" data-aos="fade-up" data-aos-delay="400">
                     <div class="row">
                         <div class="col-lg-12 text-center">
@@ -188,3 +225,64 @@
     </main>
 
 @endsection
+
+<style>
+    /* ===============================
+   Logo Meaning Section - Bina Desa
+================================= */
+
+    .logo-meaning-section {
+        padding: 60px 0;
+        background-color: #f8f9fa;
+        /* abu lembut khas template */
+    }
+
+    .logo-meaning-section h3 {
+        font-weight: 700;
+        color: #1f2c5c;
+        /* biru utama */
+        margin-bottom: 10px;
+    }
+
+    .logo-meaning-section .section-description {
+        max-width: 700px;
+        margin: 0 auto 40px;
+        color: #6c757d;
+        font-size: 16px;
+    }
+
+    /* Logo */
+    .logo-meaning-section img {
+        transition: transform 0.3s ease;
+    }
+
+    .logo-meaning-section img:hover {
+        transform: scale(1.05);
+    }
+
+    /* List Makna */
+    .logo-meaning-section ul li {
+        background: #ffffff;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .logo-meaning-section ul li strong {
+        color: #1f2c5c;
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .logo-meaning-section {
+            text-align: center;
+        }
+
+        .logo-meaning-section ul {
+            padding-left: 0;
+        }
+    }
+</style>

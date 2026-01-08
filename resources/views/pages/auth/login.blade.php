@@ -1,299 +1,633 @@
-<!-- resources/views/pages/auth/login.blade.php -->
 @extends('layouts.guest.app')
 
 @section('content')
     <main class="main">
 
-        <!-- Page Title -->
+        <!-- Page Title - DIPERKECIL -->
         <div class="page-title">
             <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="heading-title">Login</h1>
-                            <p class="mb-0">Masuk ke akun Anda untuk mengakses layanan pengaduan desa</p>
-                        </div>
+                <nav class="breadcrumbs">
+                    <div class="container">
+                        <ol>
+                            <li><a href="{{ url('/') }}"><i class="bi bi-house"></i></a></li>
+                            <li class="current">Login</li>
+                        </ol>
                     </div>
-                </div>
-            </div>
-            <nav class="breadcrumbs">
-                <div class="container">
-                    <ol>
-                        <li><a href="{{ url('/') }}">Home</a></li>
-                        <li class="current">Login</li>
-                    </ol>
-                </div>
-            </nav>
-        </div><!-- End Page Title -->
+                </nav>
+            </div><!-- End Page Title -->
 
-        <!-- Login Section -->
-        <section id="login" class="login section">
-            <div class="container" data-aos="fade-up" data-aos-delay="100">
-                <div class="row">
-                    <div class="col-lg-6 mx-auto">
-                        <div class="login-wrapper">
-                            <div class="login-header text-center">
-                                <!-- Logo Bina Desa -->
-                                <div class="logo-container mb-4">
-                                    <a href="{{ url('/') }}" class="logo d-flex align-items-center justify-content-center">
-                                        <img src="{{ asset('assets/img/logobdhorizontal.png') }}" alt="Bina Desa Logo" class="header-logo" style="max-height: 80px;">
-                                    </a>
-                                </div>
 
-                                <h2>Masuk ke Akun Anda</h2>
-                                <p>Akses pengaduan dan layanan desa Anda</p>
-                            </div>
+            <!-- Login Section - DINAIKKAN POSISINYA -->
+            <div class="login-container">
+                <div class="login-box">
+                    <!-- KIRI : FORM LOGIN -->
+                    <div class="login-form-section">
+                        <div class="login-form-wrapper">
+                            <h1 class="login-title">Login</h1>
+                            <p class="login-subtitle">Untuk mengakses akun, silakan mengisi data diri anda</p>
 
-                            {{-- <!-- Tampilkan error messages secara custom -->
-                            @if($errors->any())
+                            @if ($errors->any())
                                 <div class="alert alert-danger">
-                                    <ul class="mb-0">
-                                        @foreach($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif --}}
-
-                            <!-- Tampilkan success message -->
-                            @if(session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
+                                    @foreach ($errors->all() as $error)
+                                        <div class="alert-message">{{ $error }}</div>
+                                    @endforeach
                                 </div>
                             @endif
 
-                            <div class="login-form">
-                                <form method="POST" action="{{ route('login.post') }}" class="php-email-form">
-                                    @csrf
-                                    <div class="row gy-4">
-                                        <div class="col-12">
-                                            <label for="email" class="form-label">Alamat Email</label>
-                                            <input type="email" name="email" class="form-control"
-                                                placeholder="Masukkan alamat email Anda"
-                                                value="{{ old('email') }}" required>
-                                            <!-- Error message untuk email -->
-                                            @error('email')
-                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="password" class="form-label">Kata Sandi</label>
-                                            <input type="password" name="password" class="form-control"
-                                                placeholder="Masukkan kata sandi Anda" required>
-                                            <!-- Error message untuk password -->
-                                            @error('password')
-                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember"
-                                                    id="remember">
-                                                <label class="form-check-label" for="remember">
-                                                    Ingatkan saya
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <a href="#" class="forgot-password">Lupa Kata Sandi?</a>
-                                        </div>
-                                        <div class="col-12">
-                                            <hr class="my-4">
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="submit" class="btn-login w-100">Masuk</button>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="mt-3 mb-0">Belum punya akun?
-                                                <a href="{{ route('register') }}" class="register-link">Daftar di sini</a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                            @if (session('success'))
+                                <div class="alert alert-success">{{ session('success') }}</div>
+                            @endif
+
+                            <form method="POST" action="{{ route('login.post') }}" class="login-form">
+                                @csrf
+
+                                <!-- Email -->
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" name="email" id="email" class="form-control"
+                                        value="{{ old('email') }}" placeholder="nama@email.com" required>
+                                </div>
+
+                                <!-- Password -->
+                                <div class="form-group">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control"
+                                        placeholder="Masukkan password" required>
+                                </div>
+
+                                <!-- Tombol Masuk -->
+                                <button type="submit" class="btn btn-login">Masuk</button>
+
+                                <!-- Link Daftar -->
+                                <div class="register-section">
+                                    <p>Belum memiliki akun?
+                                        <a href="{{ route('register') }}" class="register-link">Daftar Disini</a>
+                                    </p>
+                                </div>
+                            </form>
                         </div>
+                    </div>
+
+                    <!-- KANAN : BACKGROUND IMAGE -->
+                    <div class="login-image-section">
+                        <img src="{{ asset('assets/img/login.jpeg') }}" alt="Login Background"
+                            class="login-bg-image">
                     </div>
                 </div>
             </div>
-        </section><!-- /Login Section -->
-
     </main>
 
-    <style>
-        /* Tambahan styling untuk logo */
-        .logo-container {
-            margin-bottom: 30px !important;
-            text-align: center;
-        }
+<style>
+    /* ===============================
+       VARIABLES & RESET
+    ================================ */
+    :root {
+        --primary-color: #2563eb;
+        --primary-hover: #1d4ed8;
+        --text-dark: #1e293b;
+        --text-medium: #64748b;
+        --text-light: #6b7280;
+        --border-color: #d1d5db;
+        --bg-light: #f9fafb;
+        --danger-color: #991b1b;
+        --danger-bg: #fee2e2;
+        --success-color: #065f46;
+        --success-bg: #d1fae5;
+        --radius: 8px;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
 
-        .header-logo {
-            max-height: 80px;
-            width: auto;
-            transition: transform 0.3s ease;
-        }
+    /* ===============================
+       PAGE TITLE - DIKECILKAN
+    ================================ */
+    .page-title {
+        background: #f8fafc;
+        padding: 12px 0;
+        border-bottom: 1px solid #e5e7eb;
+        margin-bottom: 10px;
+    }
 
-        .header-logo:hover {
-            transform: scale(1.05);
-        }
+    .breadcrumbs {
+        font-size: 0.85rem;
+        color: var(--text-medium);
+    }
 
-        /* Tampilan asli tetap dipertahankan */
-        .login .login-wrapper {
-            background-color: var(--surface-color);
-            border-radius: 15px;
-            padding: 60px 40px;
-            box-shadow: 0 5px 25px color-mix(in srgb, var(--default-color), transparent 90%);
-        }
+    .breadcrumbs ol {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 8px;
+    }
 
-        .login .login-header {
-            margin-bottom: 40px;
-        }
+    .breadcrumbs li {
+        display: flex;
+        align-items: center;
+    }
 
-        .login .login-header h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--heading-color);
-        }
+    .breadcrumbs a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
 
-        .login .login-header p {
-            font-size: 1.1rem;
-            color: color-mix(in srgb, var(--default-color), transparent 20%);
-            max-width: 400px;
-            margin: 0 auto;
-        }
+    .breadcrumbs a:hover {
+        text-decoration: underline;
+        color: var(--primary-hover);
+    }
 
-        .login .login-form .php-email-form input[type=email],
-        .login .login-form .php-email-form input[type=password] {
-            color: var(--default-color);
-            background-color: transparent;
-            font-size: 14px;
-            border: 2px solid color-mix(in srgb, var(--default-color), transparent 80%);
-            border-radius: 8px;
-            padding: 15px;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
+    .breadcrumbs li.current {
+        color: var(--text-light);
+    }
 
-        .login .login-form .php-email-form input[type=email]:focus,
-        .login .login-form .php-email-form input[type=password]:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--accent-color), transparent 80%);
-            outline: none;
-        }
+    /* ===============================
+       LOGIN CONTAINER
+    ================================ */
+    .login-container {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 20px;
+        margin-top: -50px;
+    }
 
-        .login .login-form .php-email-form input[type=email]::placeholder,
-        .login .login-form .php-email-form input[type=password]::placeholder {
-            color: color-mix(in srgb, var(--default-color), transparent 70%);
-        }
+    .login-box {
+        width: 100%;
+        display: flex;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        height: 500px;
+    }
 
-        .login .login-form .php-email-form .form-check-input:checked {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-        }
+    /* ===============================
+       FORM SECTION (KIRI) - 60%
+    ================================ */
+    .login-form-section {
+        flex: 1.2; /* Lebih besar */
+        padding: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+    }
 
-        .login .login-form .php-email-form .form-check-label {
-            color: var(--default-color);
-            font-size: 0.9rem;
-        }
+    .login-form-wrapper {
+        width: 100%;
+        max-width: 360px;
+        animation: fadeInUp 0.5s ease-out 0.2s both;
+    }
 
-        .login .login-form .php-email-form .forgot-password {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
+    /* Header */
+    .login-title {
+        color: var(--text-dark);
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        text-align: center;
+    }
 
-        .login .login-form .php-email-form .forgot-password:hover {
-            color: color-mix(in srgb, var(--accent-color), black 20%);
-            text-decoration: underline;
-        }
+    .login-subtitle {
+        color: var(--text-medium);
+        font-size: 0.9rem;
+        text-align: center;
+        margin-bottom: 30px;
+        line-height: 1.5;
+    }
 
-        .login .login-form .php-email-form hr {
-            border-top: 2px solid color-mix(in srgb, var(--default-color), transparent 80%);
-            margin: 25px 0;
-        }
+    /* Form Elements */
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-        .login .login-form .php-email-form .btn-login {
-            background-color: var(--accent-color);
-            color: var(--contrast-color);
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            width: 100%;
-            cursor: pointer;
-        }
+    .form-label {
+        display: block;
+        color: var(--text-dark);
+        font-weight: 500;
+        margin-bottom: 6px;
+        font-size: 0.9rem;
+    }
 
-        .login .login-form .php-email-form .btn-login:hover {
-            background-color: color-mix(in srgb, var(--accent-color), black 10%);
-            transform: translateY(-2px);
-        }
+    .form-control {
+        width: 100%;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 11px 14px;
+        font-size: 0.9rem;
+        background-color: var(--bg-light);
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
 
-        .login .login-form .php-email-form .btn-login:active {
+   .form-control:focus {
+    border-color: #1d4ed8;
+    border-width: 1px;
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.08); /* Shadow biru sangat tipis */
+    background-color: #ffffff;
+    outline: none;
+}
+
+    /* Forgot Password */
+    .forgot-password {
+        text-align: right;
+        margin-bottom: 25px;
+    }
+
+    .forgot-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+
+    .forgot-link:hover {
+        text-decoration: underline;
+        color: var(--primary-hover);
+    }
+
+    /* Login Button */
+    .btn-login {
+        width: 100%;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--radius);
+        padding: 12px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 20px;
+    }
+
+    .btn-login:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-login:active {
+        transform: translateY(0);
+    }
+
+    /* Register Section */
+    .register-section {
+        text-align: center;
+        color: var(--text-light);
+        font-size: 0.85rem;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+        margin-top: 15px;
+    }
+
+    .register-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 4px;
+        transition: color 0.2s;
+    }
+
+    .register-link:hover {
+        text-decoration: underline;
+        color: var(--primary-hover);
+    }
+
+   /* ===============================
+   IMAGE SECTION (KANAN) - NYATU DENGAN FORM
+=============================== */
+.login-image-section {
+    flex: 0.8;
+    position: relative;
+    overflow: hidden;
+    min-width: 300px;
+    background: white; /* SAMA dengan background form */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 100px 40px 10px; /* top right bottom left */
+}
+
+.login-bg-image {
+    width: 320px;           /* Lebar diperbesar */
+    height: 320px;          /* Tinggi sama dengan lebar (persegi) */
+    object-fit: contain;    /* Gambar tidak crop */
+    display: block;
+    /* Hapus efek yang membuat terlihat kotak terpisah */
+}
+
+/* RESPONSIVE - TANPA BORDER */
+@media (max-width: 768px) {
+    .login-image-section {
+        flex: none;
+        width: 100%;
+        min-height: 250px;
+        order: -1;
+        padding: 30px;
+        /* TANPA border */
+    }
+
+    .login-bg-image {
+        width: 200px;
+        max-height: 200px;
+    }
+}
+    /* ===============================
+       ALERTS - SIMPLE & PROFESSIONAL
+    =============================== */
+    .alert {
+        padding: 14px 16px;
+        border-radius: var(--radius);
+        margin-bottom: 25px;
+        font-size: 0.9rem;
+        animation: fadeIn 0.3s ease-out;
+        border: 1px solid transparent;
+        position: relative;
+        background-color: white;
+        line-height: 1.5;
+    }
+
+    .alert-danger {
+        background-color: #fef2f2;
+        color: #991b1b;
+        border-color: #fecaca;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .alert-success {
+        background-color: #f0fdf4;
+        color: #166534;
+        border-color: #bbf7d0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .alert-message {
+        margin: 0;
+        padding: 0;
+        font-weight: 400;
+    }
+
+    /* Hapus icon warning */
+    .alert-message:before {
+        content: none;
+    }
+
+    /* Tampilkan error dalam daftar */
+    .alert-danger .alert-message div {
+        margin-bottom: 6px;
+        padding: 0;
+    }
+
+    .alert-danger .alert-message div:last-child {
+        margin-bottom: 0;
+    }
+
+    /* ===============================
+       ANIMATIONS
+    ================================ */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
             transform: translateY(0);
         }
+    }
 
-        .login .login-form .php-email-form .register-link {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
+    /* ===============================
+       FORM VALIDATION ERRORS
+    ================================ */
+    .form-control.error {
+        border-color: var(--danger-color);
+        background-color: #fef2f2;
+    }
+
+    .error-message {
+        color: var(--danger-color);
+        font-size: 13px;
+        margin-top: 4px;
+        display: block;
+    }
+
+    /* ===============================
+       RESPONSIVE DESIGN
+    ================================ */
+    @media (max-width: 768px) {
+        .page-title {
+            padding: 10px 0;
+            margin-bottom: 5px;
         }
 
-        .login .login-form .php-email-form .register-link:hover {
-            color: color-mix(in srgb, var(--accent-color), black 20%);
-            text-decoration: underline;
+        .login-container {
+            padding: 0 15px;
+            margin-top: 20px;
         }
 
-        /* Style untuk error messages */
+        .login-box {
+            flex-direction: column;
+            height: auto;
+            max-width: 100%;
+            min-height: auto;
+        }
+
+        .login-image-section {
+            flex: none;
+            width: 100%;
+            min-height: 250px;
+            order: -1; /* Gambar di atas di mobile */
+            border-left: none;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 30px;
+        }
+
+        .login-bg-image {
+            width: 200px;
+            max-height: 200px;
+        }
+
+        .login-form-section {
+            flex: none;
+            width: 100%;
+            padding: 30px 25px;
+        }
+
+        .login-form-wrapper {
+            max-width: 100%;
+        }
+
+        .login-title {
+            font-size: 1.6rem;
+        }
+
         .alert {
-            border-radius: 8px;
-            padding: 12px 15px;
             margin-bottom: 20px;
-            border: 1px solid transparent;
+            padding: 12px 15px;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 992px) {
+        .login-container {
+            max-width: 95%;
         }
 
-        /* .alert-danger {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-        } */
-
-        .alert-success {
-            background-color: #d1edff;
-            border-color: #b3d9ff;
-            color: #004085;
+        .login-box {
+            height: 480px;
         }
 
-        .text-danger {
-            color: #dc3545 !important;
-            font-size: 0.875rem;
-            margin-top: 5px;
-            display: block;
+        .login-form-section {
+            padding: 35px;
         }
 
-        @media (max-width: 768px) {
-            .login .login-wrapper {
-                padding: 40px 25px;
+        .login-image-section {
+            flex: 0.7;
+            min-width: 280px;
+        }
+
+        .login-bg-image {
+            width: 250px;
+        }
+
+        .login-form-wrapper {
+            max-width: 320px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .login-form-section {
+            padding: 25px 20px;
+        }
+
+        .login-image-section {
+            padding: 25px;
+            min-height: 200px;
+        }
+
+        .login-bg-image {
+            width: 180px;
+            max-height: 180px;
+        }
+
+        .login-title {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+
+        .login-subtitle {
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            padding: 10px 12px;
+            font-size: 0.85rem;
+        }
+
+        .btn-login {
+            padding: 11px;
+            font-size: 0.9rem;
+        }
+
+        .register-section {
+            font-size: 0.8rem;
+        }
+    }
+</style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto focus ke email input
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                setTimeout(() => emailInput.focus(), 100);
             }
 
-            .login .login-header h2 {
-                font-size: 1.8rem;
+            // Form validation
+            const form = document.querySelector('.login-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    const email = form.querySelector('#email');
+                    const password = form.querySelector('#password');
+                    let isValid = true;
+
+                    // Reset error states
+                    clearErrors();
+
+                    // Email validation
+                    if (!email.value.trim()) {
+                        showError(email, 'Email harus diisi');
+                        isValid = false;
+                    } else if (!validateEmail(email.value)) {
+                        showError(email, 'Format email tidak valid');
+                        isValid = false;
+                    }
+
+                    // Password validation
+                    if (!password.value.trim()) {
+                        showError(password, 'Password harus diisi');
+                        isValid = false;
+                    } else if (password.value.length < 6) {
+                        showError(password, 'Password minimal 6 karakter');
+                        isValid = false;
+                    }
+
+                    if (!isValid) {
+                        e.preventDefault();
+                        // Add shake animation to invalid fields
+                        const errorFields = document.querySelectorAll('.form-control.error');
+                        errorFields.forEach(field => {
+                            field.style.animation = 'shake 0.4s ease';
+                            setTimeout(() => field.style.animation = '', 400);
+                        });
+                    }
+                });
             }
 
-            .header-logo {
-                max-height: 70px;
+            // Email validation function
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
             }
-        }
 
-        @media (max-width: 576px) {
-            .header-logo {
-                max-height: 60px;
+            // Show error message
+            function showError(input, message) {
+                input.classList.add('error');
+
+                // Create or update error message
+                let errorDiv = input.parentNode.querySelector('.error-message');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    input.parentNode.appendChild(errorDiv);
+                }
+
+                errorDiv.textContent = message;
             }
-        }
-    </style>
+
+            // Clear all errors
+            function clearErrors() {
+                const errors = document.querySelectorAll('.error-message');
+                errors.forEach(error => error.remove());
+
+                const inputs = document.querySelectorAll('.form-control');
+                inputs.forEach(input => input.classList.remove('error'));
+            }
+
+            // Remove error on input
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('error');
+                    const error = this.parentNode.querySelector('.error-message');
+                    if (error) {
+                        error.remove();
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

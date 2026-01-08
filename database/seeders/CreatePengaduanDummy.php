@@ -15,9 +15,9 @@ class CreatePengaduanDummy extends Seeder
         $wargaIds    = DB::table('warga')->pluck('warga_id')->toArray();
         $kategoriIds = DB::table('kategori_pengaduan')->pluck('kategori_id')->toArray();
 
-        // DEBUG: Cek data yang diambil
-        $this->command->info('Warga IDs: ' . implode(', ', $wargaIds));
-        $this->command->info('Kategori IDs: ' . implode(', ', $kategoriIds));
+        // // DEBUG: Cek data yang diambil
+        // $this->command->info('Warga IDs: ' . implode(', ', $wargaIds));
+        // $this->command->info('Kategori IDs: ' . implode(', ', $kategoriIds));
 
         if (empty($wargaIds)) {
             $this->command->error('DATA WARGA KOSONG! Jalankan WargaSeeder dulu.');
@@ -46,17 +46,13 @@ class CreatePengaduanDummy extends Seeder
                 'kategori_id' => $faker->randomElement($kategoriIds),
                 'judul'       => 'Pengaduan ' . $issue . ' di ' . $faker->city,
                 'deskripsi'   => 'Warga mengeluhkan ' . $issue . ' yang terjadi di ' . $faker->streetAddress . '. Kejadian ini sudah berlangsung selama ' . $faker->numberBetween(1, 7) . ' hari dan sangat mengganggu aktivitas warga sehari-hari.',
+                'status'      => $faker->randomElement(['menunggu', 'diproses', 'selesai', 'ditolak']),
                 'lokasi_text' => $faker->streetAddress,
                 'rt'          => $faker->randomElement(['001', '002', '003']),
                 'rw'          => $faker->randomElement(['001', '002']),
-                'bukti_foto'  => null,
-                'status'      => $faker->randomElement(['menunggu', 'diproses', 'selesai', 'ditolak']),
-                'tanggapan'   => $faker->optional()->sentence(),
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ]);
         }
-
-        $this->command->info('Seeder pengaduan berhasil!');
     }
 }

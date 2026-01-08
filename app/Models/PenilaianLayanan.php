@@ -20,7 +20,7 @@ class PenilaianLayanan extends Model
     ];
 
     /**
-     * Scope filter 
+     * Scope filter
      */
     public function scopeFilter(Builder $query, $request, array $filterableColumns): Builder
     {

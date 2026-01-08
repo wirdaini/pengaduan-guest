@@ -12,13 +12,13 @@ class KategoriPengaduanController extends Controller
         $filterableColumns = ['prioritas', 'sla_hari'];
 
         // Kolom yang bisa di-search
-        $searchableColumns = ['nama', 'prioritas', 'sla_hari']; 
+        $searchableColumns = ['nama', 'prioritas', 'sla_hari'];
 
         // Query dengan filter DAN search
         $kategoris = KategoriPengaduan::filter($request, $filterableColumns)
             ->search($request, $searchableColumns)
             ->orderBy('created_at', 'desc')
-            ->paginate(9)
+            ->paginate(16)
             ->withQueryString();
 
         return view('pages.kategori_pengaduan.index', compact('kategoris'));

@@ -7,20 +7,10 @@
 
         <!-- Page Title -->
         <div class="page-title">
-            <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="heading-title">Data Users</h1>
-                            <p class="mb-0">Kelola semua user yang memiliki akses ke sistem Bina Desa</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}"><i class="bi bi-house"></i></a></li>
                         <li class="current">Data Users</li>
                     </ol>
                 </div>
@@ -48,6 +38,13 @@
                                 <i class="bi bi-plus-circle"></i> Tambah User Baru
                             </a>
                         </div>
+
+                        <div class="mt-2">
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-person-badge me-1"></i>
+                                Total: <strong>{{ $users->total() }}</strong> user
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -57,16 +54,6 @@
                         <div class="search-section">
                             <div class="card" style="background: transparent; border: none; box-shadow: none;">
                                 <div class="card-body" style="padding: 0;">
-                                    <h3 class="search-title">Cari & Filter Users</h3>
-                                    <div class="d-flex justify-content-between align-items-center mb-4">
-                                        <p class="search-subtitle mb-0">Temukan dan kelola semua user sistem dengan mudah
-                                        </p>
-                                        <div class="total-badge">
-                                            <i class="bi bi-people me-1"></i>
-                                            <span class="total-number">{{ $users->total() }}</span>
-                                            <span class="total-text">user</span>
-                                        </div>
-                                    </div>
 
                                     <form method="GET" action="{{ route('user.index') }}" class="search-form">
                                         <div class="search-input-group">
@@ -170,43 +157,40 @@
                     </div>
                 @endif
 
-                <!-- Users Grid -->
+                <!-- Users Grid dengan Gambar Bulat -->
                 <div class="row gy-4">
-
                     @foreach ($users as $user)
-                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+                        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
                             <div class="user-card">
-                                <div class="user-header">
-                                    <!-- ========== PERUBAHAN DISINI ========== -->
-                                    <!-- SAMA PERSIS SEPERTI SHOW VIEW -->
-                                    <div class="user-avatar-container">
+                                <!-- Bagian Gambar Profile Bulat -->
+                                <div class="user-picture-area">
+                                    <div class="user-picture-circle">
                                         @if ($user->profile_picture && Illuminate\Support\Facades\Storage::disk('public')->exists($user->profile_picture))
-                                            <!-- USER PUNYA FOTO: TAMPILKAN FOTO ASLI -->
                                             <img src="{{ Illuminate\Support\Facades\Storage::url($user->profile_picture) }}"
-                                                alt="{{ $user->name }}" class="user-avatar-img">
+                                                alt="{{ $user->name }}" class="user-picture-img">
                                         @else
-                                            <!-- USER TIDAK PUNYA FOTO: ICON ORANG DI LINGKARAN ABU-ABU -->
-                                            <div class="user-avatar-default">
-                                                <i class="bi bi-person-fill"></i>
+                                            <div class="user-picture-default">
+                                                <i class="bi bi-person-circle"></i>
                                             </div>
                                         @endif
                                     </div>
-                                    <!-- ========== END PERUBAHAN ========== -->
-                                    <div class="user-overlay">
-                                        <div class="action-links">
-                                            <a href="{{ route('user.show', $user->id) }}" class="btn-info"
-                                                title="Lihat Detail">
+
+                                    <!-- Overlay untuk Action Buttons -->
+                                    <div class="user-overlay-circle">
+                                        <div class="user-action-links">
+                                            <a href="{{ route('user.show', $user->id) }}"
+                                                class="user-action-btn user-view-btn">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="{{ route('user.edit', $user->id) }}" class="btn-edit"
-                                                title="Edit Data">
+                                            <a href="{{ route('user.edit', $user->id) }}"
+                                                class="user-action-btn user-edit-btn">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <form action="{{ route('user.destroy', $user->id) }}" method="POST"
                                                 style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-delete" title="Hapus Data"
+                                                <button type="submit" class="user-action-btn user-delete-btn"
                                                     onclick="return confirm('Yakin ingin menghapus user ini?')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -214,48 +198,33 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Informasi User -->
                                 <div class="user-content">
-                                    <h4>{{ $user->name }}</h4>
-                                    <span class="user-role">{{ ucfirst($user->role) }}</span>
+                                    <h4 class="user-name">{{ $user->name }}</h4>
+                                    <span class="user-role-badge">{{ ucfirst($user->role) }}</span>
 
-                                    <div class="user-info">
-                                        <p><strong>Email:</strong> {{ $user->email }}</p>
-                                        <p><strong>Status:</strong>
-                                            @if ($user->email_verified_at)
-                                                <span class="text-success">Terverifikasi</span>
-                                            @else
-                                                <span class="text-warning">Belum Verifikasi</span>
-                                            @endif
-                                        </p>
+                                    <!-- Email User -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-envelope"></i>
+                                        <span class="user-info-text">
+                                            {{ $user->email }}
+                                        </span>
                                     </div>
 
-                                    <div class="user-meta">
-                                        <div class="status-badge">
-                                            <i class="bi bi-person-check"></i>
-                                            <span class="status-{{ $user->role }}">{{ ucfirst($user->role) }}</span>
-                                        </div>
-                                        <div class="tanggal">
-                                            <i class="bi bi-calendar"></i>
-                                            <span>{{ $user->created_at->format('d M Y') }}</span>
-                                        </div>
+                                    <!-- Status Verifikasi -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-shield-check"></i>
+                                        <span
+                                            class="user-info-text user-status-{{ $user->email_verified_at ? 'verified' : 'unverified' }}">
+                                            {{ $user->email_verified_at ? 'Terverifikasi' : 'Belum Verifikasi' }}
+                                        </span>
                                     </div>
 
-                                    <div class="action-buttons">
-                                        <a href="{{ route('user.show', $user->id) }}" class="btn-info-full">
-                                            <i class="bi bi-eye"></i> Detail
-                                        </a>
-                                        <a href="{{ route('user.edit', $user->id) }}" class="btn-edit-full">
-                                            <i class="bi bi-pencil"></i> Edit
-                                        </a>
-                                        <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                                            style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-delete-full"
-                                                onclick="return confirm('Yakin ingin menghapus user ini?')">
-                                                <i class="bi bi-trash"></i> Hapus
-                                            </button>
-                                        </form>
+                                    <!-- Tanggal Bergabung -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-calendar-event"></i>
+                                        <span class="user-info-text">{{ $user->created_at->format('d M Y') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -292,238 +261,253 @@
     </main>
 
     <style>
+        /* ===========================================
+               CARD USER LEBIH PENDEK & RAPI
+            =========================================== */
         .user-card {
             background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             height: 100%;
+            border: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 340px;
+            /* DIPENDEKKAN LAGI */
+            position: relative;
         }
 
         .user-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
 
-        .user-header {
+        /* Area Gambar Bulat di Tengah - DIPERKECIL */
+        .user-picture-area {
             position: relative;
-            height: 120px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #175cdd 0%, #1a4bb8 100%);
+            width: 100px;
+            /* DIPERKECIL */
+            height: 100px;
+            /* DIPERKECIL */
+            margin: 0 auto 12px auto;
+            /* DIPENDEKKAN */
+            flex-shrink: 0;
         }
 
-        /* ========== PERUBAHAN CSS DISINI ========== */
-        .user-avatar-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 80px;
-            height: 80px;
+        /* Lingkaran untuk Foto - DIPERKECIL */
+        .user-picture-circle {
+            width: 100px;
+            /* DIPERKECIL */
+            height: 100px;
+            /* DIPERKECIL */
             border-radius: 50%;
-            border: 3px solid white;
             overflow: hidden;
-            background: white;
-            /* Background putih untuk foto */
+            border: 4px solid #f0f5ff;
+            background: #f8f9fa;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .user-avatar-img {
+        .user-picture-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.4s ease;
         }
 
-        /* ICON ORANG UNTUK USER TANPA FOTO */
-        .user-avatar-default {
+        .user-card:hover .user-picture-img {
+            transform: scale(1.05);
+        }
+
+        /* Default Icon untuk User tanpa Foto */
+        .user-picture-default {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            background: #6c757d;
-            /* ABU-ABU seperti show view */
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(135deg, #175cdd 0%, #1a4bb8 100%);
             color: white;
             font-size: 2.5rem;
-            /* Ukuran icon */
+            /* DIPERKECIL */
         }
 
-        .user-avatar-default i {
-            opacity: 0.8;
-        }
-
-        /* ========== END PERUBAHAN ========== */
-
-        .user-overlay {
+        /* Overlay Lingkaran untuk Action Buttons */
+        .user-overlay-circle {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(23, 92, 221, 0.9);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 2;
         }
 
-        .user-card:hover .user-overlay {
+        .user-card:hover .user-overlay-circle {
             opacity: 1;
         }
 
-        .action-links {
+        /* ========== PERUBAHAN 1: Tombol Hoverlay DIKECILKAN ========== */
+        .user-action-links {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            /* DIKECILKAN dari 10px jadi 8px */
         }
 
-        .btn-info,
-        .btn-edit,
-        .btn-delete {
-            width: 40px;
-            height: 40px;
+        /* Tombol Action di Overlay - DIKECILKAN */
+        .user-action-btn {
+            width: 26px;
+            /* DIKECILKAN dari 30px jadi 26px */
+            height: 26px;
+            /* DIKECILKAN dari 30px jadi 26px */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-decoration: none;
-            transition: transform 0.3s ease;
-        }
-
-        .btn-info {
-            background: #17a2b8;
-        }
-
-        .btn-edit {
-            background: #ffc107;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-            border: none;
-        }
-
-        .btn-info:hover,
-        .btn-edit:hover,
-        .btn-delete:hover {
-            transform: scale(1.1);
-            color: white;
-        }
-
-        .user-content {
-            padding: 20px;
-        }
-
-        .user-content h4 {
-            color: #2c3e50;
-            margin-bottom: 5px;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        .user-role {
-            color: #6c757d;
-            font-size: 0.8em;
-            font-weight: 500;
-        }
-
-        .user-info {
-            margin: 15px 0;
-        }
-
-        .user-info p {
-            margin-bottom: 5px;
-            font-size: 0.85em;
-            color: #495057;
-            line-height: 1.4;
-        }
-
-        .user-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            padding: 10px 0;
-            border-top: 1px solid #e9ecef;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .status-badge,
-        .tanggal {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.8em;
-            font-weight: 500;
-        }
-
-        .status-admin {
-            color: #dc3545;
-        }
-
-        .status-petugas {
-            color: #fd7e14;
-        }
-
-        .status-warga {
-            color: #28a745;
-        }
-
-        .tanggal {
-            color: #6c757d;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-info-full,
-        .btn-edit-full,
-        .btn-delete-full {
-            flex: 1;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            text-align: center;
-            font-size: 0.8em;
             transition: all 0.3s ease;
+            border: 1.5px solid white;
+            /* DITIPISKAN dari 2px jadi 1.5px */
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            font-size: 0.75rem;
+            /* DIKECILKAN dari 0.85rem jadi 0.75rem */
+        }
+
+        .user-view-btn:hover {
+            background: rgba(23, 162, 184, 0.9);
+            transform: scale(1.1);
+            /* DIKECILKAN dari 1.15 jadi 1.1 */
+        }
+
+        .user-edit-btn:hover {
+            background: rgba(255, 193, 7, 0.9);
+            transform: scale(1.1);
+            /* DIKECILKAN dari 1.15 jadi 1.1 */
+        }
+
+        .user-delete-btn:hover {
+            background: rgba(220, 53, 69, 0.9);
+            transform: scale(1.1);
+            /* DIKECILKAN dari 1.15 jadi 1.1 */
+        }
+
+        /* User Content */
+        .user-content {
+            padding: 0 5px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        /* Nama User - DIPERKECIL SEDIKIT */
+        .user-name {
+            color: #2c3e50;
+            margin-bottom: 6px;
+            /* DIPENDEKKAN */
+            font-weight: 700;
+            font-size: 1rem;
+            /* DIPERKECIL */
+            line-height: 1.3;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 5px;
+        }
+
+        /* Badge Role - DIPERKECIL */
+        .user-role-badge {
+            display: inline-block;
+            background: #f0f5ff;
+            color: #175cdd;
+            padding: 3px 10px;
+            /* DIPERKECIL */
+            border-radius: 12px;
+            /* DIPERKECIL */
+            font-size: 0.75rem;
+            /* DIPERKECIL */
+            font-weight: 600;
+            margin-bottom: 12px;
+            /* DIPENDEKKAN */
+            border: 1px solid #d1e0ff;
+            white-space: nowrap;
+        }
+
+        /* ========== PERUBAHAN 2: Info item digeser ke kanan ========== */
+        .user-info-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            font-size: 0.8rem;
+            /* DIPERKECIL */
+            margin-bottom: 8px;
+            /* DIPENDEKKAN */
+            width: 100%;
+            text-align: left;
+            padding: 4px 8px;
+            /* DITAMBAH padding kanan 8px */
+            min-height: 24px;
+            /* TAMBAHKAN MIN-HEIGHT UNTUK KONSISTEN */
+            margin-left: 4px;
+            /* DIGESER KE KANAN 4px */
+        }
+
+        .user-info-item i {
+            color: #175cdd;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+            width: 18px;
+            /* FIX WIDTH */
+            text-align: center;
+            /* PASTIKAN ICON DI TENGAH */
+        }
+
+        /* Email lebih rapi dengan line clamp */
+        .user-info-text {
+            color: #6c757d;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            flex: 1;
+            line-height: 1.4;
+            max-height: 2.8em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-size: 0.8rem;
+            /* SERAGAM DENGAN ITEM LAIN */
+        }
+
+        /* Status Warna */
+        .user-status-verified {
+            color: #28a745 !important;
             font-weight: 500;
         }
 
-        .btn-info-full {
-            background: #17a2b8;
-            color: white;
+        .user-status-unverified {
+            color: #fd7e14 !important;
+            font-weight: 500;
         }
 
-        .btn-edit-full {
-            background: #ffc107;
-            color: #212529;
-        }
-
-        .btn-delete-full {
-            background: #dc3545;
-            color: white;
-        }
-
-        .btn-info-full:hover,
-        .btn-edit-full:hover,
-        .btn-delete-full:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .empty-state {
-            padding: 60px 20px;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-        }
-
-        /* Tambahkan di CSS Anda */
+        /* CSS untuk search-section */
         .search-section .search-title {
             font-size: 2rem;
             font-weight: 300;
@@ -616,23 +600,7 @@
             box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .search-section .search-form .search-input-group {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1.5rem;
-                border-radius: 24px;
-            }
-
-            .search-section .search-form .search-input-group .search-btn,
-            .search-section .search-form .search-input-group .reset-btn {
-                border-radius: 16px;
-                justify-content: center;
-            }
-        }
-
-        /* CSS untuk total-badge (tambahkan di dalam <style>) */
+        /* CSS untuk total-badge */
         .total-badge {
             background: #f8f9fa;
             border: 2px solid #e9ecef;
@@ -667,8 +635,97 @@
             white-space: nowrap;
         }
 
-        /* Responsif untuk mobile */
+        /* Responsive untuk card - SESUAIKAN JUGA */
+        @media (max-width: 1200px) {
+            .user-info-text {
+                max-width: 160px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .col-lg-3 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .user-picture-area {
+                width: 90px;
+                height: 90px;
+            }
+
+            .user-picture-circle {
+                width: 90px;
+                height: 90px;
+            }
+
+            .user-name {
+                font-size: 0.95rem;
+            }
+
+            .user-info-text {
+                max-width: 140px;
+            }
+
+            .user-card {
+                min-height: 330px;
+            }
+
+            /* Tombol hoverlay juga diperkecil di responsive */
+            .user-action-btn {
+                width: 24px;
+                /* DIKECILKAN dari 28px jadi 24px */
+                height: 24px;
+                /* DIKECILKAN dari 28px jadi 24px */
+                font-size: 0.7rem;
+                /* DIKECILKAN dari 0.8rem jadi 0.7rem */
+            }
+
+            /* Info item tetap digeser */
+            .user-info-item {
+                padding: 4px 6px;
+                /* DIKECILKAN sedikit di tablet */
+                margin-left: 2px;
+            }
+        }
+
         @media (max-width: 768px) {
+            .col-lg-3 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .user-picture-area {
+                width: 100px;
+                height: 100px;
+            }
+
+            .user-picture-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .user-info-text {
+                max-width: 220px;
+            }
+
+            .user-card {
+                min-height: 320px;
+            }
+
+            /* Responsive untuk search */
+            .search-section .search-form .search-input-group {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+
+            .search-section .search-form .search-input-group .search-btn,
+            .search-section .search-form .search-input-group .reset-btn {
+                border-radius: 16px;
+                justify-content: center;
+            }
+
             .d-flex.justify-content-between {
                 flex-direction: column;
                 align-items: flex-start !important;
@@ -678,6 +735,58 @@
             .total-badge {
                 align-self: flex-start;
                 margin-top: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info-text {
+                max-width: 180px;
+            }
+
+            .user-card {
+                min-height: 310px;
+                padding: 15px 12px;
+            }
+
+            .user-picture-area {
+                width: 85px;
+                height: 85px;
+                margin-bottom: 10px;
+            }
+
+            .user-picture-circle {
+                width: 85px;
+                height: 85px;
+            }
+
+            .user-info-item {
+                font-size: 0.75rem;
+                margin-bottom: 6px;
+                padding: 3px 4px;
+                /* LEBIH KECIL DI MOBILE */
+                margin-left: 0;
+                /* RESET DI MOBILE */
+            }
+
+            .user-info-item i {
+                font-size: 0.85rem;
+                width: 16px;
+            }
+
+            /* Tombol hoverlay lebih kecil di mobile */
+            .user-action-btn {
+                width: 22px;
+                /* LEBIH KECIL DI MOBILE */
+                height: 22px;
+                /* LEBIH KECIL DI MOBILE */
+                font-size: 0.65rem;
+                /* LEBIH KECIL DI MOBILE */
+            }
+        }
+
+        @media (max-width: 360px) {
+            .user-info-item {
+                font-size: 0.7rem;
             }
         }
     </style>

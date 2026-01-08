@@ -17,9 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // ==================== PUBLIC ROUTES ====================
-Route::get('/', function () {
-    return view('pages.home.landing');
-})->name('home');
+Route::get('/', [DashboardController::class, 'index'])->name('home');
 
 // Auth Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -47,28 +45,19 @@ Route::middleware(['checkislogin'])->group(function () {
 
     // ========== ROUTES KHUSUS ADMIN ==========
     Route::middleware(['checkrole:admin'])->group(function () {
-        // User Management
+        // User Management - HANYA ADMIN
         Route::resource('user', UserController::class);
 
-        // Warga Management
+        // Warga Management - HANYA ADMIN
         Route::resource('warga', WargaController::class);
 
-        // Kategori Pengaduan
+        // Kategori Pengaduan - HANYA ADMIN
         Route::resource('kategori_pengaduan', KategoriPengaduanController::class);
     });
 
     // ========== ROUTES UNTUK ADMIN & PETUGAS ==========
     Route::middleware(['checkrole:admin,petugas'])->group(function () {
-        // User Management
-        Route::resource('user', UserController::class);
-
-        // Warga Management
-        Route::resource('warga', WargaController::class);
-
-        // Kategori Pengaduan
-        Route::resource('kategori_pengaduan', KategoriPengaduanController::class);
-
-        // Tindak Lanjut
+        // Tindak Lanjut - ADMIN & PETUGAS
         Route::resource('tindak_lanjut', TindakLanjutController::class);
         Route::delete('/tindak_lanjut/{tindak_id}/media/{media_id}',
             [TindakLanjutController::class, 'destroyMedia'])->name('tindak_lanjut.destroy.media');
@@ -76,15 +65,15 @@ Route::middleware(['checkislogin'])->group(function () {
             [TindakLanjutController::class, 'downloadMedia'])->name('tindak_lanjut.download.media');
     });
 
-    // ========== ROUTES UNTUK SEMUA YANG LOGIN ==========
+    // ========== PENGADUAN - LOGIKA BERBEDA BERDASARKAN ROLE ==========
+    // Semua role bisa akses, tapi data yang ditampilkan berbeda di Controller
     Route::middleware(['checkrole:admin,petugas,warga'])->group(function () {
-        // PENGADUAN - dengan pembatasan di Controller
         Route::get('/pengaduan', [PengaduanController::class, 'index'])->name('pengaduan.index');
         Route::get('/pengaduan/create', [PengaduanController::class, 'create'])->name('pengaduan.create');
         Route::post('/pengaduan', [PengaduanController::class, 'store'])->name('pengaduan.store');
         Route::get('/pengaduan/{pengaduan}', [PengaduanController::class, 'show'])->name('pengaduan.show');
 
-        // EDIT/UPDATE/DELETE - khusus pengaduan status "baru"
+        // Edit/Update/Delete hanya untuk pemilik pengaduan (warga) atau admin/petugas
         Route::get('/pengaduan/{pengaduan}/edit', [PengaduanController::class, 'edit'])->name('pengaduan.edit');
         Route::put('/pengaduan/{pengaduan}', [PengaduanController::class, 'update'])->name('pengaduan.update');
         Route::delete('/pengaduan/{pengaduan}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy');
@@ -94,23 +83,23 @@ Route::middleware(['checkislogin'])->group(function () {
             [PengaduanController::class, 'destroyMedia'])->name('pengaduan.destroy.media');
         Route::get('/pengaduan/{pengaduan_id}/media/{media_id}/download',
             [PengaduanController::class, 'downloadMedia'])->name('pengaduan.download.media');
+    });
 
-        // PENILAIAN LAYANAN
+    // ========== PENILAIAN LAYANAN ==========
+    Route::middleware(['checkrole:admin,petugas,warga'])->group(function () {
         Route::resource('penilaian_layanan', PenilaianLayananController::class);
         Route::get('/penilaian/pengaduan/{pengaduan_id}', [PenilaianLayananController::class, 'createByPengaduan'])
             ->name('penilaian_layanan.create_by_pengaduan');
-
-        // PROFIL USER
-        Route::get('/profil', [UserController::class, 'profil'])->name('profil');
-        Route::put('/profil', [UserController::class, 'updateProfil'])->name('profil.update');
     });
+
 
     // ========== ROUTES KHUSUS WARGA ==========
     Route::middleware(['checkrole:warga'])->group(function () {
-        // Pengaduan Saya
+        // Pengaduan Saya - halaman khusus untuk warga melihat pengaduan mereka
         Route::get('/pengaduan-saya', [PengaduanController::class, 'pengaduanSaya'])->name('pengaduan.saya');
 
-        // Beri Penilaian untuk pengaduan selesai
-        Route::post('/pengaduan/{id}/penilaian', [PengaduanController::class, 'beriPenilaian'])->name('pengaduan.penilaian');
+        // Beri penilaian untuk pengaduan yang selesai
+        Route::post('/pengaduan/{id}/penilaian', [PengaduanController::class, 'beriPenilaian'])
+            ->name('pengaduan.penilaian');
     });
 });

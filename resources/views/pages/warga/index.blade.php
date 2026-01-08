@@ -7,22 +7,10 @@
 
         <!-- Page Title -->
         <div class="page-title">
-            <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="heading-title">Data Warga</h1>
-                            <p class="mb-0">
-                                Daftar warga yang telah terdaftar dalam sistem. Kelola data warga dengan mudah.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <nav class="breadcrumbs">
                 <div class="container">
                     <ol>
-                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ url('/') }}"><i class="bi bi-house"></i></a></li>
                         <li class="current">Data Warga</li>
                     </ol>
                 </div>
@@ -50,6 +38,13 @@
                                 <i class="bi bi-plus-circle"></i> Tambah Warga Baru
                             </a>
                         </div>
+
+                        <div class="mt-2">
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-people me-1"></i>
+                                Total: <strong>{{ $warga->total() }}</strong> warga
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -59,19 +54,8 @@
                         <div class="search-section">
                             <div class="card" style="background: transparent; border: none; box-shadow: none;">
                                 <div class="card-body" style="padding: 0;">
-                                    <h3 class="search-title">Cari & Filter Warga</h3>
-                                    <p class="search-subtitle">Temukan dan kelola semua data warga dengan mudah</p>
 
                                     <form method="GET" action="{{ route('warga.index') }}" class="search-form">
-                                        <div class="d-flex justify-content-between align-items-center mb-4">
-                                            <p class="search-subtitle mb-0">Temukan dan kelola semua data warga dengan mudah
-                                            </p>
-                                            <div class="total-badge">
-                                                <i class="bi bi-person-vcard me-1"></i>
-                                                <span class="total-number">{{ $warga->total() }}</span>
-                                                <span class="total-text">warga</span>
-                                            </div>
-                                        </div>
                                         <div class="search-input-group">
                                             <!-- SEARCH INPUT -->
                                             <div class="input-wrapper">
@@ -205,31 +189,34 @@
 
                 <!-- Warga Grid -->
                 <div class="row gy-4">
-
                     @foreach ($warga as $item)
-                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
-                            <div class="warga-card">
-                                <div class="warga-header">
-                                    <!-- Avatar dengan inisial nama -->
-                                    <div class="warga-avatar"
-                                        style="background: {{ $item->jenis_kelamin == 'L' ? '#3498db' : '#e84393' }};">
-                                        {{ strtoupper(substr($item->nama, 0, 2)) }}
+                        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+                            <div class="user-card">
+                                <!-- Bagian Gambar Profile Bulat -->
+                                <div class="user-picture-area">
+                                    <div class="user-picture-circle">
+                                        <div class="user-picture-default"
+                                            style="background: {{ $item->jenis_kelamin == 'L' ? 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)' : 'linear-gradient(135deg, #e84393 0%, #d63031 100%)' }};">
+                                            {{ strtoupper(substr($item->nama, 0, 2)) }}
+                                        </div>
                                     </div>
-                                    <div class="warga-overlay">
-                                        <div class="action-links">
-                                            <a href="{{ route('warga.show', $item->warga_id) }}" class="btn-info"
-                                                title="Lihat Detail">
+
+                                    <!-- Overlay untuk Action Buttons -->
+                                    <div class="user-overlay-circle">
+                                        <div class="user-action-links">
+                                            <a href="{{ route('warga.show', $item->warga_id) }}"
+                                                class="user-action-btn user-view-btn">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn-edit"
-                                                title="Edit Data">
+                                            <a href="{{ route('warga.edit', $item->warga_id) }}"
+                                                class="user-action-btn user-edit-btn">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST"
                                                 style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-delete" title="Hapus Data"
+                                                <button type="submit" class="user-action-btn user-delete-btn"
                                                     onclick="return confirm('Yakin ingin menghapus warga ini?')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -237,46 +224,55 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="warga-content">
-                                    <h4>{{ $item->nama }}</h4>
-                                    <span class="warga-nik">NIK: {{ $item->no_ktp }}</span>
 
-                                    <div class="warga-info">
-                                        <p><strong>Jenis Kelamin:</strong>
-                                            {{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
-                                        <p><strong>Agama:</strong> {{ $item->agama }}</p>
-                                        <p><strong>Pekerjaan:</strong> {{ $item->pekerjaan }}</p>
-                                        <p><strong>Telepon:</strong> {{ $item->telp }}</p>
-                                        <p><strong>Email:</strong> {{ $item->email }}</p>
+                                <!-- Informasi Warga -->
+                                <div class="user-content">
+                                    <h4 class="user-name">{{ $item->nama }}</h4>
+                                    <span class="user-role-badge"
+                                        style="background: {{ $item->jenis_kelamin == 'L' ? '#e3f2fd' : '#fce4ec' }}; color: {{ $item->jenis_kelamin == 'L' ? '#1565c0' : '#c2185b' }};">
+                                        {{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                    </span>
+
+                                    <!-- NIK Warga -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-person-badge"></i>
+                                        <span class="user-info-text">
+                                            {{ $item->no_ktp }}
+                                        </span>
                                     </div>
 
-                                    <div class="warga-meta">
-                                        <div class="status-badge">
-                                            <i class="bi bi-person-check"></i>
-                                            <span class="status-verified">Terverifikasi</span>
-                                        </div>
-                                        <div class="tanggal">
-                                            <i class="bi bi-calendar"></i>
-                                            <span>{{ $item->created_at->format('d M Y') }}</span>
-                                        </div>
+                                    <!-- Agama -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-heart"></i>
+                                        <span class="user-info-text">
+                                            {{ $item->agama }}
+                                        </span>
                                     </div>
 
-                                    <div class="action-buttons">
-                                        <a href="{{ route('warga.show', $item->warga_id) }}" class="btn-info-full">
-                                            <i class="bi bi-eye"></i> Detail
-                                        </a>
-                                        <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn-edit-full">
-                                            <i class="bi bi-pencil"></i> Edit
-                                        </a>
-                                        <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST"
-                                            style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-delete-full"
-                                                onclick="return confirm('Yakin ingin menghapus data warga ini?')">
-                                                <i class="bi bi-trash"></i> Hapus
-                                            </button>
-                                        </form>
+                                    <!-- Pekerjaan -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-briefcase"></i>
+                                        <span class="user-info-text">{{ $item->pekerjaan }}</span>
+                                    </div>
+
+                                    <!-- Nomor Telepon -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-telephone"></i>
+                                        <span class="user-info-text">{{ $item->telp ?? 'Tidak ada telepon' }}</span>
+                                    </div>
+
+                                    <!-- Email Warga -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-envelope"></i>
+                                        <span class="user-info-text">
+                                            {{ $item->email ?? 'Tidak ada email' }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Tanggal Bergabung -->
+                                    <div class="user-info-item">
+                                        <i class="bi bi-calendar-event"></i>
+                                        <span class="user-info-text">{{ $item->created_at->format('d M Y') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -312,205 +308,243 @@
     </main>
 
     <style>
-        .warga-card {
+        /* ===========================================
+                       CARD USER LEBIH PENDEK & RAPI
+                    =========================================== */
+        .user-card {
             background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             height: 100%;
-        }
-
-        .warga-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
-        }
-
-        .warga-header {
+            border: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 350px;
+            /* Dikurangi karena tidak ada status verifikasi */
             position: relative;
-            height: 120px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #175cdd 0%, #1a4bb8 100%);
         }
 
-        .warga-avatar {
-            width: 80px;
-            height: 80px;
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Area Gambar Bulat di Tengah - DIPERKECIL */
+        .user-picture-area {
+            position: relative;
+            width: 100px;
+            /* DIPERKECIL */
+            height: 100px;
+            /* DIPERKECIL */
+            margin: 0 auto 12px auto;
+            /* DIPENDEKKAN */
+            flex-shrink: 0;
+        }
+
+        /* Lingkaran untuk Foto - DIPERKECIL */
+        .user-picture-circle {
+            width: 100px;
+            /* DIPERKECIL */
+            height: 100px;
+            /* DIPERKECIL */
             border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #f0f5ff;
+            background: #f8f9fa;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-picture-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .user-card:hover .user-picture-img {
+            transform: scale(1.05);
+        }
+
+        /* Default Icon untuk Warga tanpa Foto dengan inisial */
+        .user-picture-default {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            font-weight: bold;
             color: white;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            border: 3px solid white;
+            font-size: 2.5rem;
+            /* DIPERKECIL */
+            font-weight: bold;
         }
 
-        .warga-overlay {
+        /* Overlay Lingkaran untuk Action Buttons */
+        .user-overlay-circle {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(23, 92, 221, 0.9);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 2;
         }
 
-        .warga-card:hover .warga-overlay {
+        .user-card:hover .user-overlay-circle {
             opacity: 1;
         }
 
-        .action-links {
+        /* ========== PERUBAHAN 1: Tombol Hoverlay DIKECILKAN ========== */
+        .user-action-links {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            /* DIKECILKAN dari 10px jadi 8px */
         }
 
-        .btn-info,
-        .btn-edit,
-        .btn-delete {
-            width: 40px;
-            height: 40px;
+        /* Tombol Action di Overlay - DIKECILKAN */
+        .user-action-btn {
+            width: 26px;
+            /* DIKECILKAN dari 30px jadi 26px */
+            height: 26px;
+            /* DIKECILKAN dari 30px jadi 26px */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-decoration: none;
-            transition: transform 0.3s ease;
-        }
-
-        .btn-info {
-            background: #17a2b8;
-        }
-
-        .btn-edit {
-            background: #ffc107;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-            border: none;
-        }
-
-        .btn-info:hover,
-        .btn-edit:hover,
-        .btn-delete:hover {
-            transform: scale(1.1);
-            color: white;
-        }
-
-        .warga-content {
-            padding: 20px;
-        }
-
-        .warga-content h4 {
-            color: #2c3e50;
-            margin-bottom: 5px;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        .warga-nik {
-            color: #6c757d;
-            font-size: 0.8em;
-            font-weight: 500;
-        }
-
-        .warga-info {
-            margin: 15px 0;
-        }
-
-        .warga-info p {
-            margin-bottom: 5px;
-            font-size: 0.85em;
-            color: #495057;
-            line-height: 1.4;
-        }
-
-        .warga-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            padding: 10px 0;
-            border-top: 1px solid #e9ecef;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .status-badge,
-        .tanggal {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.8em;
-            font-weight: 500;
-        }
-
-        .status-verified {
-            color: #28a745;
-        }
-
-        .tanggal {
-            color: #6c757d;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-info-full,
-        .btn-edit-full,
-        .btn-delete-full {
-            flex: 1;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            text-align: center;
-            font-size: 0.8em;
             transition: all 0.3s ease;
-            font-weight: 500;
+            border: 1.5px solid white;
+            /* DITIPISKAN dari 2px jadi 1.5px */
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            font-size: 0.75rem;
+            /* DIKECILKAN dari 0.85rem jadi 0.75rem */
         }
 
-        .btn-info-full {
-            background: #17a2b8;
-            color: white;
+        .user-view-btn:hover {
+            background: rgba(23, 162, 184, 0.9);
+            transform: scale(1.1);
+            /* DIKECILKAN dari 1.15 jadi 1.1 */
         }
 
-        .btn-edit-full {
-            background: #ffc107;
-            color: #212529;
+        .user-edit-btn:hover {
+            background: rgba(255, 193, 7, 0.9);
+            transform: scale(1.1);
+            /* DIKECILKAN dari 1.15 jadi 1.1 */
         }
 
-        .btn-delete-full {
-            background: #dc3545;
-            color: white;
+        .user-delete-btn:hover {
+            background: rgba(220, 53, 69, 0.9);
+            transform: scale(1.1);
+            /* DIKECILKAN dari 1.15 jadi 1.1 */
         }
 
-        .btn-info-full:hover,
-        .btn-edit-full:hover,
-        .btn-delete-full:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+        /* User Content */
+        .user-content {
+            padding: 0 5px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
         }
 
-        .empty-state {
-            padding: 60px 20px;
+        /* Nama User - DIPERKECIL SEDIKIT */
+        .user-name {
+            color: #2c3e50;
+            margin-bottom: 6px;
+            /* DIPENDEKKAN */
+            font-weight: 700;
+            font-size: 1rem;
+            /* DIPERKECIL */
+            line-height: 1.3;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 5px;
         }
 
-        .empty-state i {
-            font-size: 4rem;
+        /* Badge Role - DIPERKECIL */
+        .user-role-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            /* DIPERKECIL */
+            border-radius: 12px;
+            /* DIPERKECIL */
+            font-size: 0.75rem;
+            /* DIPERKECIL */
+            font-weight: 600;
+            margin-bottom: 10px;
+            /* DIPENDEKKAN LAGI */
+            border: 1px solid #d1e0ff;
+            white-space: nowrap;
         }
 
-        /* Tambahkan di CSS Anda */
+        /* ========== PERUBAHAN 2: Info item digeser ke kanan ========== */
+        .user-info-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            font-size: 0.8rem;
+            /* DIPERKECIL LAGI */
+            margin-bottom: 6px;
+            /* DIPENDEKKAN LAGI */
+            width: 100%;
+            text-align: left;
+            padding: 3px 8px;
+            /* DITAMBAH padding kanan 8px */
+            min-height: 22px;
+            /* DIPENDEKKAN */
+            margin-left: 4px;
+            /* DIGESER KE KANAN 4px */
+        }
+
+        .user-info-item i {
+            color: #175cdd;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+            /* DIPERKECIL */
+            width: 18px;
+            /* DIPERKECIL */
+            text-align: center;
+            /* PASTIKAN ICON DI TENGAH */
+        }
+
+        /* Email lebih rapi dengan line clamp */
+        .user-info-text {
+            color: #6c757d;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            flex: 1;
+            line-height: 1.3;
+            /* DIPENDEKKAN */
+            max-height: 2.6em;
+            /* DIPENDEKKAN */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-size: 0.8rem;
+            /* SERAGAM DENGAN ITEM LAIN */
+        }
+
+        /* CSS untuk search-section */
         .search-section .search-title {
             font-size: 2rem;
             font-weight: 300;
@@ -603,23 +637,7 @@
             box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .search-section .search-form .search-input-group {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1.5rem;
-                border-radius: 24px;
-            }
-
-            .search-section .search-form .search-input-group .search-btn,
-            .search-section .search-form .search-input-group .reset-btn {
-                border-radius: 16px;
-                justify-content: center;
-            }
-        }
-
-        /* CSS untuk total-badge (tambahkan di dalam <style>) */
+        /* CSS untuk total-badge */
         .total-badge {
             background: #f8f9fa;
             border: 2px solid #e9ecef;
@@ -654,8 +672,101 @@
             white-space: nowrap;
         }
 
-        /* Responsif untuk mobile */
+        /* Responsive untuk card - SESUAIKAN JUGA */
+        @media (max-width: 1200px) {
+            .user-info-text {
+                max-width: 160px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .col-lg-3 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .user-picture-area {
+                width: 90px;
+                height: 90px;
+            }
+
+            .user-picture-circle {
+                width: 90px;
+                height: 90px;
+            }
+
+            .user-name {
+                font-size: 0.95rem;
+            }
+
+            .user-info-text {
+                max-width: 140px;
+            }
+
+            .user-card {
+                min-height: 340px;
+            }
+
+            /* Tombol hoverlay juga diperkecil di responsive */
+            .user-action-btn {
+                width: 24px;
+                /* DIKECILKAN dari 28px jadi 24px */
+                height: 24px;
+                /* DIKECILKAN dari 28px jadi 24px */
+                font-size: 0.7rem;
+                /* DIKECILKAN dari 0.8rem jadi 0.7rem */
+            }
+
+            /* Info item tetap digeser */
+            .user-info-item {
+                padding: 3px 6px;
+                /* DIKECILKAN sedikit di tablet */
+                margin-left: 2px;
+                margin-bottom: 5px;
+                /* DIPENDEKKAN */
+                font-size: 0.75rem;
+                /* DIPERKECIL DI TABLET */
+            }
+        }
+
         @media (max-width: 768px) {
+            .col-lg-3 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .user-picture-area {
+                width: 100px;
+                height: 100px;
+            }
+
+            .user-picture-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .user-info-text {
+                max-width: 220px;
+            }
+
+            .user-card {
+                min-height: 330px;
+            }
+
+            /* Responsive untuk search */
+            .search-section .search-form .search-input-group {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+
+            .search-section .search-form .search-input-group .search-btn,
+            .search-section .search-form .search-input-group .reset-btn {
+                border-radius: 16px;
+                justify-content: center;
+            }
+
             .d-flex.justify-content-between {
                 flex-direction: column;
                 align-items: flex-start !important;
@@ -665,6 +776,59 @@
             .total-badge {
                 align-self: flex-start;
                 margin-top: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info-text {
+                max-width: 180px;
+            }
+
+            .user-card {
+                min-height: 320px;
+                padding: 15px 12px;
+            }
+
+            .user-picture-area {
+                width: 85px;
+                height: 85px;
+                margin-bottom: 10px;
+            }
+
+            .user-picture-circle {
+                width: 85px;
+                height: 85px;
+            }
+
+            .user-info-item {
+                font-size: 0.7rem;
+                margin-bottom: 5px;
+                padding: 2px 4px;
+                /* LEBIH KECIL DI MOBILE */
+                margin-left: 0;
+                /* RESET DI MOBILE */
+            }
+
+            .user-info-item i {
+                font-size: 0.8rem;
+                width: 14px;
+            }
+
+            /* Tombol hoverlay lebih kecil di mobile */
+            .user-action-btn {
+                width: 22px;
+                /* LEBIH KECIL DI MOBILE */
+                height: 22px;
+                /* LEBIH KECIL DI MOBILE */
+                font-size: 0.65rem;
+                /* LEBIH KECIL DI MOBILE */
+            }
+        }
+
+        @media (max-width: 360px) {
+            .user-info-item {
+                font-size: 0.65rem;
+                margin-bottom: 4px;
             }
         }
     </style>

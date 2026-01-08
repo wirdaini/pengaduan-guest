@@ -13,8 +13,41 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::orderBy('name')->paginate(9);
-        return view('pages.user.index', compact('users'));
+        // Mendefinisikan kolom yang boleh difilter
+        $filterableColumns = [
+            'role',
+            'created_at', // untuk filter tanggal
+        ];
+
+        // Kolom yang bisa di-search
+        $searchableColumns = [
+            'name',
+            'email',
+        ];
+
+        // Handle filter email_verified (khusus - tidak ada di database)
+        $query = User::query();
+
+        // Filter email verified (kustom)
+        if ($request->filled('email_verified')) {
+            if ($request->email_verified == 'verified') {
+                $query->whereNotNull('email_verified_at');
+            } elseif ($request->email_verified == 'unverified') {
+                $query->whereNull('email_verified_at');
+            }
+        }
+
+        // Apply filter dan search scope
+        $users = $query->filter($request, $filterableColumns)
+            ->search($request, $searchableColumns)
+            ->orderBy('name', 'asc')
+            ->paginate(16)
+            ->withQueryString();
+
+        // Data untuk dropdown
+        $listRole = User::select('role')->distinct()->pluck('role');
+
+        return view('pages.user.index', compact('users', 'request', 'listRole'));
     }
 
     /**

@@ -22,7 +22,7 @@ class TindakLanjutController extends Controller
             ->filter($request, $filterableColumns)
             ->search($request, $searchableColumns)
             ->orderBy('created_at', 'desc')
-            ->paginate(9)
+            ->paginate(16)
             ->withQueryString();
 
         return view('pages.tindak_lanjut.index', compact('tindak_lanjut'));

@@ -17,9 +17,9 @@ class CreateTindakLanjutDummy extends Seeder
         // PASTIKAN ambil pengaduan_id yang sudah ada
         $pengaduanIds = DB::table('pengaduan')->pluck('pengaduan_id')->toArray();
 
-        // DEBUG: Cek data yang diambil
-        $this->command->info('Pengaduan IDs: ' . implode(', ', array_slice($pengaduanIds, 0, 10)) . '...');
-        $this->command->info('Total Pengaduan: ' . count($pengaduanIds));
+        // // DEBUG: Cek data yang diambil
+        // $this->command->info('Pengaduan IDs: ' . implode(', ', array_slice($pengaduanIds, 0, 10)) . '...');
+        // $this->command->info('Total Pengaduan: ' . count($pengaduanIds));
 
         if (empty($pengaduanIds)) {
             $this->command->error('DATA PENGADUAN KOSONG! Jalankan CreatePengaduanDummy dulu.');
@@ -95,8 +95,5 @@ class CreateTindakLanjutDummy extends Seeder
                     ->update(['status' => $status]);
             }
         }
-
-        $totalTindakLanjut = DB::table('tindak_lanjut')->count();
-        $this->command->info('Seeder tindak lanjut berhasil! Total: ' . $totalTindakLanjut . ' data');
     }
 }

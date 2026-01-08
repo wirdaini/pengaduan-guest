@@ -31,27 +31,27 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // Validasi input
         $request->validate([
             'email'    => 'required|email',
             'password' => 'required|min:6',
-        ], [
-            'email.required'    => 'Alamat email wajib diisi.',
-            'email.email'       => 'Format email tidak valid.',
-            'password.required' => 'Kata sandi wajib diisi.',
-            'password.min'      => 'Kata sandi minimal 6 karakter.',
         ]);
 
-        // PAKAI Auth::attempt() - INI YANG BENAR UNTUK LARAVEL!
         if (Auth::attempt([
             'email'    => $request->email,
             'password' => $request->password,
         ], $request->has('remember'))) {
 
             $request->session()->regenerate();
-
-            // Dapatkan user yang baru login
             $user = Auth::user();
+
+            // ✅ HAPUS SESSION LOGIC LAMA
+            // $warga = DB::table('warga')->where('email', $user->email)->first();
+            // if ($warga) {
+            //     session(['warga_id' => $warga->warga_id]);
+            // }
+
+            // ✅ SEKARANG LANGSUNG PAKAI RELATIONSHIP
+            // $user->warga akan otomatis tersedia jika ada relasi
 
             return redirect()->route('dashboard')
                 ->with('success', 'Login berhasil! Selamat datang ' . $user->name . '.');
@@ -61,7 +61,6 @@ class AuthController extends Controller
             ->withErrors(['email' => 'Email atau password salah.'])
             ->withInput($request->except('password'));
     }
-
     /**
      * Memproses registrasi
      */
@@ -95,13 +94,9 @@ class AuthController extends Controller
                 'role'     => 'warga', // DEFAULT ROLE UNTUK USER BARU
             ]);
 
-            auth()->login($user);
-
-            // ========== PERUBAHAN DI SINI ==========
             // Redirect ke DASHBOARD setelah registrasi
-            return redirect()->route('dashboard')
+            return redirect()->route('login')
                 ->with('success', 'Registrasi berhasil! Selamat datang ' . $user->name . '.');
-            // ========== END PERUBAHAN ==========
 
         } catch (\Exception $e) {
             return back()->with('error', 'Registrasi gagal: ' . $e->getMessage());
